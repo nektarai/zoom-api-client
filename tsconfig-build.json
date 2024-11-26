@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "inlineSourceMap": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "noEmit": false,
+    "skipLibCheck": false,
+    "importHelpers": false,
+  },
+  "include": [
+    "src/**/*",
+  ],
+}

@@ -1,0 +1,15 @@
+# don't ever lint node_modules or other languages
+node_modules
+python
+
+# don't lint build output
+dist
+build
+
+# don't lint nyc coverage output
+coverage
+
+src/lib/ui/external-lib
+
+# don't lint custom-script data csv files (avoids OOM)
+src/scripts/data

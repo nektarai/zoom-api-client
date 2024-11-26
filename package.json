@@ -2,6 +2,9 @@
   "name": "@nektarai/zoom-api-client",
   "version": "0.0.1",
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "prepublishOnly": "npm run test && npm run build",
     "build": "rimraf dist && tsc --build tsconfig-build.json",

@@ -67,7 +67,7 @@ import {ZoomApi} from '@nektarai/zoom-api-client';
 
 ...
 
-expressRouter.get('/zoom/oauth/callback', (req, res) => {
+expressRouter.get('/zoom/oauth/callback', async (req, res) => {
   const {state, code} = req.query;
   const stateParsed = JSON.parse(state);
   const tokens =  await zoomOauth.requestTokens(code);
@@ -76,10 +76,9 @@ expressRouter.get('/zoom/oauth/callback', (req, res) => {
     tokens,
   });
   const userInfo = zoomApi.me();
-  db.write({
-    id: userInfo.id,
-    emailAddress: userInfo.email,
-  });
+  const result = await db.read(`SELECT * from "zoomUsers" where id='${userInfo.id}'`);
+  if (result.size) res.end('Auth successful!');
+  else res.end('Auth failed!');
 });
 ```
 

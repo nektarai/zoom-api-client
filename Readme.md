@@ -1,1 +1,95 @@
 # Zoom API Client
+
+This node package aims to provide a dependency-free and 100% tested Zoom Api Client. We use it in production at [Nektar.ai](http://nektar.ai).
+
+The code is heavily inspired by GoogleApis package.
+
+## Installation
+
+```sh
+npm install @nektarai/zoom-api-client
+```
+
+## Usage
+
+For now, this package includes only those APIs which Nektar uses. You can easily extend the functionality in your project and even contribute directly over here!
+
+### ZoomClient
+
+This is the core provider of all authentication and requests for Zoom.
+It is recommended to create only one `ZoomClient` instance for all Oauth (non-S2SO) purposes.
+
+```js
+import {ZoomClient} from '@nektarai/zoom-api-client';
+
+const zoomClient = new ZoomClient({
+    clientId: process.env.ZOOM_CLIENT_ID,
+    clientSecret: process.env.ZOOM_CLIENT_SECRET,
+    redirectUri: process.env.ZOOM_REDIRECT_URI,
+    verificationKey: process.env.ZOOM_VERIFICATION_KEY, // optional
+});
+```
+
+### ZoomOauth
+
+To use the Zoom's Oauth functionality
+
+```js
+import {ZoomS2SO} from '@nektarai/zoom-api-client';
+
+const zoomOauth = new ZoomOauth(zoomClient);
+
+expressRouter.get('/zoom/oauth', (req, res) => {
+  const state = {userId: req.params.userId};
+  res.redirect(zoomOauth.getAuthorizationUrl(state));
+});
+```
+
+### ZoomS2SO
+
+To use Zoom's Server-to-server oauth functionality
+
+```js
+import {ZoomClient, ZoomS2SO} from '@nektarai/zoom-api-client';
+
+const zoomClient = new ZoomClient({
+  // S2SO credentials
+})
+const zoomS2so = new ZoomS2SO(zoomClient);
+```
+
+### ZoomApi
+
+To use Zoom Api's after authentication
+
+```js
+import {ZoomApi} from '@nektarai/zoom-api-client';
+
+...
+
+expressRouter.get('/zoom/oauth/callback', (req, res) => {
+  const {state, code} = req.query;
+  const stateParsed = JSON.parse(state);
+  const tokens =  await zoomOauth.requestTokens(code);
+  const zoomApi = new ZoomApi({
+    client: zoomClient, // oauth or s2so
+    tokens,
+  });
+  const userInfo = zoomApi.me();
+  db.write({
+    id: userInfo.id,
+    emailAddress: userInfo.email,
+  });
+});
+```
+
+## Contribution
+
+(WIP)
+
+1. Clone the repo
+1. Install dependencies with `npm install`
+1. Add additional APIs in `src/` and tests in `test/`
+1. Make sure tests pass and raise a PR
+1. Take feedback, make iterative changes, and wait for your changes to be published!
+

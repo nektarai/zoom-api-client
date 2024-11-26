@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
-    "prepublishOnly": "npm:test && npm:build",
+    "prepublishOnly": "npm run test && npm run build",
     "build": "rimraf dist && tsc --build tsconfig-build.json",
     "test": "jest"
   },

@@ -1,6 +1,6 @@
 # Zoom API Client
 
-This node package aims to provide a dependency-free and 100% tested Zoom Api Client. We use it in production at [Nektar.ai](http://nektar.ai).
+This node package aims to provide a dependency-free and 100% typed and tested Zoom Api Client. We use it in production at [Nektar.ai](http://nektar.ai).
 
 The code is heavily inspired by GoogleApis package.
 

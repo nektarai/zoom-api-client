@@ -130,3 +130,32 @@ it('meetings() list', async () => {
     );
     scope.done();
 });
+
+it('meetings() create', async () => {
+    const body = {
+        topic: 'dummy',
+        type: 2,
+    };
+    const resp = { id: 2, name: 'dummy' };
+    const scope = nock(client.BASE_API_URL)
+        .post(`/users/me/meetings`, body)
+        .reply(201, resp);
+    expect(await zoomApi.meetings().create('me', body as any)).toEqual(resp);
+    scope.done();
+});
+
+it('meetings() recordings', async () => {
+    const meetingId = 'randomId';
+    const params = {
+        include_fields: 'dummy',
+    };
+    const resp = { id: 2, name: 'dummy' };
+    const paramsStr = new URLSearchParams(params as any).toString();
+    const scope = nock(client.BASE_API_URL)
+        .get(`/meetings/${meetingId}/recordings?${paramsStr}`)
+        .reply(200, resp);
+    expect(
+        await zoomApi.meetings().recordings(meetingId, params as any),
+    ).toEqual(resp);
+    scope.done();
+});

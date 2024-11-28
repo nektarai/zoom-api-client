@@ -1,4 +1,6 @@
 import {
+    ZoomApi$Meetings$Create$Request,
+    ZoomApi$Meetings$Create$Response,
     ZoomApi$Meetings$Get,
     ZoomApi$Meetings$List,
     ZoomApi$Meetings$Recordings,
@@ -166,7 +168,19 @@ export class ZoomApi {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
         return {
-            /** From: https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/meetings */
+            /** From: https://developers.zoom.us/docs/api/meetings/#tag/meetings/POST/users/{userId}/meetings */
+            create(
+                userId: string,
+                meeting: ZoomApi$Meetings$Create$Request,
+            ): Promise<ZoomApi$Meetings$Create$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/meetings`,
+                    method: 'POST',
+                    headers: self.getAuthHeader(),
+                    body: JSON.stringify(meeting),
+                }) as any;
+            },
+            /** From: https://developers.zoom.us/docs/api/meetings/#tag/meetings/GET/users/{userId}/meetings */
             list(
                 userId: string,
                 params?: Partial<{
@@ -192,7 +206,7 @@ export class ZoomApi {
                     headers: self.getAuthHeader(),
                 }) as any;
             },
-            /** From: https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/meeting */
+            /** From: https://developers.zoom.us/docs/api/meetings/#tag/meetings/GET/meetings/{meetingId} */
             get(
                 meetingId: string,
                 params?: Partial<{
@@ -207,7 +221,7 @@ export class ZoomApi {
                     headers: self.getAuthHeader(),
                 }) as any;
             },
-            /** From: https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/recordingGet */
+            /** From: https://developers.zoom.us/docs/api/meetings/#tag/cloud-recording/GET/meetings/{meetingId}/recordings */
             recordings(
                 meetingId: string,
                 params?: Partial<{
@@ -222,6 +236,9 @@ export class ZoomApi {
                     headers: self.getAuthHeader(),
                 }) as any;
             },
+            /**
+             * A quick way to get the transcript of a meeting.
+             */
             transcript(url: string): Promise<string> {
                 return self.client.request(
                     {
@@ -229,10 +246,7 @@ export class ZoomApi {
                         method: 'GET',
                         headers: self.getAuthHeader(),
                     },
-                    {
-                        textFile: true,
-                        requestTimeoutMs: 60000,
-                    },
+                    { textFile: true, requestTimeoutMs: 60000 },
                 ) as any;
             },
         };

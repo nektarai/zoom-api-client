@@ -224,158 +224,8 @@ export type ZoomApi$Meetings$Get = {
     password: string;
     pmi?: string;
     pre_schedule: boolean;
-    recurrence: {
-        end_date_time: string;
-        /**
-         * Default: 1
-         * Select how many times the meeting should recur before it is canceled.
-         * (Cannot be used with "end_date_time".)
-         */
-        end_times: number;
-        /**
-         * Use this field only if you're scheduling a recurring meeting of type 3 to state which day in a month, the meeting should recur. The value range is from 1 to 31.
-         *
-         * For instance, if you would like the meeting to recur on 23rd of each month, provide 23 as the value of this field and 1 as the value of the repeat_interval field. Instead, if you would like the meeting to recur every three months, on 23rd of the month, change the value of the repeat_interval field to 3.
-         */
-        monthly_day: number;
-        /**
-         * Use this field only if you're scheduling a recurring meeting of type 3 to state the week of the month when the meeting should recur. If you use this field, you must also use the monthly_week_day field to state the day of the week when the meeting should recur.
-         *
-         * -1 - Last week of the month.
-         * 1 - First week of the month.
-         * 2 - Second week of the month.
-         * 3 - Third week of the month.
-         * 4 - Fourth week of the month.
-         */
-        monthly_week: -1 | 1 | 2 | 3 | 4;
-        /**
-         * Use this field only if you're scheduling a recurring meeting of type 3 to state a specific day in a week when the monthly meeting should recur. To use this field, you must also use the monthly_week field.
-         *
-         * 1 - Sunday.
-         * 2 - Monday.
-         * 3 - Tuesday.
-         * 4 - Wednesday.
-         * 5 - Thursday.
-         * 6 - Friday.
-         * 7 - Saturday.
-         */
-        monthly_week_day: 1 | 2 | 3 | 4 | 5 | 6 | 7;
-        /**
-         * Define the interval at which the meeting should recur. For instance, if you would like to schedule a meeting that recurs every two months, you must set the value of this field as 2 and the value of the type parameter as 3.
-         */
-        repeat_interval: number;
-        /**
-         * 1 - Daily.
-         * 2 - Weekly.
-         * 3 - Monthly.
-         */
-        type: 1 | 2 | 3;
-        /**
-         * Default: "1"
-         * This field is required if you're scheduling a recurring meeting of type 2 to state which day(s) of the week the meeting should repeat.
-         *
-         * The value for this field could be a number between 1 to 7 in string format. For instance, if the meeting should recur on Sunday, provide "1" as the value of this field.
-         *
-         * Note: If you would like the meeting to occur on multiple days of a week, you should provide comma separated values for this field. For instance, if the meeting should recur on Sundays and Tuesdays provide "1,3" as the value of this field.
-         *
-         * 1 - Sunday.
-         * 2 - Monday.
-         * 3 - Tuesday.
-         * 4 - Wednesday.
-         * 5 - Thursday.
-         * 6 - Friday.
-         * 7 - Saturday.
-         */
-        weekly_days: '1' | '2' | '3' | '4' | '5' | '6' | '7';
-    };
-    settings: {
-        // TMI. Fill in if required
-        /*
-        allow_multiple_devices: true;
-        alternative_hosts: 'jchill@example.com;thill@example.com';
-        alternative_hosts_email_notification: true;
-        alternative_host_update_polls: true;
-        approval_type: 0;
-        approved_or_denied_countries_or_regions: {
-            approved_list: ['CX'];
-            denied_list: ['CA'];
-            enable: true;
-            method: 'approve';
-        };
-        audio: 'telephony';
-        authentication_domains: 'example.com';
-        authentication_exception: [
-            {
-                email: 'jchill@example.com';
-                name: 'Jill Chill';
-                join_url: 'https://example.com/s/11111';
-            },
-        ];
-        authentication_name: 'Sign in to Zoom';
-        authentication_option: 'signIn_D8cJuqWVQ623CI4Q8yQK0Q';
-        auto_recording: 'cloud';
-        breakout_room: {
-            enable: true;
-            rooms: [
-                {
-                    name: 'room1';
-                    participants: ['jchill@example.com'];
-                },
-            ];
-        };
-        calendar_type: 1;
-        close_registration: false;
-        cn_meeting: false;
-        contact_email: 'jchill@example.com';
-        contact_name: 'Jill Chill';
-        custom_keys: [
-            {
-                key: 'key1';
-                value: 'value1';
-            },
-        ];
-        email_notification: true;
-        encryption_type: 'enhanced_encryption';
-        enforce_login: true;
-        enforce_login_domains: 'example.com';
-        focus_mode: true;
-        global_dial_in_countries: ['US'];
-        global_dial_in_numbers: [
-            {
-                city: 'New York';
-                country: 'US';
-                country_name: 'US';
-                number: '+1 1000200200';
-                type: 'toll';
-            },
-        ];
-        host_video: true;
-        in_meeting: false;
-        jbh_time: 0;
-        join_before_host: true;
-        language_interpretation: {
-            enable: true;
-            interpreters: [
-                {
-                    email: 'interpreter@example.com';
-                    languages: 'US,FR';
-                },
-            ];
-        };
-        meeting_authentication: true;
-        mute_upon_entry: false;
-        participant_video: false;
-        private_meeting: false;
-        registrants_confirmation_email: true;
-        registrants_email_notification: true;
-        registration_type: 1;
-        show_share_button: true;
-        use_pmi: false;
-        waiting_room: false;
-        watermark: false;
-        host_save_video_order: true;
-        */
-    };
+    recurrence: ZoomApi$Meetings$$Recurrence;
+    settings: ZoomApi$Meetings$$Settings;
     start_time: string;
     start_url: string;
     status: 'waiting' | 'started';
@@ -532,6 +382,256 @@ export type ZoomApi$Reports$Meetings$$Meeting = {
     join_time: string;
     leave_time: string;
 };
+
+export type ZoomApi$Meetings$$Settings = {
+    // TODO: Add jsdoc comments
+    allow_multiple_devices: boolean;
+    alternative_hosts: string;
+    alternative_hosts_email_notification: boolean;
+    alternative_host_update_polls: boolean;
+    approval_type: number;
+    approved_or_denied_countries_or_regions: {
+        approved_list: string[];
+        denied_list: string[];
+        enable: boolean;
+        method: 'approve' | 'deny';
+    };
+    audio: 'both' | 'telephony' | 'voip' | 'thirdParty';
+    authentication_domains: string;
+    authentication_exception: {
+        email: string;
+        name: string;
+    }[];
+    authentication_option: string;
+    auto_recording: 'local' | 'cloud' | 'none';
+    breakout_room: {
+        enable: boolean;
+        rooms: {
+            name: string;
+            participants: string[];
+        }[];
+    };
+    calendar_type: 1 | 2;
+    close_registration: boolean;
+    cn_meeting: boolean;
+    contact_email: string;
+    contact_name: string;
+    custom_keys: {
+        key: string;
+        value: string;
+    }[];
+    email_notification: boolean;
+    encryption_type: 'enhanced_encryption' | 'e2ee';
+    focus_mode: boolean;
+    global_dial_in_countries: string[];
+    host_video: boolean;
+    /**
+     * @deprecated
+     */
+    in_meeting: false;
+    jbh_time: 0 | 5 | 10 | 15;
+    join_before_host: boolean;
+    language_interpretation: {
+        enable: boolean;
+        interpreters: {
+            email: string;
+            languages: string;
+        }[];
+    };
+    meeting_authentication: boolean;
+    mute_upon_entry: boolean;
+    participant_video: boolean;
+    private_meeting: boolean;
+    registrants_confirmation_email: boolean;
+    registrants_email_notification: boolean;
+    registration_type: 1 | 2 | 3;
+    show_share_button: boolean;
+    use_pmi: boolean;
+    waiting_room: boolean;
+    watermark: boolean;
+    host_save_video_order: boolean;
+};
+
+export type ZoomApi$Meetings$$Recurrence = Partial<{
+    /**
+     * Select the final date when the meeting will recur before it is canceled.
+     * Should be in UTC time, such as 2017-11-25T12:00:00Z.
+     * Cannot be used with `end_times`.
+     */
+    end_date_time: string;
+    /**
+     * Select how many times the meeting should recur before it is canceled.
+     * If end_times is set to 0, it means there is no end time.
+     * The maximum number of recurring is 60. Cannot be used with `end_date_time`.
+     */
+    end_times: number;
+    /**
+     * Use this field only if you're scheduling a recurring meeting of type 3
+     * to state the day in a month when the meeting should recur.
+     * The value range is from 1 to 31.
+     */
+    monthly_day: number;
+    /**
+     * Use this field only if you're scheduling a recurring meeting of type 3
+     * to state the week of the month when the meeting should recur.
+     * If you use this field, you must also use the `monthly_week_day` field
+     * to state the day of the week when the meeting should recur.
+     */
+    monthly_week:
+        | -1 // last week
+        | 1 // first week
+        | 2 // second week
+        | 3 // third week
+        | 4; // fourth week
+    /**
+     * Use this field only if you're scheduling a recurring meeting of type 3
+     * to state a specific day in a week when the monthly meeting should recur.
+     * To use this field, you must also use the `monthly_week` field.
+     */
+    monthly_week_day:
+        | 1 // Sunday
+        | 2 // Monday
+        | 3 // Tuesday
+        | 4 // Wednesday
+        | 5 // Thursday
+        | 6 // Friday
+        | 7; // Saturday
+    /**
+     * Define the interval when the meeting should recur.
+     * For instance, to schedule a meeting that recurs every two months,
+     * set this field's value as 2 and the value of the type parameter as 3.
+     */
+    repeat_interval: number;
+    /**
+     * This field is required if you're scheduling a recurring meeting of type 2
+     * to state the days of the week when the meeting should repeat.
+     * To set the meeting to occur on multiple days of a week, provide comma
+     * separated values for this field. For instance, if the meeting should
+     * recur on Sundays and Tuesdays, provide `1,3` as this field's value.
+     */
+    weekly_days: '1' | '2' | '3' | '4' | '5' | '6' | '7';
+}> & {
+    /**
+     * Recurrence meeting types.
+     * 1 - Daily.
+     * 2 - Weekly.
+     * 3 - Monthly.
+     */
+    type: 1 | 2 | 3;
+};
+
+export type ZoomApi$Meetings$Create$Request = Partial<{
+    /**
+     * The meeting's agenda.
+     * This value has a maximum length of 2,000 characters.
+     */
+    agenda: string;
+    /**
+     * Whether to generate a default passcode using the user's settings.
+     * @default false
+     */
+    default_password: boolean;
+    /**
+     * The meeting's scheduled duration in minutes.
+     * This field is only used for scheduled meetings (2).
+     */
+    duration: number;
+    /**
+     * The passcode required to join the meeting.
+     * By default, a passcode can only have a maximum length of 10 characters
+     * and only contain alphanumeric characters and the @, -, _, and * characters.
+     */
+    password: string;
+    /**
+     * Whether to create a prescheduled meeting via the GSuite app.
+     * This only supports the meeting type value of 2 (scheduled meetings)
+     * and 3 (recurring meetings with no fixed time).
+     */
+    pre_schedule: boolean;
+    /**
+     * The meeting's recurrence information.
+     * Use this object only for a meeting with type 8, a recurring meeting with a fixed time.
+     */
+    recurrence: ZoomApi$Meetings$$Recurrence;
+    /**
+     * The email address or user ID of the user to schedule a meeting for.
+     */
+    schedule_for: string;
+    /**
+     * Information about the meeting's settings.
+     */
+    settings: ZoomApi$Meetings$$Settings;
+    /**
+     * The meeting's start time.
+     * This field is only used for scheduled or recurring meetings with a fixed time.
+     * This supports local time and GMT formats.
+     */
+    start_time: string;
+    /**
+     * The account admin meeting template ID used to schedule a meeting using a meeting template.
+     */
+    template_id: string;
+    /**
+     * The timezone to assign to the start_time value.
+     * This field is only used for scheduled or recurring meetings with a fixed time.
+     */
+    timezone: string;
+    /**
+     * The meeting's topic.
+     */
+    topic: string;
+    /**
+     * Information about the meeting's tracking fields.
+     */
+    tracking_fields: { field: string; value: string }[];
+}> & {
+    /**
+     * The meeting type.
+     * 1 - Instant meeting.
+     * 2 - Scheduled meeting. Default.
+     * 3 - Recurring meeting with no fixed time.
+     * 8 - Recurring meeting with a fixed time.
+     * 10 - A screen share only meeting.
+     */
+    type: 1 | 2 | 3 | 8 | 10;
+};
+
+export type ZoomApi$Meetings$Create$Response = Partial<{
+    assistant_id: string;
+    host_email: string;
+    id: number;
+    agenda: string;
+    created_at: string;
+    duration: number;
+    encrypted_password: string;
+    pstn_password: string;
+    h323_password: string;
+    join_url: string;
+    chat_join_url: string;
+    occurrences: {
+        duration: number;
+        occurrence_id: string;
+        start_time: string;
+        status: 'available' | 'deleted';
+    }[];
+    password: string;
+    pmi: string;
+    pre_schedule: boolean;
+    recurrence: ZoomApi$Meetings$$Recurrence;
+    settings: ZoomApi$Meetings$$Settings;
+    start_time: string;
+    start_url: string;
+    timezone: string;
+    topic: string;
+    tracking_fields: {
+        field: string;
+        value: string;
+        visible: boolean;
+    }[];
+    type: 1 | 2 | 3 | 8;
+    dynamic_host_key: string;
+    creation_source: 'other' | 'open_api' | 'web_portal';
+}>;
 
 export type ZoomEventBody<T> = {
     event: string;

@@ -176,7 +176,10 @@ export class ZoomApi {
                 return self.client.request({
                     url: `${self.client.BASE_API_URL}/users/${userId}/meetings`,
                     method: 'POST',
-                    headers: self.getAuthHeader(),
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify(meeting),
                 }) as any;
             },
@@ -246,7 +249,7 @@ export class ZoomApi {
                         method: 'GET',
                         headers: self.getAuthHeader(),
                     },
-                    { textFile: true, requestTimeoutMs: 60000 },
+                    { requestTimeoutMs: 60000 },
                 ) as any;
             },
         };

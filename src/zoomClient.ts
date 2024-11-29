@@ -60,9 +60,13 @@ export class ZoomClient {
                 body: request.body,
                 headers: request.headers,
             });
-            result = options.textFile
-                ? await res.text()
-                : ((await res.json()) as ZoomResponse);
+            result = await res.text();
+
+            try {
+                result = JSON.parse(result);
+            } catch (_) {
+                // do nothing
+            }
 
             if (!res.ok) {
                 if (typeof result == 'string') throw new Error(result);

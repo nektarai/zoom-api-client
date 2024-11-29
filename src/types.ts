@@ -28,7 +28,6 @@ export type ZoomRequestOptions = {
      * Default: 5000
      */
     requestTimeoutMs?: number;
-    textFile?: boolean;
 } & Record<string, any>;
 
 export type ZoomResponse = Record<string, any> | string | null;
@@ -157,12 +156,12 @@ export type ZoomApi$Users$List$$User = {
      * 3 — On-prem.
      * 99 — None
      */
-    type: 1 | 2 | 3 | 99;
+    type: number;
     /**
      * 1 — A verified user email.
      * 0 — The user's email not verified.
      */
-    verified: 1 | 0;
+    verified: number;
 };
 
 export type ZoomApi$PastMeeting$Participants$$Participant = {
@@ -373,7 +372,7 @@ export type ZoomApi$Reports$Meetings$$Meeting = {
      * 4 — A personal meeting room.
      * 8 — A recurring meeting with a fixed time.
      */
-    type: 1 | 2 | 3 | 4 | 8;
+    type: number;
     user_email: string;
     user_name: string;
     uuid: string;
@@ -476,26 +475,26 @@ export type ZoomApi$Meetings$$Recurrence = Partial<{
      * to state the week of the month when the meeting should recur.
      * If you use this field, you must also use the `monthly_week_day` field
      * to state the day of the week when the meeting should recur.
+     * -1 - last week
+     * 1 -first week
+     * 2 -second week
+     * 3 -third week
+     * 4 - fourth week
      */
-    monthly_week:
-        | -1 // last week
-        | 1 // first week
-        | 2 // second week
-        | 3 // third week
-        | 4; // fourth week
+    monthly_week: number;
     /**
      * Use this field only if you're scheduling a recurring meeting of type 3
      * to state a specific day in a week when the monthly meeting should recur.
      * To use this field, you must also use the `monthly_week` field.
+     * 1 - Sunday
+     * 2 - Monday
+     * 3 - Tuesday
+     * 4 - Wednesday
+     * 5 - Thursday
+     * 6 - Friday
+     * 7 - Saturday
      */
-    monthly_week_day:
-        | 1 // Sunday
-        | 2 // Monday
-        | 3 // Tuesday
-        | 4 // Wednesday
-        | 5 // Thursday
-        | 6 // Friday
-        | 7; // Saturday
+    monthly_week_day: number;
     /**
      * Define the interval when the meeting should recur.
      * For instance, to schedule a meeting that recurs every two months,
@@ -509,7 +508,7 @@ export type ZoomApi$Meetings$$Recurrence = Partial<{
      * separated values for this field. For instance, if the meeting should
      * recur on Sundays and Tuesdays, provide `1,3` as this field's value.
      */
-    weekly_days: '1' | '2' | '3' | '4' | '5' | '6' | '7';
+    weekly_days: string;
 }> & {
     /**
      * Recurrence meeting types.
@@ -517,7 +516,7 @@ export type ZoomApi$Meetings$$Recurrence = Partial<{
      * 2 - Weekly.
      * 3 - Monthly.
      */
-    type: 1 | 2 | 3;
+    type: number;
 };
 
 export type ZoomApi$Meetings$Create$Request = Partial<{
@@ -593,13 +592,14 @@ export type ZoomApi$Meetings$Create$Request = Partial<{
      * 8 - Recurring meeting with a fixed time.
      * 10 - A screen share only meeting.
      */
-    type: 1 | 2 | 3 | 8 | 10;
+    type: number;
 };
 
 export type ZoomApi$Meetings$Create$Response = Partial<{
     assistant_id: string;
     host_email: string;
     id: number;
+    uuid: string;
     agenda: string;
     created_at: string;
     duration: number;

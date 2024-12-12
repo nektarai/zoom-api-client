@@ -10,6 +10,7 @@ import {
     ZoomApi$Users$$Status,
     ZoomApi$Users$Get,
     ZoomApi$Users$List,
+    ZoomApi$ZAKToken,
     ZoomError,
     ZoomTokens,
 } from './types';
@@ -28,7 +29,7 @@ export class ZoomApi {
         this.tokens = tokens;
     }
 
-    getZAKToken(userId: string): Promise<{ tokens: string }> {
+    getZAKToken(userId: string): Promise<ZoomApi$ZAKToken> {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const self = this;
         return this.client.request({

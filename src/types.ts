@@ -53,6 +53,8 @@ export type ZoomTokens = Partial<ZoomTokensResponse$Success> &
 
 /* --- APIs --- */
 
+export type ZoomApi$ZAKToken = { token: string };
+
 export type ZoomApi$Users$$Status = 'pending' | 'active' | 'inactive';
 
 export type ZoomApi$Users$List = {

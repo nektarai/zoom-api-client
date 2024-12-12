@@ -18,6 +18,15 @@ beforeEach(() => {
     zoomApi = new ZoomApi({ client, tokens: { access_token: 'dummy' } });
 });
 
+it('getZAKToken', async () => {
+    const userId = 'randomId';
+    const resp = { token: 'dummy' };
+    const scope = nock(client.BASE_API_URL)
+        .get(`/users/${userId}/token?type=zak`)
+        .reply(200, resp);
+    expect(await zoomApi.getZAKToken(userId)).toEqual(resp);
+    scope.done();
+});
 it('me', async () => {
     const resp = { id: 1, name: 'dummy' };
     const scope = nock(client.BASE_API_URL).get('/users/me').reply(200, resp);

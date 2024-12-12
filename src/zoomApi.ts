@@ -17,7 +17,7 @@ import { ZoomClient } from './zoomClient';
 
 export class ZoomApi {
     private client: ZoomClient;
-    private tokens: Partial<ZoomTokens>;
+    tokens: Partial<ZoomTokens>;
 
     constructor(options: { client: ZoomClient; tokens: Partial<ZoomTokens> }) {
         this.client = options.client;
@@ -26,6 +26,16 @@ export class ZoomApi {
 
     setTokens(tokens: Partial<ZoomTokens>) {
         this.tokens = tokens;
+    }
+
+    getZAKToken(userId: string): Promise<{ tokens: string }> {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
+        return this.client.request({
+            url: `${self.client.BASE_API_URL}/users/${userId}/token?type=zak`,
+            method: 'GET',
+            headers: self.getAuthHeader(),
+        }) as any;
     }
 
     private getAuthHeader() {

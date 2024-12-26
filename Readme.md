@@ -92,3 +92,4 @@ expressRouter.get('/zoom/oauth/callback', async (req, res) => {
 1. Make sure tests pass and raise a PR
 1. Take feedback, make iterative changes, and wait for your changes to be published!
 
+## [Changelog](./CHANGELOG.md)

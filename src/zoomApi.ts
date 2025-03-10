@@ -248,7 +248,10 @@ export class ZoomApi {
                     url: `${self.client.BASE_API_URL}/meetings/${meetingId}`,
                     params,
                     method: 'PATCH',
-                    headers: self.getAuthHeader(),
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
                     body: JSON.stringify(body),
                 }) as any;
             },

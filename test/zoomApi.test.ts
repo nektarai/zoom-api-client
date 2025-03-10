@@ -113,9 +113,7 @@ it('meetings() list', async () => {
         { id: 1, name: 'dummy' },
         { id: 2, name: 'dummy2' },
     ];
-    const paramsStr = new URLSearchParams(
-        params as Record<string, string>,
-    ).toString();
+    const paramsStr = new URLSearchParams(params).toString();
     const scope = nock(client.BASE_API_URL)
         .get(`/users/${userId}/meetings?${paramsStr}`)
         .reply(200, resp);
@@ -126,17 +124,15 @@ it('meetings() list', async () => {
 it('meetings() list', async () => {
     const meetingId = 'randomId';
     const params = {
-        occurence_id: '1',
-        show_previous_occurences: true,
+        occurrence_id: '1',
+        show_previous_occurrences: true,
     };
     const resp = { id: 2, name: 'dummy' };
     const paramsStr = new URLSearchParams(params as any).toString();
     const scope = nock(client.BASE_API_URL)
         .get(`/meetings/${meetingId}?${paramsStr}`)
         .reply(200, resp);
-    expect(await zoomApi.meetings().get(meetingId, params as any)).toEqual(
-        resp,
-    );
+    expect(await zoomApi.meetings().get(meetingId, params)).toEqual(resp);
     scope.done();
 });
 
@@ -159,12 +155,26 @@ it('meetings() recordings', async () => {
         include_fields: 'dummy',
     };
     const resp = { id: 2, name: 'dummy' };
-    const paramsStr = new URLSearchParams(params as any).toString();
+    const paramsStr = new URLSearchParams(params).toString();
     const scope = nock(client.BASE_API_URL)
         .get(`/meetings/${meetingId}/recordings?${paramsStr}`)
         .reply(200, resp);
-    expect(
-        await zoomApi.meetings().recordings(meetingId, params as any),
-    ).toEqual(resp);
+    expect(await zoomApi.meetings().recordings(meetingId, params)).toEqual(
+        resp,
+    );
     scope.done();
+});
+it('meetings() update', async () => {
+    const meetingId = 'randomId';
+    const body = {
+        topic: 'dummy',
+        type: 2,
+    };
+    // const resp = 'Meeting updated';
+    const scope = nock(client.BASE_API_URL)
+        .patch(`/meetings/${meetingId}`)
+        .reply(204);
+    await zoomApi.meetings().update(meetingId, body);
+    scope.done();
+    expect(scope.isDone()).toBeTruthy();
 });

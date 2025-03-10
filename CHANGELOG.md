@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.4
+
+- APIs added
+  - Meetings update (`zoomApi.meetings().update()`)
+
 ## 0.0.3
 
 - APIs added

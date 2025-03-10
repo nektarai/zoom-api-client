@@ -17,7 +17,7 @@ export type ZoomClientOptions = {
 };
 
 export type ZoomRequest = {
-    method: 'GET' | 'POST';
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     url: string;
     params?: Record<string, any>;
     body?: RequestInit['body'];
@@ -248,6 +248,8 @@ export type ZoomApi$Meetings$Get = {
      */
     type: 1 | 2 | 3 | 8;
 };
+
+export type ZoomApi$Meetings$Update = string;
 
 export type ZoomApi$Meetings$Recordings = {
     account_id: string;

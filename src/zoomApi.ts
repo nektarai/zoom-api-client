@@ -4,6 +4,7 @@ import {
     ZoomApi$Meetings$Get,
     ZoomApi$Meetings$List,
     ZoomApi$Meetings$Recordings,
+    ZoomApi$Meetings$Update,
     ZoomApi$PastMeeting$Details,
     ZoomApi$PastMeeting$Participants,
     ZoomApi$Reports$Meetings,
@@ -224,8 +225,8 @@ export class ZoomApi {
             get(
                 meetingId: string,
                 params?: Partial<{
-                    occurence_id: string;
-                    show_previous_occurences: string;
+                    occurrence_id: string;
+                    show_previous_occurrences: boolean;
                 }>,
             ): Promise<ZoomApi$Meetings$Get> {
                 return self.client.request({
@@ -233,6 +234,22 @@ export class ZoomApi {
                     method: 'GET',
                     params: { ...params },
                     headers: self.getAuthHeader(),
+                }) as any;
+            },
+            /** From: https://developers.zoom.us/docs/api/meetings/#tag/meetings/PATCH/meetings/{meetingId} */
+            update(
+                meetingId: string,
+                body: Record<string, any>,
+                params?: {
+                    occurrenceId: string;
+                },
+            ): Promise<ZoomApi$Meetings$Update> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/meetings/${meetingId}`,
+                    params,
+                    method: 'PATCH',
+                    headers: self.getAuthHeader(),
+                    body: JSON.stringify(body),
                 }) as any;
             },
             /** From: https://developers.zoom.us/docs/api/meetings/#tag/cloud-recording/GET/meetings/{meetingId}/recordings */

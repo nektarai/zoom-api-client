@@ -5,6 +5,7 @@ import {
     ZoomClientOptions,
     ZoomRequestOptions,
     ZoomResponse,
+    ZoomError,
 } from './types';
 
 export class ZoomClient {
@@ -68,10 +69,7 @@ export class ZoomClient {
                 // do nothing
             }
 
-            if (!res.ok) {
-                if (typeof result == 'string') throw new Error(result);
-                else throw new Error(result?.message || 'Zoom Api Error');
-            }
+            if (!res.ok) handleZoomError(result, res, request);
         } finally {
             clearTimeout(timeout);
         }
@@ -101,4 +99,28 @@ export class ZoomClient {
 
         return this.callApi(req, options);
     }
+}
+
+function handleZoomError(
+    result: ZoomResponse,
+    res: Response,
+    request: ZoomRequest,
+) {
+    let errorMessage: string;
+    if (typeof result === 'string') {
+        errorMessage = result;
+    } else if (result?.message) {
+        errorMessage = result.message;
+    } else if (result?.error) {
+        errorMessage = result.error;
+    } else {
+        errorMessage = `HTTP ${res.status} ${res.statusText}`;
+    }
+
+    throw new ZoomError(errorMessage, {
+        statusCode: res.status,
+        statusText: res.statusText,
+        response: result,
+        url: request.url,
+    });
 }

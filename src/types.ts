@@ -1,8 +1,25 @@
 export class ZoomError extends Error {
-    constructor(msg) {
-        super(msg);
+    public statusCode?: number;
+    public statusText?: string;
+    public response?: any;
+    public url?: string;
+
+    constructor(
+        message: string,
+        options?: {
+            statusCode?: number;
+            statusText?: string;
+            response?: any;
+            url?: string;
+        },
+    ) {
+        super(message);
 
         this.name = this.constructor.name;
+        this.statusCode = options?.statusCode;
+        this.statusText = options?.statusText;
+        this.response = options?.response;
+        this.url = options?.url;
 
         Error.captureStackTrace(this, this.constructor);
     }

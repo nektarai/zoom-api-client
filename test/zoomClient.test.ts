@@ -1,4 +1,4 @@
-import { ZoomClient } from '../src';
+import { ZoomClient, ZoomError } from '../src';
 import nock from 'nock';
 
 const clientId = 'dummy';
@@ -98,9 +98,20 @@ test('error url with json message', async () => {
     const errorMessage = 'error cause';
     const resp = { message: errorMessage };
     const scope = nock(ZOOM_BASE_API_URL).get('/v2/d4').reply(400, resp);
-    await expect(
-        client.request({ method: 'GET', url: '/d4' }),
-    ).rejects.toThrowError(errorMessage);
+
+    try {
+        await client.request({ method: 'GET', url: '/d4' });
+        fail('Expected error to be thrown');
+    } catch (error) {
+        expect(error).toBeInstanceOf(ZoomError);
+        const zoomError = error as ZoomError;
+        expect(zoomError.message).toBe(errorMessage);
+        expect(zoomError.statusCode).toBe(400);
+        expect(zoomError.statusText).toBe('Bad Request');
+        expect(zoomError.response).toEqual(resp);
+        expect(zoomError.url).toBe('https://api.zoom.us/v2/d4');
+    }
+
     scope.done();
 });
 
@@ -109,9 +120,59 @@ test('error url with text message', async () => {
     const scope = nock(ZOOM_BASE_API_URL)
         .get('/v2/d5')
         .reply(400, errorMessage);
-    await expect(
-        client.request({ method: 'GET', url: '/d5' }),
-    ).rejects.toThrowError(errorMessage);
+
+    try {
+        await client.request({ method: 'GET', url: '/d5' });
+        fail('Expected error to be thrown');
+    } catch (error) {
+        expect(error).toBeInstanceOf(ZoomError);
+        const zoomError = error as ZoomError;
+        expect(zoomError.message).toBe(errorMessage);
+        expect(zoomError.statusCode).toBe(400);
+        expect(zoomError.statusText).toBe('Bad Request');
+        expect(zoomError.response).toBe(errorMessage);
+        expect(zoomError.url).toBe('https://api.zoom.us/v2/d5');
+    }
+
+    scope.done();
+});
+
+test('error with no message defaults to HTTP status', async () => {
+    const resp = { some: 'data' };
+    const scope = nock(ZOOM_BASE_API_URL).get('/v2/d6').reply(404, resp);
+
+    try {
+        await client.request({ method: 'GET', url: '/d6' });
+        fail('Expected error to be thrown');
+    } catch (error) {
+        expect(error).toBeInstanceOf(ZoomError);
+        const zoomError = error as ZoomError;
+        expect(zoomError.message).toBe('HTTP 404 Not Found');
+        expect(zoomError.statusCode).toBe(404);
+        expect(zoomError.statusText).toBe('Not Found');
+        expect(zoomError.response).toEqual(resp);
+    }
+
+    scope.done();
+});
+
+test('error with error field in response', async () => {
+    const errorMessage = 'Invalid credentials';
+    const resp = { error: errorMessage, code: 'AUTH_FAILED' };
+    const scope = nock(ZOOM_BASE_API_URL).get('/v2/d7').reply(401, resp);
+
+    try {
+        await client.request({ method: 'GET', url: '/d7' });
+        fail('Expected error to be thrown');
+    } catch (error) {
+        expect(error).toBeInstanceOf(ZoomError);
+        const zoomError = error as ZoomError;
+        expect(zoomError.message).toBe(errorMessage);
+        expect(zoomError.statusCode).toBe(401);
+        expect(zoomError.statusText).toBe('Unauthorized');
+        expect(zoomError.response).toEqual(resp);
+    }
+
     scope.done();
 });
 

@@ -910,11 +910,10 @@ export class ZoomApi {
             },
             /** Recover meeting recordings */
             recordingStatusUpdate(
-                meetingUUID: string,
                 body?: GeneratedTypes.ZoomApi$Recording$Status$Update$Request,
             ): Promise<any> {
                 return self.client.request({
-                    url: `${self.client.BASE_API_URL}/meetings/${meetingUUID}/recordings/status`,
+                    url: `${self.client.BASE_API_URL}/meetings/${meetingId}/recordings/status`,
                     method: 'PUT',
                     headers: {
                         ...self.getAuthHeader(),
@@ -1381,11 +1380,9 @@ export class ZoomApi {
                 }) as any;
             },
             /** Get past meeting details */
-            getPastMeeting(
-                meetingId: string,
-            ): Promise<GeneratedTypes.ZoomApi$Past$Meeting$Details$Response> {
+            getPastMeeting(): Promise<GeneratedTypes.ZoomApi$Past$Meeting$Details$Response> {
                 return self.client.request({
-                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingId}`,
+                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingUUID}`,
                     method: 'GET',
                     headers: {
                         ...self.getAuthHeader(),
@@ -1393,11 +1390,9 @@ export class ZoomApi {
                 }) as any;
             },
             /** List past meeting instances */
-            listInstances(
-                meetingId: string,
-            ): Promise<GeneratedTypes.ZoomApi$Past$Meetings$Response> {
+            listInstances(): Promise<GeneratedTypes.ZoomApi$Past$Meetings$Response> {
                 return self.client.request({
-                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingId}/instances`,
+                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingUUID}/instances`,
                     method: 'GET',
                     headers: {
                         ...self.getAuthHeader(),
@@ -1406,11 +1401,10 @@ export class ZoomApi {
             },
             /** Get past meeting participants */
             listParticipants(
-                meetingId: string,
                 params?: GeneratedTypes.ZoomApi$Past$Meeting$Participants$Params,
             ): Promise<GeneratedTypes.ZoomApi$Past$Meeting$Participants$Response> {
                 return self.client.request({
-                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingId}/participants`,
+                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingUUID}/participants`,
                     method: 'GET',
                     headers: {
                         ...self.getAuthHeader(),
@@ -1419,11 +1413,9 @@ export class ZoomApi {
                 }) as any;
             },
             /** List past meetings' Q&A */
-            getQa(
-                meetingId: string,
-            ): Promise<GeneratedTypes.ZoomApi$List$Past$Meeting$Q$A$Response> {
+            getQa(): Promise<GeneratedTypes.ZoomApi$List$Past$Meeting$Q$A$Response> {
                 return self.client.request({
-                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingId}/qa`,
+                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingUUID}/qa`,
                     method: 'GET',
                     headers: {
                         ...self.getAuthHeader(),
@@ -1431,11 +1423,9 @@ export class ZoomApi {
                 }) as any;
             },
             /** List past meeting's poll results */
-            listPolls(
-                meetingId: string,
-            ): Promise<GeneratedTypes.ZoomApi$List$Past$Meeting$Polls$Response> {
+            listPolls(): Promise<GeneratedTypes.ZoomApi$List$Past$Meeting$Polls$Response> {
                 return self.client.request({
-                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingId}/polls`,
+                    url: `${self.client.BASE_API_URL}/past_meetings/${meetingUUID}/polls`,
                     method: 'GET',
                     headers: {
                         ...self.getAuthHeader(),

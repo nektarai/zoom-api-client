@@ -19,7 +19,7 @@
   "license": "MIT",
   "description": "Zoom API Client for Node.js",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "homepage": "https://github.com/nektarai/zoom-api-client#readme",
   "dependencies": {},

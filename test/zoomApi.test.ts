@@ -39,29 +39,27 @@ it('downloadTranscript', async () => {
 });
 it('pastMeeting() getPastMeeting', async () => {
     const meetingUUID = 'randomUUID';
-    const meetingId = 'randomId';
     const resp = { id: 1, event: 'dummy' };
     const scope = nock(client.BASE_API_URL)
-        .get(`/past_meetings/${meetingId}`)
+        .get(`/past_meetings/${meetingUUID}`)
         .reply(200, resp);
-    expect(
-        await zoomApi.pastMeeting(meetingUUID).getPastMeeting(meetingId),
-    ).toEqual(resp);
+    expect(await zoomApi.pastMeeting(meetingUUID).getPastMeeting()).toEqual(
+        resp,
+    );
     scope.done();
 });
 it('pastMeeting() listParticipants', async () => {
     const meetingUUID = 'randomUUID';
-    const meetingId = 'randomId';
     const resp = [
         { id: 1, name: 'dummy' },
         { id: 2, name: 'dummy2' },
     ];
     const scope = nock(client.BASE_API_URL)
-        .get(`/past_meetings/${meetingId}/participants`)
+        .get(`/past_meetings/${meetingUUID}/participants`)
         .reply(200, resp);
-    expect(
-        await zoomApi.pastMeeting(meetingUUID).listParticipants(meetingId),
-    ).toEqual(resp);
+    expect(await zoomApi.pastMeeting(meetingUUID).listParticipants()).toEqual(
+        resp,
+    );
     scope.done();
 });
 

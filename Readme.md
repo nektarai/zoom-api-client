@@ -95,15 +95,16 @@ const newMeeting = await zoomApi.user('me').createMeeting({
 // Get meeting recordings
 const recordings = await zoomApi.meeting('meeting-id').listRecordings();
 
-// Get past meeting participants
-const participants = await zoomApi.pastMeeting('meeting-uuid').listParticipants('meeting-id');
+// Get past meeting details and participants
+const details = await zoomApi.pastMeeting('meeting-uuid').getPastMeeting();
+const participants = await zoomApi.pastMeeting('meeting-uuid').listParticipants();
 ```
 
 #### Reports & Analytics
 
 ```js
-// Access reporting endpoints
-const report = await zoomApi.report()....;
+// Get daily usage report
+const report = await zoomApi.report().getDaily({ year: 2024, month: 1 });
 ```
 
 #### Devices & Hardware
@@ -148,8 +149,8 @@ Version 1.0.0 introduces breaking changes as we've transitioned to a pure OpenAP
 - Old: `meetings().list(userId)` → New: `user(userId).listMeetings()`
 - Old: `meetings().create(userId, body)` → New: `user(userId).createMeeting(body)`
 - Old: `meetings().get(id)` → New: Use appropriate `meeting(id)` methods
-- Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting(id)`
-- Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants(id)`
+- Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting()`
+- Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants()`
 
 **Benefits of 1.0:**
 - 180+ endpoints (vs ~15 in 0.x)

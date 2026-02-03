@@ -27,6 +27,7 @@ interface MethodInfo {
     returnType: string;
     hasResponseSchema: boolean;
     summary?: string;
+    originalFirstParamName?: string; // Original param name in path for URL replacement
 }
 
 /**
@@ -195,12 +196,26 @@ function generateParameterizedResourceMethod(group: ResourceGroup): string {
 }
 
 /**
+ * Get the name of the first path parameter in a path (the one right after the resource).
+ * For /past_meetings/{meetingId}/participants, returns 'meetingId'.
+ */
+function getFirstPathParamName(path: string): string | undefined {
+    const segments = path.split('/').filter(Boolean);
+    for (const segment of segments) {
+        if (segment.startsWith('{') && segment.endsWith('}')) {
+            return segment.slice(1, -1);
+        }
+    }
+    return undefined;
+}
+
+/**
  * Convert endpoints to method info, handling duplicate method names.
  */
 function generateResourceMethods(
     endpoints: ParsedEndpoint[],
     resourceName: string,
-    skipParam?: string,
+    capturedParamName?: string,
 ): MethodInfo[] {
     const methods: MethodInfo[] = [];
     const usedNames = new Map<string, number>();
@@ -219,10 +234,18 @@ function generateResourceMethods(
         }
         usedNames.set(methodName, existingCount + 1);
 
-        // Filter out the skipped param from path params
-        const pathParams = skipParam
-            ? endpoint.pathParams.filter((p) => p.name !== skipParam)
-            : endpoint.pathParams;
+        // For parameterized resources, filter out the first path param (by position, not name)
+        // This handles cases where different endpoints use different param names (e.g., meetingUUID vs meetingId)
+        let pathParams = endpoint.pathParams;
+        let originalFirstParamName: string | undefined;
+        if (capturedParamName) {
+            originalFirstParamName = getFirstPathParamName(endpoint.path);
+            if (originalFirstParamName) {
+                pathParams = endpoint.pathParams.filter(
+                    (p) => p.name !== originalFirstParamName,
+                );
+            }
+        }
 
         // Determine return type
         const hasResponseSchema = !!endpoint.responseSchema;
@@ -243,6 +266,7 @@ function generateResourceMethods(
             returnType,
             hasResponseSchema,
             summary: endpoint.summary,
+            originalFirstParamName,
         });
     }
 
@@ -451,7 +475,12 @@ function generateMethod(
     // Generate URL with path parameters substituted
     let urlPath = method.path;
     if (capturedParam) {
-        urlPath = urlPath.replace(`{${capturedParam}}`, `\${${capturedParam}}`);
+        // Use the original param name from the path for replacement, but substitute with capturedParam
+        const paramToReplace = method.originalFirstParamName || capturedParam;
+        urlPath = urlPath.replace(
+            `{${paramToReplace}}`,
+            `\${${capturedParam}}`,
+        );
     }
     for (const param of method.pathParams) {
         urlPath = urlPath.replace(`{${param.name}}`, `\${${param.name}}`);
@@ -487,40 +516,4 @@ function generateMethod(
     lines.push(`${indentStr}},`);
 
     return lines.join('\n');
-}
-
-/**
- * Generate the complete API file with backward compatibility layer.
- */
-export function generateApiFile(groups: ResourceGroup[]): string {
-    const generatedClass = generateApiClass(groups);
-
-    // Add manual methods that need to be preserved
-    const manualMethods = generateManualMethods();
-
-    // The generated class is the main output
-    // Manual methods are appended or the class is extended
-    return generatedClass;
-}
-
-/**
- * Generate manual methods that need backward compatibility.
- */
-function generateManualMethods(): string {
-    return `
-    // Manual methods preserved for backward compatibility
-
-    getZAKToken(userId: string): Promise<{ token: string }> {
-        return this.client.request({
-            url: \`\${this.client.BASE_API_URL}/users/\${userId}/token?type=zak\`,
-            method: 'GET',
-            headers: this.getAuthHeader(),
-        }) as any;
-    }
-
-    /** From: https://marketplace.zoom.us/docs/guides/auth/oauth/#using-an-access-token */
-    me(): Promise<any> {
-        return this.users().get('me');
-    }
-`;
 }

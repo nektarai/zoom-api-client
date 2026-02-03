@@ -2,7 +2,11 @@
  * TypeScript type generator from OpenAPI schemas.
  */
 
-import { ParsedEndpoint, SchemaObject, ParameterObject } from './openapi-parser';
+import {
+    ParsedEndpoint,
+    SchemaObject,
+    ParameterObject,
+} from './openapi-parser';
 import { snakeToPascal, sanitizeIdentifier } from './naming-utils';
 
 interface GeneratedType {
@@ -30,7 +34,9 @@ export function generateTypes(endpoints: ParsedEndpoint[]): string {
                 types.push({
                     name: typeName,
                     definition: `export type ${typeName} = ${definition};`,
-                    jsdoc: endpoint.summary ? `/** ${endpoint.summary} - Request body */` : undefined,
+                    jsdoc: endpoint.summary
+                        ? `/** ${endpoint.summary} - Request body */`
+                        : undefined,
                 });
             }
         }
@@ -40,11 +46,16 @@ export function generateTypes(endpoints: ParsedEndpoint[]): string {
             const typeName = `ZoomApi$${baseTypeName}$Response`;
             if (!generatedTypeNames.has(typeName)) {
                 generatedTypeNames.add(typeName);
-                const definition = schemaToTypeScript(endpoint.responseSchema, 0);
+                const definition = schemaToTypeScript(
+                    endpoint.responseSchema,
+                    0,
+                );
                 types.push({
                     name: typeName,
                     definition: `export type ${typeName} = ${definition};`,
-                    jsdoc: endpoint.summary ? `/** ${endpoint.summary} - Response */` : undefined,
+                    jsdoc: endpoint.summary
+                        ? `/** ${endpoint.summary} - Response */`
+                        : undefined,
                 });
             }
         }
@@ -58,7 +69,9 @@ export function generateTypes(endpoints: ParsedEndpoint[]): string {
                 types.push({
                     name: typeName,
                     definition: `export type ${typeName} = ${definition};`,
-                    jsdoc: endpoint.summary ? `/** ${endpoint.summary} - Query parameters */` : undefined,
+                    jsdoc: endpoint.summary
+                        ? `/** ${endpoint.summary} - Query parameters */`
+                        : undefined,
                 });
             }
         }
@@ -143,7 +156,9 @@ function schemaToTypeScript(schema: SchemaObject, indent: number): string {
 
     // Handle enum
     if (schema.enum) {
-        return schema.enum.map((v) => (typeof v === 'string' ? `'${v}'` : v)).join(' | ');
+        return schema.enum
+            .map((v) => (typeof v === 'string' ? `'${v}'` : v))
+            .join(' | ');
     }
 
     // Handle by type
@@ -162,7 +177,10 @@ function schemaToTypeScript(schema: SchemaObject, indent: number): string {
             }
             return 'any[]';
         case 'object':
-            if (!schema.properties || Object.keys(schema.properties).length === 0) {
+            if (
+                !schema.properties ||
+                Object.keys(schema.properties).length === 0
+            ) {
                 return 'Record<string, any>';
             }
             return generateObjectType(schema, indent);
@@ -189,7 +207,9 @@ function generateObjectType(schema: SchemaObject, indent: number): string {
 
     for (const [propName, propSchema] of Object.entries(properties)) {
         const isRequired = required.has(propName);
-        const safePropName = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(propName) ? propName : `'${propName}'`;
+        const safePropName = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(propName)
+            ? propName
+            : `'${propName}'`;
         const optionalMark = isRequired ? '' : '?';
 
         // Add JSDoc if there's a description
@@ -198,7 +218,9 @@ function generateObjectType(schema: SchemaObject, indent: number): string {
         }
 
         const propType = schemaToTypeScript(propSchema, indent + 1);
-        lines.push(`${innerIndent}${safePropName}${optionalMark}: ${propType};`);
+        lines.push(
+            `${innerIndent}${safePropName}${optionalMark}: ${propType};`,
+        );
     }
 
     lines.push(`${closingIndent}}`);
@@ -251,7 +273,10 @@ export function generateBackwardCompatAliases(): string {
 
         // Past Meetings
         ['ZoomApi$PastMeeting$Details', 'ZoomApi$PastMeetingDetails$Response'],
-        ['ZoomApi$PastMeeting$Participants', 'ZoomApi$PastMeetingParticipants$Response'],
+        [
+            'ZoomApi$PastMeeting$Participants',
+            'ZoomApi$PastMeetingParticipants$Response',
+        ],
 
         // Reports
         ['ZoomApi$Reports$Meetings', 'ZoomApi$ReportMeetings$Response'],

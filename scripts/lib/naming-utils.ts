@@ -43,7 +43,10 @@ export function snakeToPascal(str: string): string {
  *   pastMeetingDetails -> details
  *   pastMeetingParticipants -> participants
  */
-export function operationIdToMethodName(operationId: string, httpMethod: string): string {
+export function operationIdToMethodName(
+    operationId: string,
+    httpMethod: string,
+): string {
     // Common suffix patterns
     const suffixMappings: Record<string, string> = {
         Create: 'create',
@@ -146,7 +149,9 @@ export function getResourceGroup(
         const resource = snakeToCamel(segments[0]);
         // Convert plural to singular for parameterized access
         // past_meetings -> pastMeeting
-        const singularResource = resource.endsWith('s') ? resource.slice(0, -1) : resource;
+        const singularResource = resource.endsWith('s')
+            ? resource.slice(0, -1)
+            : resource;
         return {
             resource: singularResource,
             isParameterized: true,

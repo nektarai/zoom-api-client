@@ -44,7 +44,9 @@ it('pastMeeting() getPastMeeting', async () => {
     const scope = nock(client.BASE_API_URL)
         .get(`/past_meetings/${meetingId}`)
         .reply(200, resp);
-    expect(await zoomApi.pastMeeting(meetingUUID).getPastMeeting(meetingId)).toEqual(resp);
+    expect(
+        await zoomApi.pastMeeting(meetingUUID).getPastMeeting(meetingId),
+    ).toEqual(resp);
     scope.done();
 });
 it('pastMeeting() listParticipants', async () => {
@@ -57,7 +59,9 @@ it('pastMeeting() listParticipants', async () => {
     const scope = nock(client.BASE_API_URL)
         .get(`/past_meetings/${meetingId}/participants`)
         .reply(200, resp);
-    expect(await zoomApi.pastMeeting(meetingUUID).listParticipants(meetingId)).toEqual(resp);
+    expect(
+        await zoomApi.pastMeeting(meetingUUID).listParticipants(meetingId),
+    ).toEqual(resp);
     scope.done();
 });
 
@@ -74,7 +78,9 @@ it('user().listMeetings', async () => {
     const scope = nock(client.BASE_API_URL)
         .get(`/users/${userId}/meetings?${paramsStr}`)
         .reply(200, resp);
-    expect(await zoomApi.user(userId).listMeetings(params as any)).toEqual(resp);
+    expect(await zoomApi.user(userId).listMeetings(params as any)).toEqual(
+        resp,
+    );
     scope.done();
 });
 

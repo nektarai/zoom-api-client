@@ -30,5 +30,8 @@
     "test/**/*",
     "**/.eslintrc.js",
     "jest*.js",
+  ],
+  "exclude": [
+    "scripts/**/*"
   ]
 }

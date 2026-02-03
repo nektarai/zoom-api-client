@@ -139,7 +139,11 @@ export function parseOpenApiSpec(specPath: string): ParsedSpec {
     };
 }
 
-function parseOperation(path: string, method: HttpMethod, operation: OperationObject): ParsedEndpoint {
+function parseOperation(
+    path: string,
+    method: HttpMethod,
+    operation: OperationObject,
+): ParsedEndpoint {
     const parameters = operation.parameters || [];
 
     const pathParams = parameters.filter((p) => p.in === 'path');
@@ -201,7 +205,9 @@ export interface ResourceGroup {
     endpoints: ParsedEndpoint[];
 }
 
-export function groupEndpointsByResource(endpoints: ParsedEndpoint[]): ResourceGroup[] {
+export function groupEndpointsByResource(
+    endpoints: ParsedEndpoint[],
+): ResourceGroup[] {
     const groups = new Map<string, ResourceGroup>();
 
     for (const endpoint of endpoints) {
@@ -216,7 +222,9 @@ export function groupEndpointsByResource(endpoints: ParsedEndpoint[]): ResourceG
         // Check if this is a parameterized resource (e.g., /past_meetings/{id}/...)
         if (segments.length >= 2 && segments[1].startsWith('{')) {
             // Singular parameterized resource
-            const singular = firstSegment.endsWith('s') ? firstSegment.slice(0, -1) : firstSegment;
+            const singular = firstSegment.endsWith('s')
+                ? firstSegment.slice(0, -1)
+                : firstSegment;
             resourceKey = `${singular}:param`;
             isParameterized = true;
             paramName = segments[1].slice(1, -1);

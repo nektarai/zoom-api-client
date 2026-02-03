@@ -2,8 +2,18 @@
  * Fluent API generator from OpenAPI endpoints.
  */
 
-import { ParsedEndpoint, ResourceGroup, ParameterObject, SchemaObject } from './openapi-parser';
-import { snakeToCamel, snakeToPascal, extractPathParams, sanitizeIdentifier } from './naming-utils';
+import {
+    ParsedEndpoint,
+    ResourceGroup,
+    ParameterObject,
+    SchemaObject,
+} from './openapi-parser';
+import {
+    snakeToCamel,
+    snakeToPascal,
+    extractPathParams,
+    sanitizeIdentifier,
+} from './naming-utils';
 
 interface MethodInfo {
     name: string;
@@ -49,7 +59,7 @@ export function generateApiClass(groups: ResourceGroup[]): string {
         '    private getAuthHeader() {',
         '        if (this.tokens?.access_token) {',
         '            return {',
-        "                Authorization: `Bearer ${this.tokens.access_token}`,",
+        '                Authorization: `Bearer ${this.tokens.access_token}`,',
         '            };',
         '        }',
         "        throw new ZoomError('access_token not found');",
@@ -134,7 +144,9 @@ function generateResourceMethod(group: ResourceGroup): string {
 
     lines.push(`    /** ${group.displayName} API methods */`);
     lines.push(`    ${methodName}() {`);
-    lines.push('        // eslint-disable-next-line @typescript-eslint/no-this-alias');
+    lines.push(
+        '        // eslint-disable-next-line @typescript-eslint/no-this-alias',
+    );
     lines.push('        const self = this;');
     lines.push('        return {');
 
@@ -160,12 +172,18 @@ function generateParameterizedResourceMethod(group: ResourceGroup): string {
 
     lines.push(`    /** ${group.displayName} API methods (parameterized) */`);
     lines.push(`    ${methodName}(${paramName}: string) {`);
-    lines.push('        // eslint-disable-next-line @typescript-eslint/no-this-alias');
+    lines.push(
+        '        // eslint-disable-next-line @typescript-eslint/no-this-alias',
+    );
     lines.push('        const self = this;');
     lines.push('        return {');
 
     // Generate methods for each endpoint
-    const methods = generateResourceMethods(group.endpoints, group.name, paramName);
+    const methods = generateResourceMethods(
+        group.endpoints,
+        group.name,
+        paramName,
+    );
     for (const method of methods) {
         lines.push(generateMethod(method, 12, paramName));
     }
@@ -179,7 +197,11 @@ function generateParameterizedResourceMethod(group: ResourceGroup): string {
 /**
  * Convert endpoints to method info, handling duplicate method names.
  */
-function generateResourceMethods(endpoints: ParsedEndpoint[], resourceName: string, skipParam?: string): MethodInfo[] {
+function generateResourceMethods(
+    endpoints: ParsedEndpoint[],
+    resourceName: string,
+    skipParam?: string,
+): MethodInfo[] {
     const methods: MethodInfo[] = [];
     const usedNames = new Map<string, number>();
 
@@ -192,7 +214,8 @@ function generateResourceMethods(endpoints: ParsedEndpoint[], resourceName: stri
         if (existingCount > 0) {
             // Use a more descriptive name based on the operationId
             methodName = sanitizeIdentifier(endpoint.operationId);
-            methodName = methodName.charAt(0).toLowerCase() + methodName.slice(1);
+            methodName =
+                methodName.charAt(0).toLowerCase() + methodName.slice(1);
         }
         usedNames.set(methodName, existingCount + 1);
 
@@ -229,7 +252,10 @@ function generateResourceMethods(endpoints: ParsedEndpoint[], resourceName: stri
 /**
  * Determine the method name from an endpoint.
  */
-function determineMethodName(endpoint: ParsedEndpoint, resourceName: string): string {
+function determineMethodName(
+    endpoint: ParsedEndpoint,
+    resourceName: string,
+): string {
     const operationId = endpoint.operationId;
     const method = endpoint.method;
     const path = endpoint.path;
@@ -254,7 +280,10 @@ function determineMethodName(endpoint: ParsedEndpoint, resourceName: string): st
     }
 
     // Common CRUD patterns with sub-resource awareness
-    const isSubResource = subResource && subResource !== resourceName && !subResource.includes('_');
+    const isSubResource =
+        subResource &&
+        subResource !== resourceName &&
+        !subResource.includes('_');
 
     // POST = create
     if (method === 'post') {
@@ -300,7 +329,11 @@ function determineMethodName(endpoint: ParsedEndpoint, resourceName: string): st
         // If it's a sub-resource collection
         if (isSubResource) {
             // Plural sub-resource = list, otherwise get
-            if (subResource.endsWith('s') && !subResource.endsWith('ss') && !subResource.endsWith('status')) {
+            if (
+                subResource.endsWith('s') &&
+                !subResource.endsWith('ss') &&
+                !subResource.endsWith('status')
+            ) {
                 return `list${capitalize(subResource)}`;
             }
             return `get${capitalize(subResource)}`;
@@ -328,7 +361,13 @@ function toCamelCase(str: string): string {
 
     if (words.length === 0) return str.toLowerCase();
 
-    return words[0] + words.slice(1).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+    return (
+        words[0] +
+        words
+            .slice(1)
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join('')
+    );
 }
 
 /**
@@ -369,7 +408,11 @@ function singularize(word: string): string {
 /**
  * Generate a single method.
  */
-function generateMethod(method: MethodInfo, indent: number, capturedParam?: string): string {
+function generateMethod(
+    method: MethodInfo,
+    indent: number,
+    capturedParam?: string,
+): string {
     const indentStr = ' '.repeat(indent);
     const lines: string[] = [];
 
@@ -401,7 +444,9 @@ function generateMethod(method: MethodInfo, indent: number, capturedParam?: stri
 
     // Generate method signature
     const paramStr = params.join(', ');
-    lines.push(`${indentStr}${method.name}(${paramStr}): Promise<${method.returnType}> {`);
+    lines.push(
+        `${indentStr}${method.name}(${paramStr}): Promise<${method.returnType}> {`,
+    );
 
     // Generate URL with path parameters substituted
     let urlPath = method.path;
@@ -413,19 +458,25 @@ function generateMethod(method: MethodInfo, indent: number, capturedParam?: stri
     }
 
     lines.push(`${indentStr}    return self.client.request({`);
-    lines.push(`${indentStr}        url: \`\${self.client.BASE_API_URL}${urlPath}\`,`);
+    lines.push(
+        `${indentStr}        url: \`\${self.client.BASE_API_URL}${urlPath}\`,`,
+    );
     lines.push(`${indentStr}        method: '${method.httpMethod}',`);
     lines.push(`${indentStr}        headers: {`);
     lines.push(`${indentStr}            ...self.getAuthHeader(),`);
 
     if (method.hasRequestBody) {
-        lines.push(`${indentStr}            'Content-Type': 'application/json',`);
+        lines.push(
+            `${indentStr}            'Content-Type': 'application/json',`,
+        );
     }
 
     lines.push(`${indentStr}        },`);
 
     if (method.hasRequestBody) {
-        lines.push(`${indentStr}        body: body ? JSON.stringify(body) : undefined,`);
+        lines.push(
+            `${indentStr}        body: body ? JSON.stringify(body) : undefined,`,
+        );
     }
 
     if (method.queryParams.length > 0) {

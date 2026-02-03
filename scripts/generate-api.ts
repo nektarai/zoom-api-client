@@ -9,7 +9,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
-import { parseOpenApiSpec, groupEndpointsByResource } from './lib/openapi-parser';
+import {
+    parseOpenApiSpec,
+    groupEndpointsByResource,
+} from './lib/openapi-parser';
 import { generateTypes } from './lib/type-generator';
 import { generateApiClass } from './lib/api-generator';
 
@@ -31,8 +34,12 @@ function main() {
     console.log('📦 Grouping endpoints by resource...');
     const groups = groupEndpointsByResource(spec.endpoints);
     for (const group of groups) {
-        const paramInfo = group.isParameterized ? ` (parameterized: ${group.paramName})` : '';
-        console.log(`   ${group.name}: ${group.endpoints.length} endpoints${paramInfo}`);
+        const paramInfo = group.isParameterized
+            ? ` (parameterized: ${group.paramName})`
+            : '';
+        console.log(
+            `   ${group.name}: ${group.endpoints.length} endpoints${paramInfo}`,
+        );
     }
     console.log('');
 
@@ -51,25 +58,35 @@ function main() {
     // Format generated files with Prettier
     console.log('🎨 Formatting generated files with Prettier...');
     try {
-        execSync(`npx prettier --write "${TYPES_OUTPUT_PATH}" "${API_OUTPUT_PATH}"`, {
-            cwd: ROOT_DIR,
-            stdio: 'inherit',
-        });
+        execSync(
+            `npx prettier --write "${TYPES_OUTPUT_PATH}" "${API_OUTPUT_PATH}"`,
+            {
+                cwd: ROOT_DIR,
+                stdio: 'inherit',
+            },
+        );
         console.log('   Formatting complete!\n');
     } catch (error) {
-        console.warn('   Warning: Prettier formatting failed, continuing anyway.\n');
+        console.warn(
+            '   Warning: Prettier formatting failed, continuing anyway.\n',
+        );
     }
 
     // Lint generated files with ESLint
     console.log('🔍 Linting generated files with ESLint...');
     try {
-        execSync(`npx eslint --fix "${TYPES_OUTPUT_PATH}" "${API_OUTPUT_PATH}"`, {
-            cwd: ROOT_DIR,
-            stdio: 'inherit',
-        });
+        execSync(
+            `npx eslint --fix "${TYPES_OUTPUT_PATH}" "${API_OUTPUT_PATH}"`,
+            {
+                cwd: ROOT_DIR,
+                stdio: 'inherit',
+            },
+        );
         console.log('   Linting complete!\n');
     } catch (error) {
-        console.warn('   Warning: ESLint found issues that could not be auto-fixed.\n');
+        console.warn(
+            '   Warning: ESLint found issues that could not be auto-fixed.\n',
+        );
     }
 
     // Summary

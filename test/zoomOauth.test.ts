@@ -86,7 +86,7 @@ test('revokeTokens', async () => {
     scope.done();
 });
 
-test('verifyEvent:  No verification key provided', async () => {
+test('verifyEvent: No verification key provided', async () => {
     const event: ZoomEventRequest = {
         body: {
             payload: { client_id: '1', signature: 'random' },
@@ -110,7 +110,7 @@ test('verifyEvent:  No verification key provided', async () => {
     expect(throwError).toEqual(expect.anything());
 });
 
-test('verifyEvent:  with verification key provided', async () => {
+test('verifyEvent: with verification key provided', async () => {
     const headers = { authorization: 'authorization-random' };
     const payload = { client_id: 'dummy', signature: 'random' };
     const event = {

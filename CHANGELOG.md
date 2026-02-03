@@ -20,8 +20,8 @@ Migration examples:
 - Old: `meetings().list(userId, params)` → New: `user(userId).listMeetings(params)`
 - Old: `meetings().create(userId, body)` → New: `user(userId).createMeeting(body)`
 - Old: `meetings().recordings(meetingId)` → New: `meeting(meetingId).listRecordings()`
-- Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting(id)`
-- Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants(id)`
+- Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting()`
+- Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants()`
 
 ### Added
 

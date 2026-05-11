@@ -7,21 +7,24 @@
 This is a major release that transitions to a pure OpenAPI-generated API client. All backward-compatible wrapper methods have been removed in favor of auto-generated methods that directly mirror Zoom's OpenAPI specification.
 
 **Removed Methods:**
-- `zoomApi.me()` - Convenience method for getting current user
-- `zoomApi.getZAKToken(userId)` - ZAK token retrieval
-- `zoomApi.users().list()` / `zoomApi.users().get()` - User operations
-- `zoomApi.meetings()` - All meetings wrapper methods
-- `zoomApi.pastMeeting(id).details()` / `.participants()` - Past meeting wrappers
-- `zoomApi.reports().meetings()` - Reports wrapper methods
+
+- `zoomApi.me()` - use `user('me')` resource methods (e.g. `user('me').listMeetings()`)
+- `zoomApi.users().list()` / `zoomApi.users().get()` - user CRUD endpoints are not in the current OpenAPI spec
+- `zoomApi.meetings()` - replaced by `user(userId).listMeetings()`, `user(userId).createMeeting()`, etc.
+- `zoomApi.pastMeeting(id).details()` / `.participants()` - replaced by `pastMeeting(uuid).getPastMeeting()`, `.listParticipants()`
+- `zoomApi.reports().meetings()` - replaced by `report().listMeetings(userId)`
 
 **API Structure Changes:**
 
 Migration examples:
+
 - Old: `meetings().list(userId, params)` → New: `user(userId).listMeetings(params)`
 - Old: `meetings().create(userId, body)` → New: `user(userId).createMeeting(body)`
+- Old: `meetings().get(id)` → New: `meeting(id).getMeeting()`
 - Old: `meetings().recordings(meetingId)` → New: `meeting(meetingId).listRecordings()`
 - Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting()`
 - Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants()`
+- Old: `reports().meetings(userId)` → New: `report().listMeetings(userId)`
 
 ### Added
 

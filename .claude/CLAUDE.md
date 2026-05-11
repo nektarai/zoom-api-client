@@ -1,83 +1,62 @@
-# Zoom API Client
+# CLAUDE.md
 
-A dependency-free, fully typed Node.js client library for the Zoom API, maintained by Nektar AI.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Quick Reference
-
-### Build & Test Commands
+## Build & Test Commands
 
 ```bash
-npm run build    # Clean dist/ and compile TypeScript
-npm test         # Run Jest tests with coverage
-```
-
-### Project Structure
-
-```text
-src/
-├── index.ts        # Public API exports
-├── types.ts        # Type definitions and ZoomError class
-├── zoomClient.ts   # Core HTTP client with EventEmitter
-├── zoomOauth2.ts   # OAuth 2.0 authentication
-├── zoomS2SO.ts     # Server-to-Server OAuth (extends ZoomOauth)
-└── zoomApi.ts      # API resource methods (users, meetings, reports, etc.)
-
-test/               # Jest tests (mirrors src/ structure)
-dist/               # Compiled output (generated)
+npm run build          # Clean dist/ and compile TypeScript
+npm test               # Run Jest tests with coverage
+npm run generate       # Regenerate API client from OpenAPI spec (endpoints.json)
+npx jest test/zoomClient.test.ts              # Run a single test file
+npx jest --testNamePattern "should normalize"  # Run tests matching a pattern
 ```
 
 ## Architecture
 
-### Core Classes
+Zero-dependency, fully typed Zoom API client for Node.js. Published as `@nektarai/zoom-api-client`.
 
-- **ZoomClient**: HTTP client handling requests, URL normalization, error handling, and connection events
-- **ZoomOauth**: OAuth 2.0 flow (authorization URL, token exchange, refresh, revoke, webhook verification)
-- **ZoomS2SO**: Server-to-Server OAuth extending ZoomOauth (account credentials-based auth)
-- **ZoomApi**: Fluent API for Zoom resources (users, meetings, pastMeeting, reports, recordings)
+### Core Classes (hand-written)
 
-### Design Patterns
+- **ZoomClient** (`src/zoomClient.ts`): HTTP client wrapping `fetch` with URL normalization, timeout via AbortController, and JSON parsing. All API/OAuth calls flow through `ZoomClient.request()`.
+- **ZoomOauth** (`src/zoomOauth2.ts`): OAuth 2.0 flow — authorization URL, token exchange, refresh, revoke, webhook verification.
+- **ZoomS2SO** (`src/zoomS2SO.ts`): Server-to-Server OAuth extending ZoomOauth (account credentials-based auth).
 
-- **Fluent API**: `zoomApi.meetings().list(userId)`, `zoomApi.pastMeeting(id).details()`
-- **Strategy Pattern**: ZoomOauth vs ZoomS2SO for different auth flows
-- **Dependency Injection**: Classes accept ZoomClient instance for flexibility
-- **EventEmitter**: ZoomClient emits 'connection:new' on instantiation
+### Generated Files (do not edit manually)
 
-### Error Handling
+- **ZoomApi** (`src/zoomApi.generated.ts`): 180+ endpoint methods generated from `endpoints.json` (Zoom OpenAPI spec). Fluent resource pattern: `zoomApi.user(userId).listMeetings()`, `zoomApi.meeting(id).getMeeting()`.
+- **Types** (`src/types.generated.ts`): Request param and response types for all generated endpoints.
 
-Custom `ZoomError` class (in types.ts) includes:
+To regenerate: `npm run generate` — runs `scripts/generate-api.ts` which parses the OpenAPI spec, generates types and API client, then runs Prettier + ESLint on output.
 
-- HTTP status code and text
-- Original response payload
-- Request URL for debugging
+### Code Generation Pipeline
+
+`scripts/generate-api.ts` orchestrates:
+1. `scripts/lib/openapi-parser.ts` — parses `endpoints.json`, groups endpoints by resource
+2. `scripts/lib/type-generator.ts` — generates TypeScript types per endpoint
+3. `scripts/lib/api-generator.ts` — generates the `ZoomApi` class with fluent resource methods
+4. `scripts/lib/naming-utils.ts` — consistent name transforms (camelCase, PascalCase, etc.)
+
+### Request Flow
+
+`ZoomApi` method → `ZoomClient.request()` → URL normalization (relative paths get `BASE_API_URL` or `BASE_OAUTH_URL` prefix) → `fetch` with timeout → JSON parse → return or throw `ZoomError`.
 
 ## Code Standards
 
-### TypeScript
-
-- Strict mode enabled
-- ESNext target
-- Strict promise handling (no floating/misused promises)
-
-### Style (enforced via ESLint + Prettier)
-
-- Single quotes
-- Trailing commas
-- 4-space indentation
-
-## API Coverage
-
-- Users: list, get
-- Meetings: create, list, get, update, recordings, transcript
-- Past Meetings: details, participants
-- Reports: meeting reports
-- Tokens: ZAK token retrieval
-- Webhooks: event verification
-
-## Dependencies
-
-- **Runtime**: None (zero dependencies)
-- **Dev**: TypeScript, Jest, ESLint, Prettier, Husky, SWC
+- **Style**: Single quotes, trailing commas, 4-space indent, semicolons (Prettier-enforced)
+- **ESLint**: `no-console` is an error. `@typescript-eslint/no-explicit-any` is off. Floating promises are errors.
+- **TypeScript**: Strict mode, ESNext target, CommonJS output. `noImplicitAny` is off despite strict mode.
+- **Tests**: Jest with SWC transform. Tests use `nock` for HTTP mocking. Coverage collected from `src/`.
 
 ## Node Version
 
-Requires Node.js >= 22 (see .nvmrc)
+Requires Node.js >= 22 (see `.nvmrc`).
+
+
+<claude-mem-context>
+# Recent Activity
+
+<!-- This section is auto-generated by claude-mem. Edit content outside the tags. -->
+
+*No recent activity*
+</claude-mem-context>

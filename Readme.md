@@ -118,7 +118,7 @@ const devices = await zoomApi.devices().list();
 
 ```js
 // Webinar operations
-const webinar = await zoomApi.webinar('webinar-id').get();
+const webinar = await zoomApi.webinar('webinar-id').getWebinar();
 const registrants = await zoomApi.webinar('webinar-id').listRegistrants();
 ```
 
@@ -141,16 +141,18 @@ This will:
 Version 1.0.0 introduces breaking changes as we've transitioned to a pure OpenAPI-generated API:
 
 **Removed convenience methods:**
-- `zoomApi.me()` - use appropriate generated user methods
-- `zoomApi.getZAKToken(userId)` - use generated methods
-- `zoomApi.users().list()` / `users().get()` - use generated methods
+
+- `zoomApi.me()` - removed; use `user('me')` resource methods (e.g. `user('me').listMeetings()`)
+- `zoomApi.users().list()` / `users().get()` - removed; user CRUD endpoints are not in the current OpenAPI spec
 
 **API Structure Changes:**
+
 - Old: `meetings().list(userId)` → New: `user(userId).listMeetings()`
 - Old: `meetings().create(userId, body)` → New: `user(userId).createMeeting(body)`
-- Old: `meetings().get(id)` → New: Use appropriate `meeting(id)` methods
+- Old: `meetings().get(id)` → New: `meeting(id).getMeeting()`
 - Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting()`
 - Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants()`
+- Old: `reports().meetings(userId)` → New: `report().listMeetings(userId)`
 
 **Benefits of 1.0:**
 - 180+ endpoints (vs ~15 in 0.x)

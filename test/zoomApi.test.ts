@@ -72,9 +72,9 @@ it('user().listMeetings', async () => {
         { id: 1, name: 'dummy' },
         { id: 2, name: 'dummy2' },
     ];
-    const paramsStr = new URLSearchParams(params as any).toString();
     const scope = nock(client.BASE_API_URL)
-        .get(`/users/${userId}/meetings?${paramsStr}`)
+        .get(`/users/${userId}/meetings`)
+        .query(params)
         .reply(200, resp);
     expect(await zoomApi.user(userId).listMeetings(params as any)).toEqual(
         resp,

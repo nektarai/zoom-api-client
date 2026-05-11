@@ -2456,12 +2456,13 @@ export class ZoomApi {
         };
     }
 
-    /** Retrieve a ZAK (Zoom Account Key) token for a user. See: https://developers.zoom.us/docs/api/meetings/#tag/users */
+    /** Retrieve a ZAK (Zoom Access Key) token for a user. See: https://developers.zoom.us/docs/api/meetings/#tag/users */
     getZAKToken(userId: string): Promise<{ token: string }> {
         return this.client.request({
-            url: `${this.client.BASE_API_URL}/users/${userId}/token?type=zak`,
+            url: `${this.client.BASE_API_URL}/users/${userId}/token`,
             method: 'GET',
             headers: this.getAuthHeader(),
+            params: { type: 'zak' },
         }) as any;
     }
 

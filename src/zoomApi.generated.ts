@@ -150,10 +150,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Delete ZPA device by vendor and mac address */
-            deleteMacAddresse(
-                vendor: string,
-                macAddress: string,
-            ): Promise<any> {
+            deleteMacAddress(vendor: string, macAddress: string): Promise<any> {
                 return self.client.request({
                     url: `${self.client.BASE_API_URL}/devices/zpa/vendors/${vendor}/mac_addresses/${macAddress}`,
                     method: 'DELETE',
@@ -196,7 +193,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Create a H.323/SIP device */
-            createDevic(
+            createDevice(
                 body?: GeneratedTypes.ZoomApi$Device$Create$Request,
             ): Promise<GeneratedTypes.ZoomApi$Device$Create$Response> {
                 return self.client.request({
@@ -210,7 +207,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Update a H.323/SIP device */
-            updateDevic(
+            updateDevice(
                 deviceId: string,
                 body?: GeneratedTypes.ZoomApi$Device$Update$Request,
             ): Promise<any> {
@@ -225,7 +222,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Delete a H.323/SIP device */
-            deleteDevic(deviceId: string): Promise<any> {
+            deleteDevice(deviceId: string): Promise<any> {
                 return self.client.request({
                     url: `${self.client.BASE_API_URL}/h323/devices/${deviceId}`,
                     method: 'DELETE',
@@ -555,7 +552,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Enable SIP phone */
-            createPhon(
+            createPhone(
                 body?: GeneratedTypes.ZoomApi$Enable$S$I$P$Phone$Phones$Request,
             ): Promise<GeneratedTypes.ZoomApi$Enable$S$I$P$Phone$Phones$Response> {
                 return self.client.request({
@@ -569,7 +566,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Update SIP phone */
-            updatePhon(
+            updatePhone(
                 phoneId: string,
                 body?: GeneratedTypes.ZoomApi$Update$S$I$P$Phone$Phones$Request,
             ): Promise<any> {
@@ -584,7 +581,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Delete SIP phone */
-            deletePhon(phoneId: string): Promise<any> {
+            deletePhone(phoneId: string): Promise<any> {
                 return self.client.request({
                     url: `${self.client.BASE_API_URL}/sip_phones/phones/${phoneId}`,
                     method: 'DELETE',
@@ -687,7 +684,7 @@ export class ZoomApi {
         const self = this;
         return {
             /** Update an archived file's auto-delete status */
-            updateArchiveFil(
+            updateArchiveFile(
                 body?: GeneratedTypes.ZoomApi$Update$Archived$File$Request,
             ): Promise<any> {
                 return self.client.request({
@@ -1370,7 +1367,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Delete a meeting's archived files */
-            deleteArchiveFil(): Promise<any> {
+            deleteArchiveFile(): Promise<any> {
                 return self.client.request({
                     url: `${self.client.BASE_API_URL}/past_meetings/${meetingUUID}/archive_files`,
                     method: 'DELETE',
@@ -1586,7 +1583,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Create a meeting template from an existing meeting */
-            createMeetingTemplat(
+            createMeetingTemplate(
                 body?: GeneratedTypes.ZoomApi$Meeting$Template$Create$Request,
             ): Promise<GeneratedTypes.ZoomApi$Meeting$Template$Create$Response> {
                 return self.client.request({
@@ -1610,7 +1607,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Create a webinar template */
-            createWebinarTemplat(
+            createWebinarTemplate(
                 body?: GeneratedTypes.ZoomApi$Webinar$Template$Create$Request,
             ): Promise<GeneratedTypes.ZoomApi$Webinar$Template$Create$Response> {
                 return self.client.request({
@@ -1659,7 +1656,7 @@ export class ZoomApi {
         const self = this;
         return {
             /** Get device detail */
-            getDevic(): Promise<GeneratedTypes.ZoomApi$Get$Device$Response> {
+            getDevice(): Promise<GeneratedTypes.ZoomApi$Get$Device$Response> {
                 return self.client.request({
                     url: `${self.client.BASE_API_URL}/devices/${deviceId}`,
                     method: 'GET',
@@ -1669,7 +1666,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Change device  */
-            updateDevic(
+            updateDevice(
                 body?: GeneratedTypes.ZoomApi$Update$Device$Request,
             ): Promise<any> {
                 return self.client.request({
@@ -1683,7 +1680,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Delete device */
-            deleteDevic(): Promise<any> {
+            deleteDevice(): Promise<any> {
                 return self.client.request({
                     url: `${self.client.BASE_API_URL}/devices/${deviceId}`,
                     method: 'DELETE',
@@ -1728,7 +1725,7 @@ export class ZoomApi {
         const self = this;
         return {
             /** Update a live meeting message */
-            updateMessag(
+            updateMessage(
                 messageId: string,
                 body?: GeneratedTypes.ZoomApi$Update$Meeting$Chat$Message$By$Id$Request,
             ): Promise<any> {
@@ -1743,7 +1740,7 @@ export class ZoomApi {
                 }) as any;
             },
             /** Delete a live meeting message */
-            deleteMessag(
+            deleteMessage(
                 messageId: string,
                 params?: GeneratedTypes.ZoomApi$Delete$Meeting$Chat$Message$By$Id$Params,
             ): Promise<any> {
@@ -1835,7 +1832,7 @@ export class ZoomApi {
         const self = this;
         return {
             /** Delete a live webinar message */
-            deleteMessag(
+            deleteMessage(
                 messageId: string,
                 params?: GeneratedTypes.ZoomApi$Delete$Webinar$Chat$Message$By$Id$Params,
             ): Promise<any> {
@@ -2468,8 +2465,17 @@ export class ZoomApi {
         }) as any;
     }
 
-    /** Download raw transcript content from a recording URL (e.g. a VTT file URL from listRecordings). Uses a 60s timeout. */
+    /** Download raw transcript content from a recording URL (e.g. a VTT file URL from listRecordings). Uses a 60s timeout. Only sends auth headers to Zoom-owned domains. */
     downloadTranscript(url: string): Promise<string> {
+        const parsed = new URL(url);
+        if (
+            parsed.hostname !== 'zoom.us' &&
+            !parsed.hostname.endsWith('.zoom.us')
+        ) {
+            throw new ZoomError(
+                'downloadTranscript only supports zoom.us URLs to prevent leaking auth tokens',
+            );
+        }
         return this.client.request(
             {
                 url,

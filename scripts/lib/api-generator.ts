@@ -122,8 +122,12 @@ function getExtraMethods(): string {
         }) as any;
     }
 
-    /** Download raw transcript content from a recording URL (e.g. a VTT file URL from listRecordings). Uses a 60s timeout. */
+    /** Download raw transcript content from a recording URL (e.g. a VTT file URL from listRecordings). Uses a 60s timeout. Only sends auth headers to Zoom-owned domains. */
     downloadTranscript(url: string): Promise<string> {
+        const parsed = new URL(url);
+        if (parsed.hostname !== 'zoom.us' && !parsed.hostname.endsWith('.zoom.us')) {
+            throw new ZoomError('downloadTranscript only supports zoom.us URLs to prevent leaking auth tokens');
+        }
         return this.client.request(
             {
                 url,
@@ -420,7 +424,14 @@ function singularize(word: string): string {
     if (word.endsWith('ies')) {
         return word.slice(0, -3) + 'y';
     }
-    if (word.endsWith('es') && !word.endsWith('ses') && !word.endsWith('xes')) {
+    // Only strip 'es' for sibilant endings (ches, shes, sses, xes, zes)
+    if (
+        word.endsWith('ches') ||
+        word.endsWith('shes') ||
+        word.endsWith('sses') ||
+        word.endsWith('xes') ||
+        word.endsWith('zes')
+    ) {
         return word.slice(0, -2);
     }
     if (word.endsWith('s') && !word.endsWith('ss') && !word.endsWith('us')) {

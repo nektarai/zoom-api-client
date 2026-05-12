@@ -132,3 +132,7 @@ dist
 # IDEs
 .vscode
 .idea
+
+# Local testing with credentials (do not commit)
+test-local.ts
+test-local.js

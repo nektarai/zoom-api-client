@@ -1,8 +1,8 @@
 # Zoom API Client
 
-This node package aims to provide a dependency-free and 100% typed and tested Zoom Api Client. We use it in production at [Nektar.ai](http://nektar.ai).
+A **fully auto-generated**, dependency-free, and 100% typed Zoom API client for Node.js. Generated from Zoom's official OpenAPI specification.
 
-The code is heavily inspired by GoogleApis package.
+Maintained by [Nektar AI](http://nektar.ai) and used in production.
 
 ## Installation
 
@@ -10,9 +10,15 @@ The code is heavily inspired by GoogleApis package.
 npm install @nektarai/zoom-api-client
 ```
 
-## Usage
+## Features
 
-For now, this package includes only those APIs which Nektar uses. You can easily extend the functionality in your project and even contribute directly over here!
+- **Zero Dependencies**: No runtime dependencies
+- **Fully Typed**: Complete TypeScript type definitions generated from OpenAPI spec
+- **Comprehensive Coverage**: 180+ endpoints across meetings, webinars, users, reports, recordings, and more
+- **Auto-Generated**: Regenerate anytime from the latest Zoom OpenAPI spec
+- **Tested**: Full test coverage with Jest
+
+## Usage
 
 ### ZoomClient
 
@@ -60,36 +66,112 @@ const zoomS2so = new ZoomS2SO(zoomClient);
 
 ### ZoomApi
 
-To use Zoom Api's after authentication
+The API client provides access to all Zoom API endpoints through an intuitive, fluent interface.
+
+#### User Operations
 
 ```js
 import {ZoomApi} from '@nektarai/zoom-api-client';
 
-...
+const zoomApi = new ZoomApi({
+  client: zoomClient,
+  tokens: await zoomS2so.requestTokens(),
+});
 
-expressRouter.get('/zoom/oauth/callback', async (req, res) => {
-  const {state, code} = req.query;
-  const stateParsed = JSON.parse(state);
-  const tokens =  await zoomOauth.requestTokens(code);
-  const zoomApi = new ZoomApi({
-    client: zoomClient, // oauth or s2so
-    tokens,
-  });
-  const userInfo = zoomApi.me();
-  const result = await db.read(`SELECT * from "zoomUsers" where id='${userInfo.id}'`);
-  if (result.size) res.end('Auth successful!');
-  else res.end('Auth failed!');
+// List meetings for a user
+const meetings = await zoomApi.user('me').listMeetings({ type: 'scheduled' });
+
+// Create a meeting
+const newMeeting = await zoomApi.user('me').createMeeting({
+  topic: 'Team Standup',
+  type: 2, // Scheduled meeting
+  start_time: '2026-02-15T10:00:00Z',
 });
 ```
 
+#### Meeting Operations
+
+```js
+// Get meeting recordings
+const recordings = await zoomApi.meeting('meeting-id').listRecordings();
+
+// Get past meeting details and participants
+const details = await zoomApi.pastMeeting('meeting-uuid').getPastMeeting();
+const participants = await zoomApi.pastMeeting('meeting-uuid').listParticipants();
+```
+
+#### Reports & Analytics
+
+```js
+// Get daily usage report
+const report = await zoomApi.report().getDaily({ year: 2024, month: 1 });
+```
+
+#### Devices & Hardware
+
+```js
+// List Zoom Rooms devices
+const devices = await zoomApi.devices().list();
+```
+
+#### Webinars
+
+```js
+// Webinar operations
+const webinar = await zoomApi.webinar('webinar-id').getWebinar();
+const registrants = await zoomApi.webinar('webinar-id').listRegistrants();
+```
+
+## Code Generation
+
+This library is auto-generated from Zoom's OpenAPI specification. To regenerate:
+
+```bash
+npm run generate
+```
+
+This will:
+1. Parse the OpenAPI spec from `endpoints.json`
+2. Generate TypeScript types in `src/types.generated.ts`
+3. Generate API client methods in `src/zoomApi.generated.ts`
+4. Format and lint the generated code
+
+## Migration from 0.x to 1.0
+
+Version 1.0.0 introduces breaking changes as we've transitioned to a pure OpenAPI-generated API:
+
+**Removed convenience methods:**
+
+- `zoomApi.me()` - removed; use `user('me')` resource methods (e.g. `user('me').listMeetings()`)
+- `zoomApi.users().list()` / `users().get()` - removed; user CRUD endpoints are not in the current OpenAPI spec
+
+**API Structure Changes:**
+
+- Old: `meetings().list(userId)` → New: `user(userId).listMeetings()`
+- Old: `meetings().create(userId, body)` → New: `user(userId).createMeeting(body)`
+- Old: `meetings().get(id)` → New: `meeting(id).getMeeting()`
+- Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting()`
+- Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants()`
+- Old: `reports().meetings(userId)` → New: `report().listMeetings(userId)`
+
+**Benefits of 1.0:**
+- 180+ endpoints (vs ~15 in 0.x)
+- Consistent method naming from OpenAPI spec
+- Auto-regenerate when Zoom updates their API
+- Better type safety with generated types
+
 ## Contribution
 
-(WIP)
+We welcome contributions!
 
 1. Clone the repo
-1. Install dependencies with `npm install`
-1. Add additional APIs in `src/` and tests in `test/`
-1. Make sure tests pass and raise a PR
-1. Take feedback, make iterative changes, and wait for your changes to be published!
+2. Install dependencies: `npm install`
+3. Make your changes:
+   - For API updates: Update `endpoints.json` and run `npm run generate`
+   - For core functionality: Edit files in `src/`
+   - Add tests in `test/`
+4. Ensure tests pass: `npm test`
+5. Build: `npm run build`
+6. Submit a PR
 
 ## [Changelog](./CHANGELOG.md)

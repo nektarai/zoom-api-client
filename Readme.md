@@ -137,26 +137,46 @@ try {
 
     err.code; // Zoom's body error code, e.g. 124 (invalid access token)
     err.statusCode; // HTTP status, e.g. 429
-    err.retryAfter; // `Retry-After` in seconds, if sent
+    err.retryAfter; // `Retry-After` in whole seconds, or undefined
     err.rateLimit; // { type, category, limit, remaining, reset }, or undefined
 }
 ```
+
+OAuth failures return `{ error, reason }` rather than `message`, so those arrive joined as
+`err.message === 'invalid_grant: Invalid Token!'` — the code stays matchable by substring while the
+readable half remains visible.
 
 `rateLimit.type` is what distinguishes a per-second trip from a spent daily quota, which need very
 different retry strategies:
 
 ```js
+const DEFAULT_BACKOFF_SECONDS = 60;
+
 if (err.statusCode === 429) {
     if (err.rateLimit?.type === 'Daily-limit') {
-        // Quota is gone for the day — reschedule past the reset, don't retry now
+        // Quota is gone for the day. Reschedule past err.rateLimit.reset
+        // instead of retrying — every retry before then also fails.
+        reschedule(err.rateLimit.reset);
     } else {
-        // QPS — back off for err.retryAfter seconds and try again
+        // QPS. `retryAfter` is optional, so always supply a fallback.
+        const wait = err.retryAfter ?? DEFAULT_BACKOFF_SECONDS;
+        setTimeout(retry, wait * 1000);
     }
 }
 ```
 
+Note the `??` — `retryAfter` is `number | undefined` and Zoom does not always send `Retry-After`,
+even on a 429. Using it unguarded gives `undefined * 1000` → `NaN`, which `setTimeout` treats as
+`0` and retries instantly against an endpoint that just rejected you.
+
 `rateLimit` is `undefined` when Zoom sent no `X-RateLimit-*` headers, so an absent value means "no
 data", not "not rate limited". Fall back to `statusCode` and the message in that case.
+
+**Known limitation:** rate-limit headers are read on the error path only. `X-RateLimit-Remaining` on
+a successful response is discarded, because `request()` resolves with the parsed body and has
+nowhere to surface it. So you can react to a 429 but cannot yet throttle to avoid one — track your
+own call counts if you need that. Exposing the headers on success is additive and would not be a
+breaking change.
 
 ## Code Generation
 

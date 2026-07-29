@@ -122,16 +122,54 @@ const webinar = await zoomApi.webinar('webinar-id').getWebinar();
 const registrants = await zoomApi.webinar('webinar-id').listRegistrants();
 ```
 
+### Error handling
+
+Any non-ok response throws a `ZoomError` carrying the HTTP status, Zoom's application error code
+from the response body, and rate-limit state parsed from the response headers.
+
+```js
+import { ZoomError } from '@nektarai/zoom-api-client';
+
+try {
+    await zoomApi.report().listMeetings(userId, { from, to });
+} catch (err) {
+    if (!(err instanceof ZoomError)) throw err;
+
+    err.code; // Zoom's body error code, e.g. 124 (invalid access token)
+    err.statusCode; // HTTP status, e.g. 429
+    err.retryAfter; // `Retry-After` in seconds, if sent
+    err.rateLimit; // { type, category, limit, remaining, reset }, or undefined
+}
+```
+
+`rateLimit.type` is what distinguishes a per-second trip from a spent daily quota, which need very
+different retry strategies:
+
+```js
+if (err.statusCode === 429) {
+    if (err.rateLimit?.type === 'Daily-limit') {
+        // Quota is gone for the day — reschedule past the reset, don't retry now
+    } else {
+        // QPS — back off for err.retryAfter seconds and try again
+    }
+}
+```
+
+`rateLimit` is `undefined` when Zoom sent no `X-RateLimit-*` headers, so an absent value means "no
+data", not "not rate limited". Fall back to `statusCode` and the message in that case.
+
 ## Code Generation
 
-This library is auto-generated from Zoom's OpenAPI specification. To regenerate:
+This library is auto-generated from Zoom's OpenAPI specifications. Zoom publishes one spec per
+product area; each is committed verbatim under `specs/` and registered in `SPEC_PATHS` in
+`scripts/generate-api.ts`. To regenerate:
 
 ```bash
 npm run generate
 ```
 
 This will:
-1. Parse the OpenAPI spec from `endpoints.json`
+1. Parse each OpenAPI spec in `specs/`
 2. Generate TypeScript types in `src/types.generated.ts`
 3. Generate API client methods in `src/zoomApi.generated.ts`
 4. Format and lint the generated code
@@ -142,20 +180,22 @@ Version 1.0.0 introduces breaking changes as we've transitioned to a pure OpenAP
 
 **Removed convenience methods:**
 
-- `zoomApi.me()` - removed; use `user('me')` resource methods (e.g. `user('me').listMeetings()`)
-- `zoomApi.users().list()` / `users().get()` - removed; user CRUD endpoints are not in the current OpenAPI spec
+- `zoomApi.me()` - removed; use `user('me').getUser()` (restored in 1.1.0), or other `user('me')` resource methods such as `user('me').listMeetings()`
 
 **API Structure Changes:**
 
 - Old: `meetings().list(userId)` → New: `user(userId).listMeetings()`
 - Old: `meetings().create(userId, body)` → New: `user(userId).createMeeting(body)`
 - Old: `meetings().get(id)` → New: `meeting(id).getMeeting()`
+- Old: `meetings().recordings(id)` → New: `meeting(id).listRecordings()`
+- Old: `meetings().transcript(url)` → New: `downloadTranscript(url)`
 - Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting()`
 - Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants()`
 - Old: `reports().meetings(userId)` → New: `report().listMeetings(userId)`
+- `users().list()` is unchanged, but its response type is now `ZoomApi$Users$Response` (was `ZoomApi$Users$List`)
 
 **Benefits of 1.0:**
-- 180+ endpoints (vs ~15 in 0.x)
+- 250+ endpoints (vs ~15 in 0.x)
 - Consistent method naming from OpenAPI spec
 - Auto-regenerate when Zoom updates their API
 - Better type safety with generated types
@@ -167,7 +207,7 @@ We welcome contributions!
 1. Clone the repo
 2. Install dependencies: `npm install`
 3. Make your changes:
-   - For API updates: Update `endpoints.json` and run `npm run generate`
+   - For API updates: refresh or add a spec in `specs/` and run `npm run generate`
    - For core functionality: Edit files in `src/`
    - Add tests in `test/`
 4. Ensure tests pass: `npm test`

@@ -157,7 +157,7 @@ function schemaToTypeScript(schema: SchemaObject, indent: number): string {
     // Handle enum
     if (schema.enum) {
         return schema.enum
-            .map((v) => (typeof v === 'string' ? `'${v}'` : v))
+            .map((v) => (typeof v === 'string' ? JSON.stringify(v) : v))
             .join(' | ');
     }
 
@@ -209,7 +209,7 @@ function generateObjectType(schema: SchemaObject, indent: number): string {
         const isRequired = required.has(propName);
         const safePropName = /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(propName)
             ? propName
-            : `'${propName}'`;
+            : JSON.stringify(propName);
         const optionalMark = isRequired ? '' : '?';
 
         // Add JSDoc if there's a description

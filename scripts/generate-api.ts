@@ -17,7 +17,15 @@ import { generateTypes } from './lib/type-generator';
 import { generateApiClass } from './lib/api-generator';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
-const SPEC_PATH = path.join(ROOT_DIR, 'endpoints.json');
+/**
+ * Zoom publishes one OpenAPI spec per product area. Order matters: duplicate
+ * method names are resolved first-wins, so a spec listed earlier keeps the
+ * cleaner method name and later specs fall back to their operationId.
+ */
+const SPEC_PATHS = [
+    path.join(ROOT_DIR, 'specs', 'Meetings.json'),
+    path.join(ROOT_DIR, 'specs', 'Users.json'),
+];
 const TYPES_OUTPUT_PATH = path.join(ROOT_DIR, 'src', 'types.generated.ts');
 const API_OUTPUT_PATH = path.join(ROOT_DIR, 'src', 'zoomApi.generated.ts');
 
@@ -25,14 +33,22 @@ function main() {
     console.log('🚀 Zoom API Client Generator');
     console.log('============================\n');
 
-    // Parse the OpenAPI spec
-    console.log(`📖 Parsing OpenAPI spec: ${SPEC_PATH}`);
-    const spec = parseOpenApiSpec(SPEC_PATH);
-    console.log(`   Found ${spec.endpoints.length} endpoints\n`);
+    // Parse the OpenAPI specs
+    console.log('📖 Parsing OpenAPI specs...');
+    const endpoints = SPEC_PATHS.flatMap((specPath) => {
+        const spec = parseOpenApiSpec(specPath);
+        console.log(
+            `   ${path.basename(specPath)} (${spec.info.title}): ${
+                spec.endpoints.length
+            } endpoints`,
+        );
+        return spec.endpoints;
+    });
+    console.log(`   Found ${endpoints.length} endpoints total\n`);
 
     // Group endpoints by resource
     console.log('📦 Grouping endpoints by resource...');
-    const groups = groupEndpointsByResource(spec.endpoints);
+    const groups = groupEndpointsByResource(endpoints);
     for (const group of groups) {
         const paramInfo = group.isParameterized
             ? ` (parameterized: ${group.paramName})`
@@ -45,7 +61,7 @@ function main() {
 
     // Generate types
     console.log('📝 Generating TypeScript types...');
-    const typesContent = generateTypes(spec.endpoints);
+    const typesContent = generateTypes(endpoints);
     fs.writeFileSync(TYPES_OUTPUT_PATH, typesContent, 'utf-8');
     console.log(`   Written to: ${TYPES_OUTPUT_PATH}\n`);
 

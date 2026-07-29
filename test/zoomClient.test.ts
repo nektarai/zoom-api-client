@@ -1,4 +1,4 @@
-import { ZoomClient } from '../src';
+import { ZoomClient, ZoomError } from '../src';
 import nock from 'nock';
 
 const clientId = 'dummy';
@@ -94,13 +94,31 @@ test('/c3 url', async () => {
     scope.done();
 });
 
+/** Asserts `request` rejects with a ZoomError and returns it for inspection. */
+async function expectZoomError(url: string): Promise<ZoomError> {
+    try {
+        await client.request({ method: 'GET', url });
+    } catch (err) {
+        expect(err).toBeInstanceOf(ZoomError);
+        return err as ZoomError;
+    }
+    throw new Error(`expected ${url} to reject`);
+}
+
 test('error url with json message', async () => {
     const errorMessage = 'error cause';
     const resp = { message: errorMessage };
     const scope = nock(ZOOM_BASE_API_URL).get('/v2/d4').reply(400, resp);
-    await expect(
-        client.request({ method: 'GET', url: '/d4' }),
-    ).rejects.toThrowError(errorMessage);
+
+    const err = await expectZoomError('/d4');
+    expect(err.message).toBe(errorMessage);
+    expect(err.statusCode).toBe(400);
+    expect(err.statusText).toBe('Bad Request');
+    expect(err.response).toEqual(resp);
+    expect(err.url).toBe(`${ZOOM_BASE_API_URL}/v2/d4`);
+    expect(err.rateLimit).toBeUndefined();
+    expect(err.retryAfter).toBeUndefined();
+
     scope.done();
 });
 
@@ -109,10 +127,233 @@ test('error url with text message', async () => {
     const scope = nock(ZOOM_BASE_API_URL)
         .get('/v2/d5')
         .reply(400, errorMessage);
-    await expect(
-        client.request({ method: 'GET', url: '/d5' }),
-    ).rejects.toThrowError(errorMessage);
+
+    const err = await expectZoomError('/d5');
+    expect(err.message).toBe(errorMessage);
+    expect(err.statusCode).toBe(400);
+    expect(err.response).toBe(errorMessage);
+    expect(err.code).toBeUndefined();
+
     scope.done();
+});
+
+test('error with no message falls back to HTTP status', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d6')
+        .reply(404, { some: 'data' });
+
+    const err = await expectZoomError('/d6');
+    expect(err.message).toBe('HTTP 404 Not Found');
+    expect(err.statusCode).toBe(404);
+
+    scope.done();
+});
+
+test('error uses `error` field when `message` is absent', async () => {
+    const resp = { error: 'Invalid credentials' };
+    const scope = nock(ZOOM_BASE_API_URL).get('/v2/d7').reply(401, resp);
+
+    const err = await expectZoomError('/d7');
+    expect(err.message).toBe('Invalid credentials');
+    expect(err.statusCode).toBe(401);
+
+    scope.done();
+});
+
+test('oauth failure joins the error code with the human reason', async () => {
+    // Zoom's /oauth/token failure body: { reason, error }, no `message`.
+    const resp = { reason: 'Invalid Token!', error: 'invalid_grant' };
+    const scope = nock(client.BASE_OAUTH_URL)
+        .post('/oauth/token')
+        .reply(400, resp);
+
+    let err: ZoomError | undefined;
+    try {
+        await client.request({ method: 'POST', url: '/oauth/token' });
+    } catch (e) {
+        err = e as ZoomError;
+    }
+
+    // The machine-readable code stays matchable by substring, and the readable
+    // half is no longer reachable only via `response`.
+    expect(err?.message).toBe('invalid_grant: Invalid Token!');
+    expect(err?.statusCode).toBe(400);
+    expect(err?.response).toEqual(resp);
+
+    scope.done();
+});
+
+test('oauth failure with only a reason still yields a message', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d15')
+        .reply(400, { reason: 'Invalid Token!' });
+
+    const err = await expectZoomError('/d15');
+    expect(err.message).toBe('Invalid Token!');
+
+    scope.done();
+});
+
+test('body `code` and HTTP `statusCode` are kept separate', async () => {
+    const resp = { code: 124, message: 'Invalid access token' };
+    const scope = nock(ZOOM_BASE_API_URL).get('/v2/d8').reply(401, resp);
+
+    const err = await expectZoomError('/d8');
+    expect(err.code).toBe(124);
+    expect(err.statusCode).toBe(401);
+
+    scope.done();
+});
+
+test('429 captures Retry-After and rate limit headers', async () => {
+    const scope = nock(ZOOM_BASE_API_URL).get('/v2/d9').reply(
+        429,
+        { code: 429, message: 'Too many requests' },
+        {
+            'Retry-After': '60',
+            'X-RateLimit-Type': 'QPS',
+            'X-RateLimit-Category': 'Heavy',
+            'X-RateLimit-Limit': '20',
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': '2026-07-30T00:00:00Z',
+        },
+    );
+
+    const err = await expectZoomError('/d9');
+    expect(err.statusCode).toBe(429);
+    expect(err.code).toBe(429);
+    expect(err.retryAfter).toBe(60);
+    expect(err.rateLimit).toEqual({
+        type: 'QPS',
+        category: 'Heavy',
+        limit: 20,
+        remaining: 0,
+        reset: '2026-07-30T00:00:00Z',
+    });
+
+    scope.done();
+});
+
+test('daily rate limit is distinguishable from per-second', async () => {
+    const errorMessage =
+        'You have reached the maximum daily rate limit for this API. Refer to the response header for details on when you can make another request.';
+    const scope = nock(ZOOM_BASE_API_URL).get('/v2/d10').reply(
+        429,
+        { code: 429, message: errorMessage },
+        {
+            'X-RateLimit-Type': 'Daily-limit',
+            'X-RateLimit-Category': 'Heavy',
+        },
+    );
+
+    const err = await expectZoomError('/d10');
+    expect(err.statusCode).toBe(429);
+    expect(err.message).toBe(errorMessage);
+    expect(err.rateLimit?.type).toBe('Daily-limit');
+    expect(err.rateLimit?.limit).toBeUndefined();
+
+    scope.done();
+});
+
+test('Retry-After in HTTP-date form converts to seconds', async () => {
+    const retryAt = new Date(Date.now() + 120_000).toUTCString();
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d11')
+        .reply(429, { message: 'slow down' }, { 'Retry-After': retryAt });
+
+    const err = await expectZoomError('/d11');
+    expect(err.retryAfter).toBeGreaterThan(115);
+    expect(err.retryAfter).toBeLessThanOrEqual(120);
+
+    scope.done();
+});
+
+test('negative Retry-After is clamped to zero, not passed through', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d16')
+        .reply(429, { message: 'slow down' }, { 'Retry-After': '-1' });
+
+    // A negative delay would make setTimeout fire immediately.
+    const err = await expectZoomError('/d16');
+    expect(err.retryAfter).toBe(0);
+
+    scope.done();
+});
+
+test('fractional Retry-After is rounded to whole seconds', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d17')
+        .reply(429, { message: 'slow down' }, { 'Retry-After': '2.5' });
+
+    const err = await expectZoomError('/d17');
+    expect(err.retryAfter).toBe(3);
+
+    scope.done();
+});
+
+test('non-finite Retry-After is dropped', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d18')
+        .reply(429, { message: 'slow down' }, { 'Retry-After': '1e400' });
+
+    const err = await expectZoomError('/d18');
+    expect(err.retryAfter).toBeUndefined();
+
+    scope.done();
+});
+
+test('non-numeric rate limit headers are dropped', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d12')
+        .reply(
+            429,
+            { message: 'slow down' },
+            { 'X-RateLimit-Limit': 'unknown', 'X-RateLimit-Type': 'QPS' },
+        );
+
+    const err = await expectZoomError('/d12');
+    expect(err.rateLimit).toEqual({ type: 'QPS' });
+
+    scope.done();
+});
+
+test('blank rate limit headers are treated as absent, not zero', async () => {
+    const scope = nock(ZOOM_BASE_API_URL).get('/v2/d14').reply(
+        429,
+        { message: 'slow down' },
+        {
+            'Retry-After': '',
+            'X-RateLimit-Remaining': '  ',
+            'X-RateLimit-Type': 'QPS',
+        },
+    );
+
+    const err = await expectZoomError('/d14');
+    expect(err.retryAfter).toBeUndefined();
+    expect(err.rateLimit).toEqual({ type: 'QPS' });
+
+    scope.done();
+});
+
+test('html error body surfaces as the raw message', async () => {
+    const html = '<html><body>502 Bad Gateway</body></html>';
+    const scope = nock(ZOOM_BASE_API_URL).get('/v2/d13').reply(502, html);
+
+    const err = await expectZoomError('/d13');
+    expect(err.message).toBe(html);
+    expect(err.statusCode).toBe(502);
+    expect(err.response).toBe(html);
+
+    scope.done();
+});
+
+test('ZoomError is constructible with only a message', () => {
+    const err = new ZoomError('boom');
+    expect(err).toBeInstanceOf(Error);
+    expect(err.name).toBe('ZoomError');
+    expect(err.message).toBe('boom');
+    expect(err.statusCode).toBeUndefined();
+    expect(err.rateLimit).toBeUndefined();
 });
 
 test('url with param', async () => {

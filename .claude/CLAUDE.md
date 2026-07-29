@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm run build          # Clean dist/ and compile TypeScript
 npm test               # Run Jest tests with coverage
-npm run generate       # Regenerate API client from OpenAPI spec (endpoints.json)
+npm run generate       # Regenerate API client from the OpenAPI specs in specs/
 npx jest test/zoomClient.test.ts              # Run a single test file
 npx jest --testNamePattern "should normalize"  # Run tests matching a pattern
 ```
@@ -24,22 +24,24 @@ Zero-dependency, fully typed Zoom API client for Node.js. Published as `@nektara
 
 ### Generated Files (do not edit manually)
 
-- **ZoomApi** (`src/zoomApi.generated.ts`): 180+ endpoint methods generated from `endpoints.json` (Zoom OpenAPI spec). Fluent resource pattern: `zoomApi.user(userId).listMeetings()`, `zoomApi.meeting(id).getMeeting()`.
+- **ZoomApi** (`src/zoomApi.generated.ts`): 250+ endpoint methods generated from the Zoom OpenAPI specs in `specs/`. Fluent resource pattern: `zoomApi.user(userId).listMeetings()`, `zoomApi.meeting(id).getMeeting()`.
 - **Types** (`src/types.generated.ts`): Request param and response types for all generated endpoints.
 
-To regenerate: `npm run generate` — runs `scripts/generate-api.ts` which parses the OpenAPI spec, generates types and API client, then runs Prettier + ESLint on output.
+To regenerate: `npm run generate` — runs `scripts/generate-api.ts` which parses each spec, generates types and API client, then runs Prettier + ESLint on output.
+
+Zoom publishes one spec per product area. `specs/*.json` are committed verbatim so they can be refreshed from Zoom without a manual merge; register new ones in `SPEC_PATHS` in `scripts/generate-api.ts`. **Order matters** — duplicate method names resolve first-wins, so an earlier spec keeps the cleaner name and later ones fall back to their `operationId`. Keep `Meetings.json` first to hold existing method names stable.
 
 ### Code Generation Pipeline
 
 `scripts/generate-api.ts` orchestrates:
-1. `scripts/lib/openapi-parser.ts` — parses `endpoints.json`, groups endpoints by resource
+1. `scripts/lib/openapi-parser.ts` — parses each spec in `specs/`, groups endpoints by resource
 2. `scripts/lib/type-generator.ts` — generates TypeScript types per endpoint
 3. `scripts/lib/api-generator.ts` — generates the `ZoomApi` class with fluent resource methods
 4. `scripts/lib/naming-utils.ts` — consistent name transforms (camelCase, PascalCase, etc.)
 
 ### Request Flow
 
-`ZoomApi` method → `ZoomClient.request()` → URL normalization (relative paths get `BASE_API_URL` or `BASE_OAUTH_URL` prefix) → `fetch` with timeout → JSON parse → return or throw `ZoomError`.
+`ZoomApi` method → `ZoomClient.request()` → URL normalization (relative paths get `BASE_API_URL` or `BASE_OAUTH_URL` prefix) → `fetch` with timeout → JSON parse → return, or throw a `ZoomError` carrying the HTTP status, Zoom's body error `code`, and `retryAfter` / `rateLimit` parsed from the response headers.
 
 ## Code Standards
 

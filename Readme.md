@@ -122,16 +122,74 @@ const webinar = await zoomApi.webinar('webinar-id').getWebinar();
 const registrants = await zoomApi.webinar('webinar-id').listRegistrants();
 ```
 
+### Error handling
+
+Any non-ok response throws a `ZoomError` carrying the HTTP status, Zoom's application error code
+from the response body, and rate-limit state parsed from the response headers.
+
+```js
+import { ZoomError } from '@nektarai/zoom-api-client';
+
+try {
+    await zoomApi.report().listMeetings(userId, { from, to });
+} catch (err) {
+    if (!(err instanceof ZoomError)) throw err;
+
+    err.code; // Zoom's body error code, e.g. 124 (invalid access token)
+    err.statusCode; // HTTP status, e.g. 429
+    err.retryAfter; // `Retry-After` in whole seconds, or undefined
+    err.rateLimit; // { type, category, limit, remaining, reset }, or undefined
+}
+```
+
+OAuth failures return `{ error, reason }` rather than `message`, so those arrive joined as
+`err.message === 'invalid_grant: Invalid Token!'` — the code stays matchable by substring while the
+readable half remains visible.
+
+`rateLimit.type` is what distinguishes a per-second trip from a spent daily quota, which need very
+different retry strategies:
+
+```js
+const DEFAULT_BACKOFF_SECONDS = 60;
+
+if (err.statusCode === 429) {
+    if (err.rateLimit?.type === 'Daily-limit') {
+        // Quota is gone for the day. Reschedule past err.rateLimit.reset
+        // instead of retrying — every retry before then also fails.
+        reschedule(err.rateLimit.reset);
+    } else {
+        // QPS. `retryAfter` is optional, so always supply a fallback.
+        const wait = err.retryAfter ?? DEFAULT_BACKOFF_SECONDS;
+        setTimeout(retry, wait * 1000);
+    }
+}
+```
+
+Note the `??` — `retryAfter` is `number | undefined` and Zoom does not always send `Retry-After`,
+even on a 429. Using it unguarded gives `undefined * 1000` → `NaN`, which `setTimeout` treats as
+`0` and retries instantly against an endpoint that just rejected you.
+
+`rateLimit` is `undefined` when Zoom sent no `X-RateLimit-*` headers, so an absent value means "no
+data", not "not rate limited". Fall back to `statusCode` and the message in that case.
+
+**Known limitation:** rate-limit headers are read on the error path only. `X-RateLimit-Remaining` on
+a successful response is discarded, because `request()` resolves with the parsed body and has
+nowhere to surface it. So you can react to a 429 but cannot yet throttle to avoid one — track your
+own call counts if you need that. Exposing the headers on success is additive and would not be a
+breaking change.
+
 ## Code Generation
 
-This library is auto-generated from Zoom's OpenAPI specification. To regenerate:
+This library is auto-generated from Zoom's OpenAPI specifications. Zoom publishes one spec per
+product area; each is committed verbatim under `specs/` and registered in `SPEC_PATHS` in
+`scripts/generate-api.ts`. To regenerate:
 
 ```bash
 npm run generate
 ```
 
 This will:
-1. Parse the OpenAPI spec from `endpoints.json`
+1. Parse each OpenAPI spec in `specs/`
 2. Generate TypeScript types in `src/types.generated.ts`
 3. Generate API client methods in `src/zoomApi.generated.ts`
 4. Format and lint the generated code
@@ -142,20 +200,22 @@ Version 1.0.0 introduces breaking changes as we've transitioned to a pure OpenAP
 
 **Removed convenience methods:**
 
-- `zoomApi.me()` - removed; use `user('me')` resource methods (e.g. `user('me').listMeetings()`)
-- `zoomApi.users().list()` / `users().get()` - removed; user CRUD endpoints are not in the current OpenAPI spec
+- `zoomApi.me()` - removed; use `user('me').getUser()` (restored in 1.1.0), or other `user('me')` resource methods such as `user('me').listMeetings()`
 
 **API Structure Changes:**
 
 - Old: `meetings().list(userId)` → New: `user(userId).listMeetings()`
 - Old: `meetings().create(userId, body)` → New: `user(userId).createMeeting(body)`
 - Old: `meetings().get(id)` → New: `meeting(id).getMeeting()`
+- Old: `meetings().recordings(id)` → New: `meeting(id).listRecordings()`
+- Old: `meetings().transcript(url)` → New: `downloadTranscript(url)`
 - Old: `pastMeeting(id).details()` → New: `pastMeeting(uuid).getPastMeeting()`
 - Old: `pastMeeting(id).participants()` → New: `pastMeeting(uuid).listParticipants()`
 - Old: `reports().meetings(userId)` → New: `report().listMeetings(userId)`
+- `users().list()` is unchanged, but its response type is now `ZoomApi$Users$Response` (was `ZoomApi$Users$List`)
 
 **Benefits of 1.0:**
-- 180+ endpoints (vs ~15 in 0.x)
+- 250+ endpoints (vs ~15 in 0.x)
 - Consistent method naming from OpenAPI spec
 - Auto-regenerate when Zoom updates their API
 - Better type safety with generated types
@@ -167,7 +227,7 @@ We welcome contributions!
 1. Clone the repo
 2. Install dependencies: `npm install`
 3. Make your changes:
-   - For API updates: Update `endpoints.json` and run `npm run generate`
+   - For API updates: refresh or add a spec in `specs/` and run `npm run generate`
    - For core functionality: Edit files in `src/`
    - Add tests in `test/`
 4. Ensure tests pass: `npm test`

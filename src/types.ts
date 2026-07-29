@@ -1,8 +1,53 @@
+/** Rate-limit state parsed from Zoom's `X-RateLimit-*` response headers. */
+export type ZoomRateLimitInfo = {
+    /** `X-RateLimit-Type` — e.g. `QPS`, `Daily-limit`. */
+    type?: string;
+    /** `X-RateLimit-Category` — e.g. `Light`, `Medium`, `Heavy`. */
+    category?: string;
+    /** `X-RateLimit-Limit` */
+    limit?: number;
+    /** `X-RateLimit-Remaining` */
+    remaining?: number;
+    /** `X-RateLimit-Reset` — raw header value. Zoom sends a timestamp, not a duration. */
+    reset?: string;
+};
+
+export type ZoomErrorOptions = {
+    /** Zoom's application error code from the response body, e.g. `124`, `1001`. */
+    code?: number | string;
+    /** HTTP status code, e.g. `401`, `429`. */
+    statusCode?: number;
+    statusText?: string;
+    /** `Retry-After` in seconds. */
+    retryAfter?: number;
+    rateLimit?: ZoomRateLimitInfo;
+    /** Parsed response body. */
+    response?: ZoomResponse;
+    /** Fully-qualified request URL. */
+    url?: string;
+};
+
 export class ZoomError extends Error {
-    constructor(msg) {
+    readonly code?: number | string;
+    readonly statusCode?: number;
+    readonly statusText?: string;
+    readonly retryAfter?: number;
+    readonly rateLimit?: ZoomRateLimitInfo;
+    readonly response?: ZoomResponse;
+    readonly url?: string;
+
+    constructor(msg: string, options?: ZoomErrorOptions) {
         super(msg);
 
         this.name = this.constructor.name;
+
+        this.code = options?.code;
+        this.statusCode = options?.statusCode;
+        this.statusText = options?.statusText;
+        this.retryAfter = options?.retryAfter;
+        this.rateLimit = options?.rateLimit;
+        this.response = options?.response;
+        this.url = options?.url;
 
         Error.captureStackTrace(this, this.constructor);
     }

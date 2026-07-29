@@ -13,6 +13,7 @@ import {
     snakeToPascal,
     extractPathParams,
     sanitizeIdentifier,
+    escapeJsDoc,
 } from './naming-utils';
 
 interface MethodInfo {
@@ -223,21 +224,28 @@ function generateResourceMethods(
     capturedParamName?: string,
 ): MethodInfo[] {
     const methods: MethodInfo[] = [];
-    const usedNames = new Map<string, number>();
+    const usedNames = new Set<string>();
 
     for (const endpoint of endpoints) {
         let methodName = determineMethodName(endpoint, resourceName);
         const baseTypeName = operationIdToBaseTypeName(endpoint.operationId);
 
         // Handle duplicate method names by using operationId as fallback
-        const existingCount = usedNames.get(methodName) || 0;
-        if (existingCount > 0) {
+        if (usedNames.has(methodName)) {
             // Use a more descriptive name based on the operationId
-            methodName = sanitizeIdentifier(endpoint.operationId);
+            const sanitized = sanitizeIdentifier(endpoint.operationId);
             methodName =
-                methodName.charAt(0).toLowerCase() + methodName.slice(1);
+                sanitized.charAt(0).toLowerCase() + sanitized.slice(1);
         }
-        usedNames.set(methodName, existingCount + 1);
+        // The fallback can collide too (two specs may share an operationId
+        // within one resource group), and a duplicate method name emits
+        // duplicate properties in an object literal, which is a TS error.
+        let candidate = methodName;
+        for (let i = 2; usedNames.has(candidate); i++) {
+            candidate = `${methodName}${i}`;
+        }
+        methodName = candidate;
+        usedNames.add(methodName);
 
         // For parameterized resources, filter out the first path param (by position, not name)
         // This handles cases where different endpoints use different param names (e.g., meetingUUID vs meetingId)
@@ -475,7 +483,7 @@ function generateMethod(
 
     // Generate JSDoc
     if (method.summary) {
-        lines.push(`${indentStr}/** ${method.summary} */`);
+        lines.push(`${indentStr}/** ${escapeJsDoc(method.summary)} */`);
     }
 
     // Generate method signature

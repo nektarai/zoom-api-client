@@ -1,5 +1,36 @@
 # Changelog
 
+## [1.1.0-alpha.0]
+
+### Added
+
+- **Users API coverage**: generation now reads multiple OpenAPI specs from `specs/`. Adding Zoom's
+  Users spec restores `users().list()` and `user(userId).getUser()` — the replacements for `me()`
+  and the `users()` endpoints dropped in 1.0.0 — plus `groups()`, `group()`, `divisions()`,
+  `division()`, and `contacts()` resources. 71 new methods; no existing method was renamed.
+- **Error metadata on `ZoomError`**: non-ok responses now carry the HTTP status, Zoom's application
+  error code, and rate-limit state instead of only a message, so callers can decide whether and
+  when to retry.
+  - `code` — Zoom's application error code from the response body (e.g. `124`, `1001`)
+  - `statusCode` / `statusText` — the HTTP status (e.g. `429`)
+  - `retryAfter` — `Retry-After` in seconds; the HTTP-date form is converted for you
+  - `rateLimit` — `{ type, category, limit, remaining, reset }` from `X-RateLimit-*`, or
+    `undefined` when Zoom sent no such headers. `type` distinguishes `QPS` from `Daily-limit`.
+  - `response` / `url` — the parsed body and the request URL
+
+### Changed
+
+- API errors now throw `ZoomError` where a bare `Error` was thrown before. `ZoomError extends
+  Error`, so `instanceof Error` checks and message-based handling are unaffected.
+- `endpoints.json` moved to `specs/Meetings.json`. Specs are committed verbatim as published by
+  Zoom so they can be refreshed without a manual merge; list them in `SPEC_PATHS` in
+  `scripts/generate-api.ts`, earliest-first, since duplicate method names resolve first-wins.
+
+### Fixed
+
+- Enum values and property names containing quotes are now escaped in generated types. Previously
+  a value like `Can't update for Zoom One users` emitted a syntactically invalid type.
+
 ## [1.0.0] - 2026-02-02
 
 ### BREAKING CHANGES

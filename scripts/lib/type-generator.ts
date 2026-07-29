@@ -7,7 +7,11 @@ import {
     SchemaObject,
     ParameterObject,
 } from './openapi-parser';
-import { snakeToPascal, sanitizeIdentifier } from './naming-utils';
+import {
+    snakeToPascal,
+    sanitizeIdentifier,
+    escapeJsDoc,
+} from './naming-utils';
 
 interface GeneratedType {
     name: string;
@@ -35,7 +39,7 @@ export function generateTypes(endpoints: ParsedEndpoint[]): string {
                     name: typeName,
                     definition: `export type ${typeName} = ${definition};`,
                     jsdoc: endpoint.summary
-                        ? `/** ${endpoint.summary} - Request body */`
+                        ? `/** ${escapeJsDoc(endpoint.summary)} - Request body */`
                         : undefined,
                 });
             }
@@ -54,7 +58,7 @@ export function generateTypes(endpoints: ParsedEndpoint[]): string {
                     name: typeName,
                     definition: `export type ${typeName} = ${definition};`,
                     jsdoc: endpoint.summary
-                        ? `/** ${endpoint.summary} - Response */`
+                        ? `/** ${escapeJsDoc(endpoint.summary)} - Response */`
                         : undefined,
                 });
             }
@@ -70,7 +74,7 @@ export function generateTypes(endpoints: ParsedEndpoint[]): string {
                     name: typeName,
                     definition: `export type ${typeName} = ${definition};`,
                     jsdoc: endpoint.summary
-                        ? `/** ${endpoint.summary} - Query parameters */`
+                        ? `/** ${escapeJsDoc(endpoint.summary)} - Query parameters */`
                         : undefined,
                 });
             }
@@ -214,7 +218,9 @@ function generateObjectType(schema: SchemaObject, indent: number): string {
 
         // Add JSDoc if there's a description
         if (propSchema.description) {
-            lines.push(`${innerIndent}/** ${propSchema.description} */`);
+            lines.push(
+                `${innerIndent}/** ${escapeJsDoc(propSchema.description)} */`,
+            );
         }
 
         const propType = schemaToTypeScript(propSchema, indent + 1);
@@ -243,7 +249,7 @@ function generateParamsType(params: ParameterObject[]): string {
         }
 
         if (param.description) {
-            lines.push(`    /** ${param.description} */`);
+            lines.push(`    /** ${escapeJsDoc(param.description)} */`);
         }
         lines.push(`    ${safeName}: ${paramType};`);
     }

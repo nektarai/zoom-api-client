@@ -126,6 +126,15 @@ export function sanitizeIdentifier(str: string): string {
 }
 
 /**
+ * Escape spec-supplied text for use inside a `/** ... *\/` comment. Specs are
+ * committed verbatim from Zoom, so a description containing a comment
+ * terminator would otherwise close the block early and emit invalid output.
+ */
+export function escapeJsDoc(text: string): string {
+    return text.replace(/\*\//g, '*\\/');
+}
+
+/**
  * Extract path parameters from a path string.
  * Example: /users/{userId}/meetings/{meetingId} -> ['userId', 'meetingId']
  */

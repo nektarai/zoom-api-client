@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.1.0-alpha.1]
+
+### Fixed
+
+- `Retry-After` is now normalized to whole, non-negative seconds. A negative or fractional value
+  passed through verbatim, so `setTimeout(retry, retryAfter * 1000)` could fire immediately against
+  a rate-limited endpoint. Non-finite values are dropped instead of surfacing as `Infinity`.
+- OAuth failure bodies (`{ error, reason }`, no `message`) now produce
+  `invalid_grant: Invalid Token!` instead of just `invalid_grant`. The machine-readable code stays
+  first so substring matching keeps working, and the human-readable half is no longer reachable only
+  through `err.response`.
+- Generated method names can no longer collide. The duplicate-name fallback was not re-checked
+  against the names already in use, so two endpoints in one resource group sharing an `operationId`
+  emitted duplicate properties in an object literal — a TypeScript error that only surfaced at
+  build time. Not reachable with the current specs; it becomes reachable as specs are added.
+- Spec-supplied text is escaped before being interpolated into generated JSDoc. A description or
+  summary containing `*/` would close the comment early and emit invalid output. Same class as the
+  quote-escaping fix in the previous release, and it matters for the same reason: specs are
+  committed verbatim from Zoom and refreshed wholesale.
+
+### Documentation
+
+- The retry example now uses `err.retryAfter ?? 60`; `retryAfter` is optional and Zoom does not
+  always send `Retry-After`, even on a 429.
+- Documented that rate-limit headers are read on the error path only, so callers can react to a 429
+  but cannot yet throttle to avoid one.
+
 ## [1.1.0-alpha.0]
 
 ### Added

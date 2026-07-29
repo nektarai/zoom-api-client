@@ -174,6 +174,271 @@ export type ZoomApi$Assigndevicetoauser$Commonarea$Request = {
     vendor: string;
 };
 
+/** Assign a division - Request body */
+export type ZoomApi$Assigndivision$Member$Request = {
+    /** Array of userId/user email of users to whom you would like to assign this division. Up to 30 users can be assigned a division at once. */
+    users?: {
+        /** Email address of the user to whom you would like to assign the division. Provide either the userId in the user_id field or the email address in the user_email field. If both fields are provided, only userId is used. */
+        user_email?: string;
+        /** User ID of the user to whom you would like to assign the division.  */
+        user_id?: string;
+    }[];
+};
+
+/** Assign a division - Response */
+export type ZoomApi$Assigndivision$Member$Response = {
+    /** Date and time at which the members are assigned to the division. */
+    added_at?: string;
+    /** User ids */
+    ids?: string;
+};
+
+/** Bulk update features for users - Request body */
+export type ZoomApi$Bulk$Update$Feature$Request = {
+    /** The feature type to update. */
+    feature_type:
+        | 'user_type'
+        | 'concurrent_meeting'
+        | 'large_meeting'
+        | 'webinar'
+        | 'zoom_events'
+        | 'zoom_whiteboard'
+        | 'plan_united_type'
+        | 'zoom_one_type'
+        | 'zoom_iq_for_sales'
+        | 'zoom_revenue_accelerator'
+        | 'zoom_clips_plus';
+    /** The feature value to update. The value you can pass depends on the 'feature_type' field. 
+
+**user_type:** 
+* `1` - Basic 
+* `2` - Licensed 
+* <del>`99` - None. This can only be set with `ssoCreate`. </del>
+
+**concurrent_meeting:** 
+* `Basic` 
+* `Plus` 
+* `None`. 
+
+**large_meeting:** 
+* `1` - 100 capacity 
+* `32` - 200 capacity
+* `64` - 300 capacity
+* `128` - 500 capacity
+* `256` - 1000 capacity 
+* `1024` - 3000 capacity
+* `2048` - 5000 capacity
+* `0` - Turn off the **Large meeting** feature. 
+
+**webinar:** 
+* `16` - 100 capacity 
+* `1` - 500 capacity 
+* `64` - 1000 capacity 
+* `128` - 3000 capacity
+* `256` - 5000 capacity 
+* `512` - 10000 capacity 
+* `1024` - 20000 capacity 
+* `2048` - 30000 capacity 
+* `4096` - 40000 capacity 
+* `8192` - 50000 capacity 
+* `16384` - promo 500 capacity 
+* `32768` - promo 1000 capacity 
+* `0` - Turn off the **Webinar** feature. 
+
+**zoom_events:** 
+* `500` - 500 capacity 
+* `1000` - 1000 capacity 
+* `3000` - 3000 capacity 
+* `5000` - 5000 capacity 
+* `10000` - 10000 capacity 
+* `20000` - 20000 capacity 
+* `30000` - 30000 capacity 
+* `50000` - 50000 capacity 
+* `0` - Turn off the **Zoom events** feature. 
+
+**<del>zoom_iq_for_sales</del>:** 
+* `true` - Turn on the **Zoom Revenue Accelerator** feature. 
+* `false` - Turn off the **Zoom Revenue Accelerator** feature. 
+
+**zoom_revenue_accelerator:** 
+* `true` - Turn on the **Zoom Revenue Accelerator** feature. 
+* `false` - Turn off the **Zoom Revenue Accelerator** feature. 
+
+**zoom_whiteboard:** 
+* `true` - Turn on the **Zoom whiteboard** feature. 
+* `false` - Turn off the **Zoom whiteboard** feature. 
+
+**zoom_clips_plus** 
+* `true` - Turn on the **Zoom Clips Plus** feature. 
+* `false` - Turn off the **Zoom Clips Plus** feature.  
+
+**plan_united_type:** 
+* `1` - Zoom United Pro-United with US/CA Unlimited. 
+* `2` - Zoom United Pro-United with UK/IR Unlimited. 
+* `4` - Zoom United Pro-United with AU/NZ Unlimited. 
+* `8` - Zoom United Pro-United with Global Select. 
+* `16` -  Zoom United Pro-United with Zoom Phone Pro. 
+* `32` - Zoom United Biz-United with US/CA Unlimited. 
+* `64` - Zoom United Biz-United with UK/IR Unlimited. 
+* `128` - Zoom United Biz-United with AU/NZ Unlimited. 
+* `256` - Zoom United Biz-United with Global Select. 
+* `512` -  Zoom United Biz-United with Zoom Phone Pro. 
+* `1024` - Zoom United Ent-United with US/CA Unlimited. 
+* `2048` - Zoom United Ent-United with UK/IR Unlimited. 
+* `4096` - Zoom United Ent-United with AU/NZ Unlimited. 
+* `8192` - Zoom United Ent-United with Global Select. 
+* `16384` -  Zoom United Ent-United with Zoom Phone Pro. 
+* `32768` - Zoom United Pro-United with JP Unlimited. 
+* `65536` - Zoom United Biz-United with JP Unlimited. 
+* `131072` - Zoom United Ent-United with JP Unlimited. 
+* `0` - Turn off the **Zoom united** feature. 
+
+**zoom_one_type:** 
+* `16` - Zoom Workplace Business Plus with US/CA Unlimited. 
+* `32` - Zoom Workplace Business Plus with UK/Ireland Unlimited. 
+* `64` - Zoom Workplace Business Plus with AU/NZ Unlimited. 
+* `128` - Zoom Workplace Business Plus with Japan Unlimited. 
+* `33554432` - Zoom Workplace Business Plus with Global Select. 
+* `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited. 
+* `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited. 
+* `536870912` - Zoom Workplace Enterprise Premier with UK/Ireland Unlimited. 
+* `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited. 
+* `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited. 
+* `0` - Turn off the **Zoom Workplace** feature. 
+
+For Gov accounts: 
+* `16` - Zoom One Business Plus. 
+* `0` - Turn off the **Zoom one** feature. 
+
+For Education accounts: 
+* `18014398509481984` - Zoom One for Education School and Campus. 
+* `72057594037927936` - Zoom One for Education Enterprise Essentials. 
+* `576460752303423488` - Zoom One for Education Enterprise Student. 
+* `144115188075855872` - Zoom One for Education Enterprise Plus. 
+* `137438953472` - Zoom One for Education School and Campus Plus with US/CA Unlimited. 
+* `1099511627776` -Zoom One for Education School and Campus Plus with AU/NZ Unlimited. 
+* `549755813888` - Zoom One for Education School and Campus Plus with UK/Ireland Unlimited. 
+* `274877906944` - Zoom One for Education School and Campus Plus with Japan Unlimited. 
+* `2199023255552` - Zoom One for Education School and Campus Plus with Global Select. 
+* `4294967296` - Zoom One for Education Enterprise Premier with US/CA Unlimited. 
+* `34359738368` - Zoom One for Education Enterprise Premier with AU/NZ Unlimited. 
+* `17179869184` -Zoom One for Education Enterprise Premier with UK/Ireland Unlimited. 
+* `8589934592` - Zoom One for Education Enterprise Premier with with Japan Unlimited. 
+* `68719476736` - Zoom One for Education Enterprise Premier with Global Select. 
+* `0` - Turn off the **Zoom one** feature. */
+    feature_value: string;
+    /** The subscription ID associated with the corresponding license. For accounts with duplicate subscription IDs, when zoom_one_type is 0, this parameter represents the subscription ID that requires the allocation of a meeting license. */
+    subscription_id?: string;
+    /** The users' information to update. */
+    users: {
+        /** The user's ID. */
+        id?: string;
+        /** The user's email. */
+        email?: string;
+    }[];
+    /** A list of license information used to specify the appropriate license type, license option, and license subscription reference ID or name during user creation. */
+    license_info_list?: {
+        /** License type name.
+The `MEETING` license is associated with the paid user type, while the `ZOOM_WORKPLACE_BUNDLE` license corresponds to the Zoom Workplace series licenses. */
+        license_type: 'MEETING' | 'ZOOM_WORKPLACE_BUNDLE';
+        /** License option.
+
+For the `MEETING` parameter, setting the corresponding value indicates that the user is converted to a licensed user. The specific values are as follows:
+User's plan type.  
+ `2` - Licensed.  
+
+For the `ZOOM_WORKPLACE_BUNDLE` parameter, setting the corresponding value assigns the user a Zoom Workplace series license. The specific values are as follows:
+The user's Zoom Workplace plan option.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus with US/CA Unlimited.  
+ `32` - Zoom Workplace Business Plus with UK/IR Unlimited.  
+ `64` - Zoom Workplace Business Plus with AU/NZ Unlimited.  
+ `128` - Zoom Workplace Business Plus with Japan Unlimited.  
+ `33554432` - Zoom Workplace Business Plus with Global Select.  
+ `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited.  
+ `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited.  
+ `536870912` - Zoom Workplace Enterprise Premier with UK/IR Unlimited.  
+ `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited.  
+ `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited.
+
+The Zoom Workplace plan option for Govermnemt accounts.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus. 
+
+The Zoom Workplace plan option for Education accounts.  
+ `18014398509481984` - Zoom Workplace for Education School and Campus.  
+ `72057594037927936` - Zoom Workplace for Education Enterprise Essentials.  
+ `576460752303423488` - Zoom Workplace for Education Enterprise Student. 
+ `144115188075855872` - Zoom Workplace for Education Enterprise Plus.  
+ `137438953472` - Zoom Workplace for Education School and Campus Plus with US/CA Unlimited.  
+ `1099511627776` - Zoom Workplace for Education School and Campus Plus with AU/NZ     Unlimited.  
+ `549755813888` - Zoom Workplace for Education School and Campus Plus with UK/IR Unlimited.  
+ `274877906944` - Zoom Workplace for Education School and Campus Plus with Japan Unlimited.  
+ `2199023255552` - Zoom Workplace for Education School and Campus Plus with Global Select.  
+ `4294967296` - Zoom Workplace for Education Enterprise Premier with US/CA Unlimited.  
+ `34359738368` - Zoom Workplace for Education Enterprise Premier with AU/NZ Unlimited.  
+ `17179869184` -Zoom Workplace for Education Enterprise Premier with UK/IR Unlimited.  
+ `8589934592` - Zoom Workplace for Education Enterprise Premier with with Japan Unlimited.  
+ `68719476736` - Zoom Workplace for Education Enterprise Premier with Global Select. */
+        license_option:
+            | 2
+            | 4
+            | 8
+            | 16
+            | 32
+            | 64
+            | 128
+            | 33554432
+            | 134217728
+            | 1073741824
+            | 536870912
+            | 268435456
+            | 4398046511104
+            | 18014398509481984
+            | 72057594037927940
+            | 576460752303423500
+            | 144115188075855870
+            | 137438953472
+            | 1099511627776
+            | 549755813888
+            | 274877906944
+            | 2199023255552
+            | 4294967296
+            | 34359738368
+            | 17179869184
+            | 8589934592
+            | 68719476736;
+        /** The subscription ID associated with the corresponding license. */
+        subscription_id: string;
+    }[];
+};
+
+/** Bulk update features for users - Response */
+export type ZoomApi$Bulk$Update$Feature$Response = {
+    /** The IDs of users for whom the feature was updated successfully */
+    success_user_ids?: string[];
+    /** The details why these users' feature was not updated successfully. */
+    fail_details?: {
+        /** The IDs of users for whom the feature was not updated successfully. */
+        user_ids?: string[];
+        /** The reason why the feature for these users was not updated successfully. */
+        reason?:
+            | 'Users not found'
+            | 'Have upcoming events'
+            | 'Unpaid user'
+            | 'Not enough seats'
+            | "Can't update for Zoom One users"
+            | "Can't update for free users"
+            | "Can't update for Zoom United users"
+            | "Can't update for Zoom Room users"
+            | 'Not allowed to add basic users'
+            | "Can't update for non-SSO users"
+            | 'No need to update';
+    }[];
+};
+
 /** Change device association - Request body */
 export type ZoomApi$Change$Device$Association$Request = {
     /** The Zoom Room ID of the device being associated to. The `room_id` is required. It can be ` ` or the specific room ID. If it is ` ` , it means release from the room. If the room ID is a specific value, assign that room to the device . */
@@ -188,6 +453,160 @@ export type ZoomApi$Change$Device$Association$Request = {
  
 `ZRW` - Companion whiteboard. */
     app_type?: 'ZR' | 'ZRC' | 'ZRP' | 'ZRW';
+};
+
+/** Create a contact group - Request body */
+export type ZoomApi$Contact$Group$Create$Request = {
+    /** The contact group's name. */
+    group_name?: string;
+    /** Contact group privacy configuration:  
+ `1` - Visible to anyone, searchable by anyone.  
+ `2` - Visible to members only, searchable by anyone.  
+ `3` - Visible to members only, searchable by members only. */
+    group_privacy?: 1 | 2 | 3;
+    /** The group description. */
+    description?: string;
+    group_members?: {
+        /** Contact group member types:  
+ `1` - user.  
+ `2` - user group. */
+        type?: 1 | 2;
+        /** The member ID: user ID (`user`) or user group ID (`user group`). */
+        id?: string;
+    }[];
+};
+
+/** Create a contact group - Response */
+export type ZoomApi$Contact$Group$Create$Response = {
+    /** The contact group ID. */
+    group_id?: string;
+    /** The contact group's name. */
+    group_name?: string;
+    /** The contact group's total member count. */
+    total_members?: number;
+    /** Contact group privacy configuration:  
+ `1` - Visible to anyone, searchable by anyone.  
+ `2` - Visible to members only, searchable by anyone.  
+ `3` - Visible to members only, searchable by members only. */
+    group_privacy?: 1 | 2 | 3;
+    /** The group description. */
+    description?: string;
+};
+
+/** Add contact group members - Request body */
+export type ZoomApi$Contact$Group$Member$Add$Request = {
+    /** Group members array */
+    group_members?: {
+        /** Contact group member types:  
+ `1` - user.  
+ `2` - user group. */
+        type?: 1 | 2;
+        /** The member ID: user ID (`user`) or user group ID (`user group`). */
+        id?: string;
+    }[];
+};
+
+/** Add contact group members - Response */
+export type ZoomApi$Contact$Group$Member$Add$Response = {
+    /** Member ids array */
+    member_ids?: string[];
+};
+
+/** Remove members in a contact group - Query parameters */
+export type ZoomApi$Contact$Group$Member$Remove$Params = Partial<{
+    /** The member's ID in a contact group. Use commas (,) to separate a maximum of 20 ids.   
+ 
+Can be retrieved by calling the [**List contact groups**](/docs/api-reference/zoom-api/methods#operation/contactGroupMembers) API. */
+    member_ids: string;
+}>;
+
+/** List contact group members - Query parameters */
+export type ZoomApi$Contact$Group$Members$Params = Partial<{
+    /** The number of records returned with a single API call.  */
+    page_size: number;
+    /** The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. */
+    next_page_token: string;
+}>;
+
+/** List contact group members - Response */
+export type ZoomApi$Contact$Group$Members$Response = {
+    /** List of contact group members. */
+    group_members?: {
+        /** Contact group member types:  
+ `1` - user.  
+ `2` - user group. */
+        type?: 1 | 2;
+        /** The member ID: user ID (`user`) or user group ID (`user group`). */
+        id?: string;
+        /** The member's name: user's name (`user`) or the group's name (`user group`). */
+        name?: string;
+    }[];
+    /** The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
+     */
+    next_page_token?: string;
+    /** The number of records returned within a single API call. */
+    page_size?: number;
+};
+
+/** Get a contact group - Response */
+export type ZoomApi$Contact$Group$Response = {
+    /** The group ID. */
+    group_id?: string;
+    /** The group name. */
+    group_name?: string;
+    /** The total number of members in a contact group. */
+    total_members?: number;
+    /** The contact group privacy configuration:  
+ `1` - Visible to anyone, searchable by anyone.  
+ `2` - Visible to members only, searchable by anyone.  
+ `3` - Visible to members only, searchable by members only. */
+    group_privacy?: 1 | 2 | 3;
+    /** The group description. */
+    description?: string;
+};
+
+/** Update a contact group - Request body */
+export type ZoomApi$Contact$Group$Update$Request = {
+    /** The contact group's name. */
+    name?: string;
+    /** Contact group privacy configuration:  
+ `1` - Visible to anyone, searchable by anyone.  
+ `2` - Visible to members only, searchable by anyone.  
+ `3` - Visible to members only, searchable by members only. */
+    privacy?: 1 | 2 | 3;
+    /** The group description. */
+    description?: string;
+};
+
+/** List contact groups - Query parameters */
+export type ZoomApi$Contact$Groups$Params = Partial<{
+    /** The number of records returned with a single API call.  */
+    page_size: number;
+    /** The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. */
+    next_page_token: string;
+}>;
+
+/** List contact groups - Response */
+export type ZoomApi$Contact$Groups$Response = {
+    /** List of contact group objects. */
+    groups?: {
+        /** The group ID. */
+        group_id?: string;
+        /** The group name. */
+        group_name?: string;
+        /** The contact group privacy configuration:  
+ `1` - Visible to anyone, searchable by anyone.  
+ `2` - Visible to members only, searchable by anyone.  
+ `3` - Visible to members only, searchable by members only. */
+        group_privacy?: 1 | 2 | 3;
+        /** The group description. */
+        description?: string;
+    }[];
+    /** The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.
+     */
+    next_page_token?: string;
+    /** The number of records returned within a single API call. */
+    page_size?: number;
 };
 
 /** Perform batch poll creation - Request body */
@@ -414,6 +833,36 @@ export type ZoomApi$Create$Webinar$Branding$Name$Tag$Response = {
     /** Whether the name tag is the default name tag or not. */
     is_default?: boolean;
 };
+
+/** Create a division - Request body */
+export type ZoomApi$Createadivision$Request = {
+    /** The division's name. */
+    division_name: string;
+    /** The division's description. */
+    division_description?: string;
+};
+
+/** Create a division - Response */
+export type ZoomApi$Createadivision$Response = {
+    /** The division's id */
+    division_id?: string;
+    /** The division's name. */
+    division_name?: string;
+    /** The division's description. */
+    division_description?: string;
+};
+
+/** Delete Virtual Background files - Query parameters */
+export type ZoomApi$Del$Group$V$B$Params = Partial<{
+    /** A comma-separated list of the file IDs to delete. */
+    file_ids: string;
+}>;
+
+/** Delete Virtual Background files - Query parameters */
+export type ZoomApi$Del$User$V$B$Params = Partial<{
+    /** A comma-separated list of the Virtual Background file IDs to delete. */
+    file_ids: string;
+}>;
 
 /** Delete a live meeting message - Query parameters */
 export type ZoomApi$Delete$Meeting$Chat$Message$By$Id$Params = Partial<{
@@ -916,6 +1365,20 @@ You can also use this ID to export a CSV file of the billing report from this UR
     currency?: string;
 };
 
+/** Get collaboration device detail - Response */
+export type ZoomApi$Get$Collaboration$Device$Response = {
+    /** The device's unique identifier. */
+    id?: string;
+    /** Name of the Personal Zoom Room's device. */
+    device_name?: string;
+    /** Name of the Personal Zoom Room. */
+    room_name?: string;
+    /** The Zoom Room's unique identifier. */
+    room_user_id?: string;
+    /** The device's status. The value can be either `Online` or `Offline`. */
+    status?: 'Online' | 'Offline';
+};
+
 /** Get device detail - Response */
 export type ZoomApi$Get$Device$Response = {
     /** The device's unique identifier. */
@@ -968,6 +1431,1516 @@ Device Type:
     /** The phone device's owner. */
     user_email?: string;
 };
+
+/** Get locked settings - Query parameters */
+export type ZoomApi$Get$Group$Lock$Settings$Params = Partial<{
+    /** Optional query parameters.
+     * `meeting_security` - Use this query parameter to view the meeting security settings applied to the user's account. */
+    option: string;
+}>;
+
+/** Get locked settings - Response */
+export type ZoomApi$Get$Group$Lock$Settings$Response =
+    | {
+          /** The group's audio conference settings. */
+          audio_conferencing?: {
+              /** Whether the group has the [**Toll-free and Fee-based Toll Call**](https://support.zoom.us/hc/en-us/articles/360060950711-Enabling-Toll-free-and-Fee-based-Toll-Call) setting enabled. */
+              toll_free_and_fee_based_toll_call?: boolean;
+              /** Whether the group has the [**Toll Call**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066909#h_01F51844DRCX3K7BRTMZ40381R) setting enabled. */
+              toll_call?: boolean;
+              /** Whether the group has the [**Call Me and Invite by Phone**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067414#h_01F53VG7NCJDZ238VVXZDJ8QMH) setting enabled. */
+              call_me_and_invite_by_phone?: boolean;
+              /** Whether the group has the [**Personal Audio Conference**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0060449#h_01F5BPMNMERFWXN5S8ZJRZZCSE) setting enabled. */
+              personal_audio_conference?: boolean;
+              /** Whether the group has the [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5H1618B9AQ9F29NYRNE8W) setting enabled. */
+              participant_phone_masking?: boolean;
+          };
+          email_notification?: {
+              /** Notify the alternative host who is set or removed. */
+              alternative_host_reminder?: boolean;
+              /** Notify host and participants when the meeting is cancelled. */
+              cancel_meeting_reminder?: boolean;
+              /** Whether to notify the host when a cloud recording is available. */
+              cloud_recording_available_reminder?: boolean;
+              /** Notify host when participants join the meeting before them. */
+              jbh_reminder?: boolean;
+              /** Notify the host there is a meeting is scheduled, rescheduled, or cancelled. */
+              schedule_for_reminder?: boolean;
+          };
+          in_meeting?: {
+              /** Allow participants who belong to your account to see that a guest (someone who does not belong to your account) is participating in the meeting/webinar. */
+              alert_guest_join?: boolean;
+              /** If the value of this field is set to `true`, allow users to delete messages in the in-meeting chat.
+               */
+              allow_users_to_delete_messages_in_meeting_chat?: boolean;
+              /** Whether to allow livestreaming. */
+              allow_live_streaming?: boolean;
+              /** Show Zoom windows during screen share. */
+              allow_show_zoom_windows?: boolean;
+              /** Allow participants to use annotation tools to add information to shared screens. */
+              annotation?: boolean;
+              /** Allow host to put attendee on hold.
+
+**This field has been deprecated and is no longer supported.** */
+              attendee_on_hold?: boolean;
+              /** Enable users to see and add contacts to 'auto-answer group' in the contact list on chat. Any call from members of this group will be automatically answered. */
+              auto_answer?: boolean;
+              /** Whether to allow a live transcription service to transcribe meetings. */
+              auto_generated_captions?: boolean;
+              /** Automatically save all in-meeting chats. */
+              auto_saving_chat?: boolean;
+              /** Allow host to split meeting participants into separate, smaller rooms. */
+              breakout_room?: boolean;
+              /** Allow meeting participants to send chat message visible to all participants. */
+              chat?: boolean;
+              /** Allow participants to ask questions for the host and participants to answer. */
+              meeting_question_answer?: boolean;
+              /** Allow host to type closed captions or assign a participant or third party device to add closed captions. */
+              closed_caption?: boolean;
+              /** Allow the host to add co-hosts. Co-hosts have the same in-meeting controls as the host. */
+              co_host?: boolean;
+              /** Displays whether or not custom [data center regions](https://support.zoom.us/hc/en-us/articles/360042411451-Selecting-data-center-regions-for-hosted-meetings-and-webinars) have been selected for meetings/webinars hosted by this group. */
+              custom_data_center_regions?: boolean;
+              /** Whether the **Disable desktop screen sharing for meetings you host** setting is enabled. */
+              disable_screen_sharing_for_host_meetings?: boolean;
+              /** Whether the **Disable screen sharing when guests are in the meeting** setting is enabled. */
+              disable_screen_sharing_for_in_meeting_guests?: boolean;
+              /** Require that all meetings are encrypted using AES. */
+              e2e_encryption?: boolean;
+              /** Play sound when participants join or leave. */
+              entry_exit_chime?: string;
+              /** Allow another user to take control of the camera during a meeting. */
+              far_end_camera_control?: boolean;
+              /** Enable users to provide feedback to Zoom at the end of the meeting. */
+              feedback?: boolean;
+              /** Indicates whether [in-meeting file transfer](https://support.zoom.us/hc/en-us/articles/209605493-In-meeting-file-transfer) setting has been enabled for the users in the group or not. */
+              file_transfer?: boolean;
+              /** Whether to allow the viewing of full transcripts in the in-meeting side panel. */
+              full_transcript?: boolean;
+              /** Enable higher quality video for host and participants in a meeting. This will require more bandwidth. */
+              group_hd?: boolean;
+              /** Enable higher quality video for host and participants in a webinar. This will require more bandwidth. */
+              webinar_group_hd?: boolean;
+              /** Whether to allow hosts to assign participants as interpreters who can interpret one language into another in real-time. */
+              language_interpretation?: boolean;
+              /** Allow hosts to assign participants as sign language interpreters who can interpret one language into sign language in real-time. Hosts can assign interpreters when scheduling, or during the meeting itself. This feature is only available with version 5.11.3 or later. */
+              sign_language_interpretation?: boolean;
+              /** Allow host to type closed captions or assign a participant or third party device to add closed captions. */
+              manual_captions?: boolean;
+              /** Whether meeting participants can [communicate using the emoji reactions](https://support.zoom.us/hc/en-us/articles/115001286183-Nonverbal-feedback-and-meeting-reactions) located in the **Reactions** menu in the meeting toolbar. */
+              meeting_reactions?: boolean;
+              /** Set this field to true to use [webinar reactions](https://support.zoom.us/hc/en-us/articles/4803536268429). */
+              webinar_reactions?: boolean;
+              /** Whether the host can present a survey to participants once a meeting has ended. This feature is only available in version 5.7.3 or higher. */
+              meeting_survey?: boolean;
+              /** Allow participants in a meeting can provide nonverbal feedback and express opinions by clicking on icons in the Participants panel. */
+              non_verbal_feedback?: boolean;
+              /** Allow users to select original sound during a meeting. */
+              original_audio?: boolean;
+              /** Add 'Polls' to the meeting controls. This allows the host to survey the attendees. */
+              polling?: boolean;
+              /** Display end-of-meeting experience feedback survey. */
+              post_meeting_feedback?: boolean;
+              /** Allow meeting participants to send a private 1:1 message to another participant. */
+              private_chat?: boolean;
+              /** During screen sharing, allow the person who is sharing to let others control the shared content. */
+              remote_control?: boolean;
+              /** Allow meeting host to provide 1:1 remote support to another participant. */
+              remote_support?: boolean;
+              /** Indicates whether the [**Request permission to unmute participants**](https://support.zoom.us/hc/en-us/articles/203435537-Muting-and-unmuting-participants-in-a-meeting#h_01EGK4XFWS1SJGZ71MYGKF7260) option has been enabled and locked for the group or not. */
+              request_permission_to_unmute_participants?: boolean;
+              /** Whether participants can save closed captions or transcripts. */
+              save_caption?: boolean;
+              /** Whether participants can save closed captions or transcripts. */
+              save_captions?: boolean;
+              /** Allow host and participants to share their screen or content during meetings. */
+              screen_sharing?: boolean;
+              /** Allow users to invite participants by email only by default. */
+              sending_default_email_invites?: boolean;
+              /** Whether to allow participants to join a meeting directly from their browser and bypass the Zoom application download process. This is useful for participants who cannot download, install, or run applications. Note that the meeting experience from the browser is limited. */
+              show_a_join_from_your_browser_link?: boolean;
+              /** Allow participants to join a meeting directly from their browser. */
+              show_browser_join_link?: boolean;
+              /** Always show meeting controls during a meeting. */
+              show_meeting_control_toolbar?: boolean;
+              /** Whether the person sharing during a presentation can allow others to control the slide presentation. This feature is only available in version 5.8.3 or higher. */
+              slide_control?: boolean;
+              /** Allow users to select stereo audio during a meeting. */
+              stereo_audio?: boolean;
+              /** Allow HTML formatting instead of plain text for meeting invitations scheduled with the Outlook plugin. */
+              use_html_format_email?: boolean;
+              /** Enable virtual backgrounds. */
+              virtual_background?: boolean;
+              /** Attendees cannot join a meeting until a host admits them individually from the waiting room. */
+              waiting_room?: boolean;
+              /** Whether to allow webinar participants to send chat messages. */
+              webinar_chat?: boolean;
+              /** Whether webinar livestreaming is enabled. */
+              webinar_live_streaming?: boolean;
+              /** Whether the host can add polls before or during a webinar. */
+              webinar_polling?: boolean;
+              /** Whether attendees can ask the host and panelists questions in the webinar. */
+              webinar_question_answer?: boolean;
+              /** Whether the host can present surveys to attendees once a webinar has ended. */
+              webinar_survey?: boolean;
+              /** Allow participants to share a whiteboard that includes annotation tools. */
+              whiteboard?: boolean;
+          };
+          other_options?: {
+              /** If `true`, iOS blurs the screenshot in the task switcher when multiple apps are open. Android hides the screenshot in the system-level list of recent apps. */
+              blur_snapshot?: boolean;
+          };
+          recording?: {
+              /** Make cloud recordings accessible to account members only. */
+              account_user_access_recording?: boolean;
+              /** Allow Zoom to automatically delete recordings permanently after a specified number of days. */
+              auto_delete_cmr?: boolean;
+              /** Record meetings automatically as they start. */
+              auto_recording?: boolean;
+              /** Allow hosts to record and save the meeting or webinar in the cloud. */
+              cloud_recording?: boolean;
+              /** Allow anyone with a link to the cloud recording to download. */
+              cloud_recording_download?: boolean;
+              /** Allow the host to delete the recordings. If this option is disabled, the recordings cannot be deleted by the host and only admin can delete them. */
+              host_delete_cloud_recording?: boolean;
+              /** Setting to allow cloud recording access only from specific IP address ranges.
+               */
+              ip_address_access_control?: {
+                  /** If set to `true`, the cloud recordings of this account can only be accessed by the IP addresses defined in the `ip_addresses_or_ranges` property.
+
+ */
+                  enable?: boolean;
+                  /** IP addresses or ranges that have access to the cloud recordings. Separate multiple IP ranges with commas. Use `n.n.n.n, n.n.n.n/n` or `n.n.n.n - n.n.n.n` syntax where n is a number, such as `46.33.24.184, 48.99.100.2/25` or `200.181.108.17 - 220.181.108.157`.
+
+ */
+                  ip_addresses_or_ranges?: string;
+              };
+              /** Allow hosts and participants to record the meeting to a local file. */
+              local_recording?: boolean;
+              /** If set to `true`, meeting hosts cannot view their meeting cloud recordings. Only the admins who have recording management privilege can access them.
+
+ */
+              prevent_host_access_recording?: boolean;
+              /** Only authenticated users can view cloud recordings */
+              recording_authentication?: boolean;
+              /** [Archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-Meeting-and-Webinar-data) settings. This setting can only be used if you have been granted archiving solution access by the Zoom support team. */
+              archive?: boolean;
+          };
+          schedule_meeting?: {
+              /** Determine how participants can join the audio portion of the meeting. */
+              audio_type?: boolean;
+              /** If the value is set to `true`, the meeting passcode will be encrypted and included in the join meeting link to allow participants to join with just one click without having to enter the passcode.
+               */
+              embed_password_in_join_link?: boolean;
+              /** If the join before host option is enabled for a personal meeting, then enforce passcode requirement. */
+              force_pmi_jbh_password?: boolean;
+              /** Start meetings with host video on. */
+              host_video?: boolean;
+              /** Allow participants to join the meeting before the host arrives */
+              join_before_host?: boolean;
+              /** Only authenticated users can join meetings */
+              meeting_authentication?: boolean;
+              /** Automatically mute all participants when they join the meeting. */
+              mute_upon_entry?: boolean;
+              /** Start meetings with participant video on. */
+              participant_video?: boolean;
+              /** Generate and send new passcodes for newly scheduled or edited meetings. */
+              pstn_password_protected?: boolean;
+              /** Require passcode for instant meetings. If you use personal meeting ID (PMI) for your instant meetings, this option will be disabled. */
+              require_password_for_instant_meetings?: boolean;
+              /** Require participants to enter passcode for PMI meetings. */
+              require_password_for_pmi_meetings?: boolean;
+              /** This setting applies for regular meetings that do not use PMI. If enabled, a passcode will be generated while a host schedules a new meeting and participants will be required to enter the passcode before they can join the meeting. */
+              require_password_for_scheduling_new_meetings?: boolean;
+              /** Receive desktop notification for upcoming meetings. */
+              upcoming_meeting_reminder?: boolean;
+              /** Whether to enable the [**Enable continuous meeting chat**] setting. */
+              continuous_meeting_chat?: boolean;
+          };
+          /** Group Settings: Telephony. */
+          telephony?: {
+              /** Third party audio conference info. */
+              telephony_regions?: boolean;
+              /** Allow users to join the meeting using the existing third party audio configuration. */
+              third_party_audio?: boolean;
+          };
+      }
+    | {
+          meeting_security?: {
+              /** Whether the [**Approve or block entry for users from specific countries/regions**](https://support.zoom.us/hc/en-us/articles/360060086231-Joining-from-specific-countries-regions) setting is enabled. */
+              approved_or_denied_countries_or_regions?: boolean;
+              /** Whether all meetings must be secured with at least one security option. 
+
+ This setting can only be disabled by Enterprise, ISV, Business (with more than 100 licenses), and Education accounts. */
+              auto_security?: boolean;
+              /** Whether users in specific domains are blocked from joining meetings and webinars. */
+              block_user_domain?: boolean;
+              /** Whether the meeting passcode is encrypted and included in the invitation link. The provided link will allow participants to join the meeting without having to enter the passcode. */
+              embed_password_in_join_link?: boolean;
+              /** The type of encryption used when starting a meeting.
+               * `enhanced_encryption` - Enhanced encryption. Encryption data is stored in the cloud.
+               * `e2ee` - End-to-end encryption. The encryption key is stored on the local device and cannot be obtained by anyone else. Enabling E2EE also [**disables** certain features](https://support.zoom.us/hc/en-us/articles/360048660871), such as cloud recording, live streaming, and allowing participants to join before the host. */
+              encryption_type?: 'enhanced_encryption' | 'e2ee';
+              /** Whether end-to-end encryption is enabled for meetings. */
+              end_to_end_encrypted_meetings?: boolean;
+              /** Whether all instant and scheduled meetings that users can join via client or Zoom Rooms systems are passcode-protected. [Personal meeting ID (PMI)](https://support.zoom.us/hc/en-us/articles/203276937) meetings are **not** included in this setting. */
+              meeting_password?: boolean;
+              /** Whether to specify that only authenticated users can join the meeting from the web client. */
+              only_authenticated_can_join_from_webclient?: boolean;
+              /** Whether passcodes are required for participants joining by phone. 
+
+ If enabled and the meeting is passcode-protected, a numeric passcode is required for participants to join by phone. For meetings with alphanumeric passcodes, a numeric passcode will be generated. */
+              phone_password?: boolean;
+              /** Whether all PMI meetings that users can join via client or Zoom Rooms systems are passcode-protected. */
+              pmi_password?: boolean;
+              /** Whether participants are placed in the [**waiting room**](https://support.zoom.us/hc/en-us/articles/115000332726-Waiting-Room) when they join a meeting. 
+
+ If the **Waiting Room** feature is enabled, the [**Allow participants to join before host**](https://support.zoom.us/hc/en-us/articles/202828525-Allow-participants-to-join-before-host) setting is automatically disabled. */
+              waiting_room?: boolean;
+              /** Whether to generate a passcode when scheduling webinars. Participants must use the generated passcode to join the scheduled webinar. */
+              webinar_password?: boolean;
+          };
+      };
+
+/** Get a group's settings - Query parameters */
+export type ZoomApi$Get$Group$Settings$Params = Partial<{
+    /** Optional query parameters.
+     * `meeting_authentication` - View the [meeting authentication settings](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars) applied to the user's account.
+     * `recording_authentication` - View the [recording authentication settings](https://support.zoom.us/hc/en-us/articles/360037756671-Authentication-Profiles-for-Cloud-Recordings) applied to the user's account.
+     * `meeting_security` - View the meeting security settings applied to the user's account. */
+    option:
+        | 'meeting_authentication'
+        | 'recording_authentication'
+        | 'meeting_security';
+    /** Provide the name of the field to use to filter the response. For example, if you provide `host_video` as the value of this field, you will get a response similar to this: 
+
+{
+ `schedule_meeting`: {
+ `host_video`: false
+ }
+} 
+
+Provide multiple values by separating them with commas, such as `host_video,participant_video`. */
+    custom_query_fields: string;
+}>;
+
+/** Get a group's settings - Response */
+export type ZoomApi$Get$Group$Settings$Response =
+    | {
+          /** The group's audio conference settings. */
+          audio_conferencing?: {
+              /** The group's [**Toll-free and Fee-based Toll Call**](https://support.zoom.us/hc/en-us/articles/360060950711-Enabling-Toll-free-and-Fee-based-Toll-Call#h_01F51844DRCX3K7BRTMZ40381R) settings. */
+              toll_free_and_fee_based_toll_call?: {
+                  /** Whether webinar attendees can dial in through the account's **Toll-free and Fee-based Toll Call** phone numbers. This feature is only available in version 5.2.2 and higher. */
+                  allow_webinar_attendees_dial?: boolean;
+                  /** Whether the group has the [**Toll-free and Fee-based Toll Call**](https://support.zoom.us/hc/en-us/articles/360060950711-Enabling-Toll-free-and-Fee-based-Toll-Call#h_01F51844DRCX3K7BRTMZ40381R) setting enabled. */
+                  enable?: boolean;
+                  /** The group's **Toll-free and Fee-based Toll Call** phone number information. */
+                  numbers?: {
+                      /** The phone number's [E.164 country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes). */
+                      code?: string;
+                      /** The phone number's [country code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries). */
+                      country_code?: string;
+                      /** The country name. */
+                      country_name?: string;
+                      /** The phone number's display number. */
+                      display_number?: string;
+                      /** The phone number. */
+                      number?: string;
+                  }[];
+              };
+              /** The group's [**Toll Call**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066909#h_01F51844DRCX3K7BRTMZ40381R) settings. */
+              toll_call?: {
+                  /** Whether the group has the [**Toll Call**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066909#h_01F51844DRCX3K7BRTMZ40381R) setting enabled. */
+                  enable?: boolean;
+                  /** The group's **Toll Call** phone number information. */
+                  numbers?: {
+                      /** The phone number's [E.164 country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes). */
+                      code?: string;
+                      /** The phone number's two letter [country code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries). */
+                      country_code?: string;
+                      /** The country name. */
+                      country_name?: string;
+                      /** The phone number's display number. */
+                      display_number?: string;
+                      /** The phone number. */
+                      number?: string;
+                  }[];
+              };
+              /** The group's [**Call Me and Invite by Phone**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067414#h_01F53VG7NCJDZ238VVXZDJ8QMH) settings. */
+              call_me_and_invite_by_phone?: {
+                  /** Whether the group has the [**Call Me and Invite by Phone**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067414#h_01F53VG7NCJDZ238VVXZDJ8QMH) setting enabled. */
+                  enable?: boolean;
+                  /** Require Call Me users to press 1 before being connected to the meeting.
+                   * `auto` - Automatically determine whether to require pressing 1 before connecting to the meeting.
+                   * `always` - Always require Call Me users to press 1 before connecting to the meeting.
+                   * `never` - Never require Call Me users to press 1 before connecting to the meeting. */
+                  require_press_1_for_call_me?: 'auto' | 'always' | 'never';
+                  /** Whether webinar attendees can use Call Me to connect audio. This feature is only available in version 5.2.2 and higher. */
+                  allow_webinar_attendees_call_me?: boolean;
+                  /** The group's call out countries/regions settings. */
+                  call_out_countries?: {
+                      /** The list of all available countries/regions that can be enabled for call out. */
+                      allowed_countries?: {
+                          /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                          code?: string;
+                          /** The name of the country or region. */
+                          name?: string;
+                      }[];
+                      /** The list of countries/regions that users can call out to. */
+                      selected_countries?: {
+                          /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                          code?: string;
+                          /** The name of the country or region. */
+                          name?: string;
+                      }[];
+                  };
+              };
+              /** Whether the group has the [**Personal Audio Conference**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0060449#h_01F5BPMNMERFWXN5S8ZJRZZCSE) setting enabled. */
+              personal_audio_conference?: boolean;
+              /** The group's [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5H1618B9AQ9F29NYRNE8W) settings. */
+              participant_phone_masking?: {
+                  /** Whether the group has the [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5H1618B9AQ9F29NYRNE8W) setting enabled. */
+                  enable?: boolean;
+                  /** The type of phone number masking pattern to apply.
+                   * `mask_default` - Default masking pattern (Example: 888****666).
+                   * `mask_first_5` - Mask first five digits (Example: *****66666).
+                   * `mask_except_last_4` - Mask everything except last four digits (Example: *****6666). */
+                  masking_type?:
+                      | 'mask_default'
+                      | 'mask_first_5'
+                      | 'mask_except_last_4';
+              };
+              /** The group's [**Global Dial-in Countries/Regions**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0068094#h_01F5KK9RF10NA325STVQP8TYER) settings. */
+              global_dial_in_countries?: {
+                  /** The list of all available countries/regions that can be selected for displaying dial-in numbers in the meeting invitation. */
+                  allowed_countries?: {
+                      /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+                  /** The list of selected countries/regions whose dial-in numbers will be listed in the email invitation. */
+                  selected_countries?: {
+                      /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+                  /** Whether to include toll-free numbers in the email invitation for the selected countries/regions. */
+                  include_toll_free?: boolean;
+              };
+          };
+          email_notification?: {
+              /** Notify the alternative host who is set or removed. */
+              alternative_host_reminder?: boolean;
+              /** Notify host and participants when the meeting is cancelled. */
+              cancel_meeting_reminder?: boolean;
+              /** Whether to notify the host when a cloud recording is available. */
+              cloud_recording_available_reminder?: boolean;
+              /** Notify host when participants join the meeting before them. */
+              jbh_reminder?: boolean;
+              /** Whether to notify any alternative hosts when a cloud recording is available. */
+              recording_available_reminder_alternative_hosts?: boolean;
+              /** Whether to notify the person who scheduled the meeting or webinar for the host when a cloud recording is available. */
+              recording_available_reminder_schedulers?: boolean;
+              /** Notify the host there is a meeting is scheduled, rescheduled, or cancelled. */
+              schedule_for_reminder?: boolean;
+          };
+          in_meeting?: {
+              /** Allow participants who belong to your account to see that a guest (someone who does not belong to your account) is participating in the meeting or webinar. */
+              alert_guest_join?: boolean;
+              /** If the value of this field is set to `true`, allow users to delete messages in the in-meeting chat.
+               */
+              allow_users_to_delete_messages_in_meeting_chat?: boolean;
+              /** Whether livestreaming is enabled. */
+              allow_live_streaming?: boolean;
+              /** Whether to allow participants to only chat with certain groups.
+* `1` - The participant cannot use chat.
+* `2` - Host and co-hosts only.
+ * `3` - The participant can chat with other participants publicly.
+* `4` - The participant can chat with other participants publicly and privately.
+
+**Note:** This setting is only available with client versions 5.7.3 and above. */
+              allow_participants_chat_with?: 1 | 2 | 3 | 4;
+              /** Show Zoom windows during screen share. */
+              allow_show_zoom_windows?: boolean;
+              /** Whether to allow participants to save meeting chats.
+               * `1` - Participants cannot save meeting chats.
+               * `2` - Participants can only save host and co-host meeting chats.
+               * `3` - Participants can save all meeting chats. */
+              allow_users_save_chats?: 1 | 2 | 3;
+              /** Allow participants to use annotation tools to add information to shared screens. */
+              annotation?: boolean;
+              /** Allow the host to put an attendee on hold.
+
+**This field has been deprecated and is no longer supported.** */
+              attendee_on_hold?: boolean;
+              /** Enable users to see and add contacts to 'auto-answer group' in the contact list on chat. Any call from members of this group will be automatically answered. */
+              auto_answer?: boolean;
+              /** Automatically save all in-meeting chats. */
+              auto_saving_chat?: boolean;
+              /** Allow the host to split meeting participants into separate, smaller rooms. */
+              breakout_room?: boolean;
+              /** Whether the host can assign participants to breakout rooms when scheduling. This feature is **only** available in version 4.5.0 or higher. */
+              breakout_room_schedule?: boolean;
+              /** Allow meeting participants to send chat message visible to all participants. */
+              chat?: boolean;
+              /** Allow participants to ask questions for the host and participants to answer. */
+              meeting_question_answer?: boolean;
+              /** Allow the host to type closed captions or assign a participant/third party device to add closed captions. */
+              closed_caption?: boolean;
+              /** Information about the group's closed captioning settings. */
+              closed_captioning?: {
+                  /** Whether to allow a live transcription service to transcribe meetings. */
+                  auto_transcribing?: boolean;
+                  /** Whether to allow the host to type closed captions or assign a participant or 3rd-party service to provide closed captioning. */
+                  enable?: boolean;
+                  /** Whether to allow participants to save closed captions or transcripts. */
+                  save_caption?: boolean;
+                  /** Whether to allow the use of an API token to integrate with 3rd-party closed captioning services. */
+                  third_party_captioning_service?: boolean;
+                  /** Whether to allow the viewing of full transcripts in the in-meeting side panel. */
+                  view_full_transcript?: boolean;
+              };
+              /** Allow the host to add co-hosts. Co-hosts have the same in-meeting controls as the host. */
+              co_host?: boolean;
+              /** If set to `true`, you can [select data center regions](https://support.zoom.us/hc/en-us/articles/360042411451-Selecting-data-center-regions-for-hosted-meetings-and-webinars) to be used by this group for hosting their real-time meeting and webinar traffic. These regions can be provided in the `data_center_regions` field. If set to `false`, the regions cannot be customized and the default regions will be used. */
+              custom_data_center_regions?: boolean;
+              /** Whether custom livestreaming is enabled. */
+              custom_live_streaming_service?: boolean;
+              /** The specific instructions to allow your account's meeting hosts to configure a custom livestream. */
+              custom_service_instructions?: string;
+              /** If the value of `custom_data_center_regions` is `true`, a comma-separated list of these [data center regions](https://support.zoom.us/hc/en-us/articles/360059254691-Datacenter-abbreviation-list) to opt in to.
+               * `AU` - Australia.
+               * `LA` - Latin America.
+               * `CA` - Canada.
+               * `CN` - China.
+               * `DE` - Germany.
+               * `HK` - Hong Kong SAR.
+               * `IN` - India.
+               * `IE` - Ireland.
+               * `TY` - Japan.
+               * `MX` - Mexico.
+               * `NL` - Netherlands.
+               * `SG` - Singapore.
+               * `US` - United States. */
+              data_center_regions?: (
+                  | 'AU'
+                  | 'LA'
+                  | 'CA'
+                  | 'CN'
+                  | 'DE'
+                  | 'HK'
+                  | 'IN'
+                  | 'IE'
+                  | 'TY'
+                  | 'MX'
+                  | 'NL'
+                  | 'SG'
+                  | 'US'
+              )[];
+              /** Whether the **Disable desktop screen sharing for meetings you host** setting is enabled. */
+              disable_screen_sharing_for_host_meetings?: boolean;
+              /** Whether the **Disable screen sharing when guests are in the meeting** setting is enabled. */
+              disable_screen_sharing_for_in_meeting_guests?: boolean;
+              /** Require that all meetings are encrypted using AES. */
+              e2e_encryption?: boolean;
+              /** Play sound when participants join or leave. */
+              entry_exit_chime?: string;
+              /** Allow another user to take control of the camera during a meeting. */
+              far_end_camera_control?: boolean;
+              /** Enable users to provide feedback to Zoom at the end of the meeting. */
+              feedback?: boolean;
+              /** Indicates whether [in-meeting file transfer](https://support.zoom.us/hc/en-us/articles/209605493-In-meeting-file-transfer) setting has been enabled for the users in the group or not. */
+              file_transfer?: boolean;
+              /** Enable higher quality video for host and participants in the meeting. This requires more bandwidth. */
+              group_hd?: boolean;
+              /** Enable higher quality video for host and participants in the webianr. This requires more bandwidth. */
+              webinar_group_hd?: boolean;
+              /** Whether to allow participants to join a meeting directly from their desktop browser. Note that the meeting experience from the desktop browser is limited. */
+              join_from_desktop?: boolean;
+              /** Whether to allow participants to join a meeting directly from their mobile browser. Note that the meeting experience from the mobile browser is limited. */
+              join_from_mobile?: boolean;
+              /** Information about the [Translate captions](https://support.zoom.us/hc/en-us/articles/8158738379917-Managing-automated-captions-) settings in meetings. */
+              auto_generated_translation?: {
+                  /** Information about all spoken languages and translation languages in meetings. */
+                  language_item_pairList?: {
+                      /** A list of spoken languages and translation languages. */
+                      trans_lang_config?: {
+                          /** The language used in meetings. */
+                          speak_language?: {
+                              /** The language's name. */
+                              name?:
+                                  | 'Chinese (Simplified)'
+                                  | 'Dutch'
+                                  | 'English'
+                                  | 'French'
+                                  | 'German'
+                                  | 'Italian'
+                                  | 'Japanese'
+                                  | 'Korean'
+                                  | 'Portuguese'
+                                  | 'Russian'
+                                  | 'Spanish'
+                                  | 'Ukrainian';
+                              /** The code for the language. */
+                              code?:
+                                  | 'zh'
+                                  | 'nl'
+                                  | 'en'
+                                  | 'fr'
+                                  | 'de'
+                                  | 'it'
+                                  | 'ja'
+                                  | 'ko'
+                                  | 'pt'
+                                  | 'ru'
+                                  | 'es'
+                                  | 'uk';
+                          };
+                          /** Information about all the translation languages. */
+                          translate_to?: {
+                              /** Whether to select all the translation languages. */
+                              all?: boolean;
+                              /** A list of the translation languages. */
+                              language_config?: {
+                                  /** The translation language's name. */
+                                  name?: 'English';
+                                  /** The translation language's code. */
+                                  code?: 'en';
+                              }[];
+                          };
+                      }[];
+                      /** Whether to select all spoken languages and translation languages. */
+                      all?: boolean;
+                  };
+                  /** Whether to allow users to enable automated translated captions in these language pairs in meetings. */
+                  enable?: boolean;
+              };
+              /** Information about the [language interpretation](https://support.zoom.us/hc/en-us/articles/360034919791-Using-Language-Interpretation-in-your-meeting-or-webinar) settings. */
+              language_interpretation?: {
+                  /** A list of user-defined supported languages. */
+                  custom_languages?: string[];
+                  /** Whether to enable language interpretation by default. */
+                  enable_language_interpretation_by_default?: boolean;
+                  /** Whether to allow participants to speak in listening channel. */
+                  allow_participants_to_speak_in_listening_channel?: boolean;
+                  /** Whether to allow up to 25 custom languages when scheduling meetings. */
+                  allow_up_to_25_custom_languages_when_scheduling_meetings?: boolean;
+                  /** Whether to allow hosts to assign participants as interpreters who can interpret one language into another in real-time. */
+                  enable?: boolean;
+                  /** A list of system-supported languages. */
+                  languages?:
+                      | 'English'
+                      | 'Chinese'
+                      | 'Japanese'
+                      | 'German'
+                      | 'French'
+                      | 'Russian'
+                      | 'Portuguese'
+                      | 'Spanish'
+                      | 'Korean';
+              };
+              /** Allow hosts to assign participants as sign language interpreters who can interpret one language into sign language in real-time. Hosts can assign interpreters when scheduling, or during the meeting itself. This feature is only available with version 5.11.3 or later. */
+              sign_language_interpretation?: {
+                  /** Whether to allow hosts to assign participants as sign language interpreters who can interpret one language into another in real-time. */
+                  enable?: boolean;
+                  /** Whether to enable sign language interpretation view by default in scheduler. */
+                  enable_sign_language_interpretation_by_default?: boolean;
+                  /** A list of system-supported languages. */
+                  languages?: (
+                      | 'American'
+                      | 'Chinese'
+                      | 'French'
+                      | 'German'
+                      | 'Japanese'
+                      | 'Russian'
+                      | 'Brazilian'
+                      | 'Spanish'
+                      | 'Mexican'
+                      | 'British'
+                  )[];
+                  /** A list of user-defined supported languages. */
+                  custom_languages?: string[];
+              };
+              /** Whether Facebook livestreaming is enabled. */
+              live_streaming_facebook?: boolean;
+              /** Whether YouTube livestreaming is enabled. */
+              live_streaming_youtube?: boolean;
+              /** Information about manual captioning settings. */
+              manual_captioning?: {
+                  /** Whether to allow the host to manually caption or let the host assign a participant to provide manual captioning. */
+                  allow_to_type?: boolean;
+                  /** Whether to enable Zoom's [live transcription feature](https://support.zoom.us/hc/en-us/articles/207279736-Managing-closed-captioning-and-live-transcription#h_01FHGGHYJ4457H4GSZY0KM3NSB). */
+                  auto_generated_captions?: boolean;
+                  /** Whether to enable the viewing of full transcripts in the in-meeting side panel. */
+                  full_transcript?: boolean;
+                  /** Whether to [enable manual closed captioning](https://support.zoom.us/hc/en-us/articles/207279736-Managing-closed-captioning-and-live-transcription). */
+                  manual_captions?: boolean;
+                  /** Whether to allow participants to [save closed captions or transcripts](https://support.zoom.us/hc/en-us/articles/360060958752). 
+
+ **Note:** If the `full_transcript` field is set to `false`, participants **cannot** save captions. */
+                  save_captions?: boolean;
+                  /** Whether to allow the use of an API token to integrate with a [3rd-party device](https://support.zoom.us/hc/en-us/articles/115002212983) to provide closed captioning. */
+                  third_party_captioning_service?: boolean;
+              };
+              /** Whether meeting participants can [communicate using the emoji reactions](https://support.zoom.us/hc/en-us/articles/115001286183-Nonverbal-feedback-and-meeting-reactions) located in the **Reactions** menu in the meeting toolbar. */
+              meeting_reactions?: boolean;
+              /** Choose from the following meeting reaction options.
+               * `all` - All emojis: Allow meeting participants to use any emoji available in Zoom chat as a reaction in a meeting.
+               * `selected` - Selected emojis: Allow meeting participants to use the 6 standard meeting reaction emojis: Clapping Hands, Thumbs Up, Heart, Tears of Joy, Open Mouth, Party Popper (Tada, Celebration)  */
+              meeting_reactions_emojis?: 'all' | 'selected';
+              /** Whether to allow hosts and panelists to use audible clap. */
+              allow_host_panelists_to_use_audible_clap?: boolean;
+              /** Set this field to `true` to use [webinar reactions](https://support.zoom.us/hc/en-us/articles/4803536268429). */
+              webinar_reactions?: boolean;
+              /** Whether to allow the host to present a survey to participants once a meeting has ended. This feature is only available in version 5.7.3 or higher. */
+              meeting_survey?: boolean;
+              /** Allow participants in a meeting to provide nonverbal feedback and express opinions by clicking on icons in the participants panel. */
+              non_verbal_feedback?: boolean;
+              /** Show the list of H.323/SIP devices only to the host. */
+              only_host_view_device_list?: boolean;
+              /** Allow users to select original sound during a meeting. */
+              original_audio?: boolean;
+              /** Add 'Polls' to the meeting controls. This allows the host to survey the attendees. */
+              polling?: boolean;
+              /** Display end-of-meeting experience feedback survey. */
+              post_meeting_feedback?: boolean;
+              /** Allow meeting participants to send a private 1:1 message to another participant. */
+              private_chat?: boolean;
+              /** When each participant joins by telephone, allow the option to record and play their own voice as entry and exit chimes. */
+              record_play_own_voice?: boolean;
+              /** During screen sharing, allow the person who is sharing to let others control the shared content. */
+              remote_control?: boolean;
+              /** Allow meeting host to provide 1:1 remote support to another participant. */
+              remote_support?: boolean;
+              /** Indicates whether the [**Request permission to unmute participants**](https://support.zoom.us/hc/en-us/articles/203435537-Muting-and-unmuting-participants-in-a-meeting#h_01EGK4XFWS1SJGZ71MYGKF7260) option has been enabled for the group or not. */
+              request_permission_to_unmute_participants?: boolean;
+              /** Allow host and participants to share their screen or content during meetings. */
+              screen_sharing?: boolean;
+              /** Allow users to invite participants by email only by default. */
+              sending_default_email_invites?: boolean;
+              /** Whether to allow participants to join a meeting directly from their browser and bypass the Zoom application download process. This is useful for participants who cannot download, install, or run applications. Note that the meeting experience from the browser is limited. */
+              show_a_join_from_your_browser_link?: boolean;
+              /** Allow participants to join a meeting directly from their browser. */
+              show_browser_join_link?: boolean;
+              /** Show the list of H.323/SIP devices. */
+              show_device_list?: boolean;
+              /** Always show meeting controls during a meeting. */
+              show_meeting_control_toolbar?: boolean;
+              /** Whether the person sharing during a presentation can allow others to control the slide presentation. This feature is only available in version 5.8.3 or higher. */
+              slide_control?: boolean;
+              /** Allow users to select stereo audio during a meeting. */
+              stereo_audio?: boolean;
+              /** If the value of `custom_data_center_regions` is `true`, a comma-separated list of these [data center regions](https://support.zoom.us/hc/en-us/articles/360059254691-Datacenter-abbreviation-list) to **not** opt in to.
+               * `EU` - Europe.
+               * `HK` - Hong Kong.
+               * `AU` - Australia.
+               * `IN` - India.
+               * `LA` - Latin America.
+               * `TY` - Tokyo.
+               * `CN` - China.
+               * `US` - United States.
+               * `CA` - Canada. */
+              unchecked_data_center_regions?:
+                  | 'EU'
+                  | 'HK'
+                  | 'AU'
+                  | 'IN'
+                  | 'TY'
+                  | 'CN'
+                  | 'US'
+                  | 'CA'
+                  | 'DE'
+                  | 'NL'
+                  | 'LA';
+              /** Allow HTML formatting instead of plain text for meeting invitations scheduled with the Outlook plugin. */
+              use_html_format_email?: boolean;
+              /** Enable virtual backgrounds. */
+              virtual_background?: boolean;
+              /** Settings to manage virtual background. */
+              virtual_background_settings?: {
+                  /** Allow users to upload custom backgrounds. */
+                  allow_upload_custom?: boolean;
+                  /** Allow use of videos for virtual backgrounds. */
+                  allow_videos?: boolean;
+                  /** Enable virtual backgrounds. */
+                  enable?: boolean;
+                  files?: {
+                      /** The file's unique identifier. */
+                      id?: string;
+                      /** Indicates whether or not this file is the default virtual background file. */
+                      is_default?: boolean;
+                      /** File name. */
+                      name?: string;
+                      /** File size. */
+                      size?: number;
+                      /** File type. */
+                      type?: string;
+                  }[];
+              };
+              /** Attendees can't join a meeting until a host admits them individually from the waiting room. */
+              waiting_room?: boolean;
+              webinar_chat?: {
+                  /** Allow webinar attendees to chat with other attendees.
+                   * `1` - No one.
+                   * `2` - Host and all panelists.
+                   * `3` - Everyone. */
+                  allow_attendees_chat_with?: 1 | 2 | 3;
+                  /** Whether to automatically save chat messages to a local file on the host's computer when the webinar ends. */
+                  allow_auto_save_local_chat_file?: boolean;
+                  /** Allow webinar panelists to chat with other attendees.
+                   * `1` - Host and all panelists.
+                   * `2` - Everyone. */
+                  allow_panelists_chat_with?: 1 | 2;
+                  /** Whether to allow webinar panelists to send direct messages to other panelists. */
+                  allow_panelists_send_direct_message?: boolean;
+                  /** Whether to allow webinar attendees to save chats.
+                   * `0` - Attendees cannot save chats.
+                   * `1` - Attendees can only save host and panelist chats.
+                   * `2` - Attendees can save all chats. */
+                  allow_users_save_chats?: 0 | 1 | 2;
+                  /** By default, allow webinar attendees to chat with.
+                   * `1` - Host and all panelists.
+                   * `2` - Everyone. */
+                  default_attendees_chat_with?: 1 | 2;
+                  /** Whether to allow webinar participants to send chat messages. */
+                  enable?: boolean;
+              };
+              webinar_live_streaming?: {
+                  /** The specific instructions to allow your account's meeting hosts to configure a custom livestream. */
+                  custom_service_instructions?: string;
+                  /** Whether webinar livestreaming is enabled. */
+                  enable?: boolean;
+                  /** Whether to notify users to watch the livestream. This does not apply to custom real-time messaging protocol (RTMP). */
+                  live_streaming_reminder?: boolean;
+                  /** The available livestreaming services.
+                   * `facebook`
+                   * `workplace_by_facebook`
+                   * `youtube`
+                   * `custom_live_streaming_service` */
+                  live_streaming_service?: (
+                      | 'facebook'
+                      | 'workplace_by_facebook'
+                      | 'youtube'
+                      | 'custom_live_streaming_service'
+                  )[];
+              };
+              /** Information about the account's meeting polling settings. */
+              meeting_polling?: {
+                  /** Whether to allow the host to add polls before or during a meeting. */
+                  enable?: boolean;
+                  /** Whether to allow the host to create advanced polls and quizzes. Advanced polls and quizzes include single choice, multiple choice, drop down, matching, short answer, long answer, rank order, and fill-in-the-blank questions. Hosts can also set the correct answers for quizzes they create. */
+                  advanced_polls?: boolean;
+                  /** Whether to allow users to manage saved polls and quizzes from Meetings */
+                  manage_saved_polls_and_quizzes?: boolean;
+                  /** Whether to require answers to be anonymous. */
+                  require_answers_to_be_anonymous?: boolean;
+                  /** Whether to allow alternative hosts to add or edit polls and quizzes. */
+                  allow_alternative_host_to_add_edit?: boolean;
+                  /** Whether to allow the host to upload an image for each question. */
+                  allow_host_to_upload_image?: boolean;
+              };
+              webinar_polling?: {
+                  /** Whether to allow the host to add polls before or during a webinar. */
+                  enable?: boolean;
+                  /** Whether to allow the host to create advanced polls and quizzes. Advanced polls and quizzes include single choice, multiple choice, drop down, matching, short answer, long answer, rank order, and fill-in-the-blank questions. Hosts can also set the correct answers for quizzes they create. */
+                  advanced_polls?: boolean;
+                  /** Whether to allow users to manage saved polls and quizzes from Meetings */
+                  manage_saved_polls_and_quizzes?: boolean;
+                  /** Whether to require answers to be anonymous. */
+                  require_answers_to_be_anonymous?: boolean;
+                  /** Whether to allow the host to upload an image for each question. */
+                  allow_host_to_upload_image?: boolean;
+                  /** Whether to allow alternative hosts to add or edit polls and quizzes. */
+                  allow_alternative_host_to_add_edit?: boolean;
+              };
+              /** Whether attendees can ask the host and panelists questions in the webinar. */
+              webinar_question_answer?: boolean;
+              /** Whether to allow the host to present surveys to attendees once a webinar has ended. */
+              webinar_survey?: boolean;
+              /** Allow participants to share a whiteboard that includes annotation tools. */
+              whiteboard?: boolean;
+              /** Indicates who can share their screen or content during meetings. The value can be one of the following:   
+ 
+`host`: Only host can share the screen.  
+ 
+`all`: Both hosts and attendees can share their screen during meetings. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              who_can_share_screen?: 'host' | 'all';
+              /** Indicates who is allowed to start sharing screen when someone else in the meeting is sharing their screen. The value can be one of the following:  
+ 
+`host`: Only a host can share the screen when someone else is sharing.  
+ 
+`all`: Anyone in the meeting is allowed to start sharing their screen when someone else is sharing. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              who_can_share_screen_when_someone_is_sharing?: 'host' | 'all';
+              /** Indicates how many participants can share at the same time. The value can be one of the following:  
+ 
+`one`: Only one participant can share at a time
+.  
+ 
+`multiple`: Multiple participants can share simultaneously (dual monitors recommended)
+. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              participants_share_simultaneously?: 'multiple' | 'one';
+              /** Whether Workplace by Facebook is enabled. */
+              workplace_by_facebook?: boolean;
+          };
+          other_options?: {
+              /** Whether to display the Zoom help badge on the bottom-right of the page. */
+              allow_users_contact_support_via_chat?: boolean;
+              /** Whether iOS blurs the screenshot in the task switcher when multiple apps are open. Android hides the screenshot in the system-level list of recent apps. */
+              blur_snapshot?: boolean;
+              /** Webinar registration options. */
+              webinar_registration_options?: {
+                  /** Allow host to enable **Show join info on registration confirmation page**. */
+                  allow_host_to_enable_join_info?: boolean;
+                  /** Allow host to enable **Show social share buttons on registration page**. */
+                  allow_host_to_enable_social_share_buttons?: boolean;
+                  /** Enable custom questions. */
+                  enable_custom_questions?: boolean;
+              };
+          };
+          profile?: {
+              recording_storage_location?: {
+                  /** Users can choose the country to store their recorded content. Content can include meeting, webinar, and phone recordings, as well as voicemail, transcripts, and custom greeting prompts. See [Managing the Communications Content storage location](https://support.zoom.us/hc/en-us/articles/360050781131) for details.
+
+Provide abbreviated country codes as the value for this field. See the [Countries abbreviation list](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) for details. */
+                  allowed_values?: string[];
+                  /** Abbreviated country code. */
+                  value?: string;
+              };
+          };
+          recording?: {
+              /** Make cloud recordings accessible to account members only. */
+              account_user_access_recording?: boolean;
+              /** [Archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-Meeting-and-Webinar-data) settings. This setting can only be used if you have been granted archiving solution access by the Zoom Support team. */
+              archive?: {
+                  /** Enable the archiving feature. */
+                  enable?: boolean;
+                  settings?: {
+                      /** Include in-meeting or in-webinar audio in the archive. */
+                      audio_file?: boolean;
+                      /** Include closed caption or transcript in the archive. */
+                      cc_transcript_file?: boolean;
+                      /** Include in-meeting chat in the archive. */
+                      chat_file?: boolean;
+                      /** Include user email in in-meeting chat file. */
+                      chat_with_sender_email?: boolean;
+                      /** Include in-meeting or in-webinar video in the archive. */
+                      video_file?: boolean;
+                      /** Include direct message in in-meeting chat file. */
+                      chat_with_direct_message?: boolean;
+                      /** The retention period for archiving content, in days. */
+                      archive_retention?:
+                          | 1
+                          | 2
+                          | 3
+                          | 4
+                          | 5
+                          | 6
+                          | 7
+                          | 8
+                          | 9
+                          | 10
+                          | 11
+                          | 12
+                          | 13
+                          | 14
+                          | 15
+                          | 16
+                          | 17
+                          | 18
+                          | 19
+                          | 20
+                          | 21
+                          | 22
+                          | 23
+                          | 24
+                          | 25
+                          | 26
+                          | 27
+                          | 28
+                          | 29
+                          | 30;
+                      /** Perform the action when meetings or webinars cannot be archived.  
+ `1` - Participants can stay in the meeting and will receive a notification.  
+ `2` - Nobody can join or stay in the meeting. */
+                      action_when_archive_failed?: 1 | 2;
+                      /** Show notification when video or audio archiving starts.  
+ `1` - Participants can stay in the meeting and will receive a notification.  
+ `2` - Nobody can join or stay in the meeting. */
+                      notification_when_archiving_starts?:
+                          | 'participants'
+                          | 'guest';
+                      /** Play voice prompt when video or audio archiving starts.  
+ `1` - Participants can stay in the meeting and will receive a notification.  
+ `2` - Nobody can join or stay in the meeting. */
+                      play_voice_prompt_when_archiving_starts?:
+                          | 'participants'
+                          | 'guest'
+                          | 'none';
+                  };
+                  /** Archive types.
+
+* `1` - Only meetings are archived.  
+ 
+* `2` - Only webinars are archived.  
+ 
+* `3` - Both meetings and webinars are archived. */
+                  type?: 1 | 2 | 3;
+              };
+              /** Record meetings automatically as they start. */
+              auto_recording?: string;
+              /** Allow hosts to record and save the meeting or webinar in the cloud. */
+              cloud_recording?: boolean;
+              /** Allow anyone with a link to the cloud recording to download. */
+              cloud_recording_download?: boolean;
+              /** Allow only the host with a link to the cloud recording to download. */
+              cloud_recording_download_host?: boolean;
+              /** Allow the host to delete the recordings. If this option is disabled, the recordings cannot be deleted by the host and only admin can delete them. */
+              host_delete_cloud_recording?: boolean;
+              /** The account's [**Record active speaker, gallery view and shared screen separately**](https://support.zoom.us/hc/en-us/articles/360060316092-Changing-basic-and-advanced-cloud-recording-settings#h_01F4CYJTCTXNS2MXH00W9EFG6R) settings. */
+              record_files_separately?: {
+                  /** Whether recording only the active speaker is enabled. */
+                  active_speaker?: boolean;
+                  /** Whether recording only the gallery view is enabled. */
+                  gallery_view?: boolean;
+                  /** Whether recording only shared screen is enabled. */
+                  shared_screen?: boolean;
+              };
+              /** Whether participants' names display in the recording. */
+              display_participant_name?: boolean;
+              /** Whether thumbnails of the presenter are recorded when they are sharing their screen. */
+              recording_thumbnails?: boolean;
+              /** Whether recordings will be optimized for a 3rd party video editor. This can increase the file size and the time it takes to generate recording files. */
+              optimize_recording_for_3rd_party_video_editor?: boolean;
+              /** Whether the [recording highlights](https://support.zoom.us/hc/en-us/articles/360060802432) feature is enabled. */
+              recording_highlight?: boolean;
+              /** Whether panelist chats are saved to the recording. */
+              save_panelist_chat?: boolean;
+              /** Whether poll results shared during the meeting or webinar are saved. This also includes poll results shared during the meeting or webinar. */
+              save_poll_results?: boolean;
+              /** Whether [closed captions](https://support.zoom.us/hc/en-us/articles/207279736) are saved as a VTT (Video Track Text) file. */
+              save_close_caption?: boolean;
+              /** Setting to allow cloud recording access only from specific IP address ranges.
+               */
+              ip_address_access_control?: {
+                  /** If set to `true`, the cloud recordings of this account can only be accessed by the IP addresses defined in the `ip_addresses_or_ranges` property.
+
+ */
+                  enable?: boolean;
+                  /** IP addresses or ranges that have access to the cloud recordings. Separate multiple IP ranges with comma. Use n.n.n.n, n.n.n.n/n or n.n.n.n - n.n.n.n syntax where n is a number.
+
+Example: `46.33.24.184, 48.99.100.2/25` or `200.181.108.17 - 220.181.108.157`
+
+ */
+                  ip_addresses_or_ranges?: string;
+              };
+              /** Allow hosts and participants to record the meeting to a local file. */
+              local_recording?: boolean;
+              /** If set to `true`, meeting hosts cannot view their meeting cloud recordings. Only the admins who have recording management privilege can access them.
+
+ */
+              prevent_host_access_recording?: boolean;
+              /** Whether to record one audio file for all participants. */
+              record_audio_file?: boolean;
+              /** When someone is sharing their screen, active speaker will show on the top right corner of the shared screen. */
+              record_gallery_view?: boolean;
+              /** Record active speaker with shared screen. */
+              record_speaker_view?: boolean;
+              /** Automatically transcribe the audio of a meeting or webinar for cloud recordings. */
+              recording_audio_transcript?: boolean;
+              /** By selecting this option, your recording will have meeting smart chapters, and next steps. You are directing Zoom to access, process, and use your account's recording data for the purpose of analysis and insights. */
+              smart_recording?: {
+                  /** By selecting this option, meeting details in the audio transcript will be highlighted. Hosts can modify highlighted sections and generate a video summary (highlighted sections may have a 3-second offset) based on these sections. The summary is for informational purposes only and may not be complete. */
+                  create_recording_highlights?: boolean;
+                  /** By selecting this option, your recording will have chapters with overview. Hosts can edit the chapters. */
+                  create_smart_chapters?: boolean;
+                  /** By selecting this option, there will be a summary of actions to take after the recorded meeting. */
+                  create_next_steps?: boolean;
+              };
+              /** Save chat messages from the meeting or webinar. */
+              save_chat_text?: boolean;
+              /** Add a timestamp to the recording. */
+              show_timestamp?: boolean;
+              /** setting name: Recording notifications - Zoom clients */
+              recording_notification_for_zoom_client?: {
+                  /** Child setting name is [Show a disclaimer to participants when a recording starts], the value is option name you selected. */
+                  disclaimer_to_participants?: string;
+                  /** Child setting name is [Play voice prompt for], the value is option name you selected. */
+                  play_voice_prompt?: string;
+                  /** Child setting name is [Ask host to confirm before starting a recording], the value is option name you selected */
+                  ask_host_to_confirm?: boolean;
+              };
+              /** Allow users to retain, access,and manage transcripts generated by AI Companion features for use by other AI Companion services. */
+              durable_meeting_transcript?: {
+                  /** Main setting value */
+                  durable_meeting_transcript?: boolean;
+                  /** Allow hosts to access and manage transcripts */
+                  allow_host_access_meeting_transcript?: boolean;
+              };
+              /** Allow Zoom Revenue Accelerator to manage recording files with separate auto-delete settings */
+              allow_revenue_accelerator_manage_recording_separate_auto_delete?: boolean;
+              /** When the cloud recording is going to be permanently deleted from trash */
+              cloud_recording_permanently_deleted?: {
+                  /** Main setting value */
+                  cloud_recording_permanently_deleted_from_trash?: boolean;
+                  /** Selected email reminder */
+                  email_reminder_type?:
+                      | '7 days before deletion'
+                      | 'Weekly digest on Monday';
+              };
+              /** Allow 3rd-party recording */
+              allow_cmr_3rd_party_bot?: boolean;
+              /** add water marker for recording */
+              water_marker_recording?: boolean;
+              /** Viewers can see the transcript */
+              viewer_see_transcript?: boolean;
+              /** Allow invitees to access recordings without the passcode */
+              allow_invitees_access_recordings_without_passcode?: boolean;
+              /** Set recording as on-demand by default */
+              recording_as_on_demand?: boolean;
+              /** Recording notifications - Phone users */
+              recording_notifications_phone_users?: {
+                  /** Require phone-only users to press 1 to consent to being recorded */
+                  require_press_one_consent_to_record?: boolean;
+                  /** Multiple notifications for phone users */
+                  multiple_notifications_phone_users?: boolean;
+              };
+              /** Upload recording to the cloud */
+              upload_recording?: boolean;
+              /** Allow users to add cloud recordings to Zoom Clips */
+              allow_add_cloud_recordings_to_zoom_clips?: boolean;
+              /** Allow cloud recording sharing */
+              allow_share?: boolean;
+              /** Viewers see chat */
+              viewer_see_chat?: boolean;
+              /** Require users to authenticate before viewing cloud recordings */
+              authenticated_view_cloud_recoding?: {
+                  /** Main setting value */
+                  authenticated_can_view_cloud_recordings?: boolean;
+                  /** Default authentication option */
+                  default_authenticate_content?:
+                      | 'Signed-in users in my account'
+                      | 'Sign in to Zoom'
+                      | 'Sign in to Zoom with specified domains'
+                      | 'Sign in to external Single Sign-On (SSO)'
+                      | 'Only people with access';
+              };
+              /** Push notification to subscription URL when a cloud recording is available */
+              notification_subscription_url_when_recording_available?: boolean;
+              /** Recording storage email notifications */
+              recording_storage_email_notifications?: boolean;
+              /** all sub-options for local recording */
+              local_recording_options?: {
+                  /** Internal meeting participants */
+                  internal_meeting_participants?: boolean;
+                  /** Auto approve their permission requests */
+                  internal_auto_approve_requests?: boolean;
+                  /** External meeting participants */
+                  external_meeting_participants?: boolean;
+                  /** Auto approve their permission requests */
+                  external_auto_approve_requests?: boolean;
+                  /** Meeting participants with specified domains */
+                  participants_with_specified_domains?: boolean;
+                  /** Enter the domain information */
+                  participants_with_specified_domains_content?: string;
+                  /** Auto approve their permission requests */
+                  participants_specified_domains_auto_approve_requests?: boolean;
+                  /** Save chat messages from the meeting / webinar */
+                  save_chat_messages?: boolean;
+                  /** Save closed caption as a VTT file */
+                  save_closed_caption?: boolean;
+              };
+              /** Embed passcode in the shareable link for one-click access */
+              embed_passcode_in_shareable_link?: boolean;
+          };
+          schedule_meeting?: {
+              /** Determine how participants can join the audio portion of the meeting. */
+              audio_type?: string;
+              /** If the value is set to `true`, the meeting passcode will be encrypted and included in the join meeting link to allow participants to join with just one click without having to enter the passcode.
+               */
+              embed_password_in_join_link?: boolean;
+              /** If join before host option is enabled for a personal meeting, then enforce passcode requirement.
+
+
+**This field will be deprecated in near future.** If you would like to enable this setting, we highly encourage you to use the `require_password_for_pmi_meetings` field.
+
+ */
+              force_pmi_jbh_password?: boolean;
+              /** Start meetings with host video on. */
+              host_video?: boolean;
+              /** Allow participants to join the meeting before the host arrives. */
+              join_before_host?: boolean;
+              /** Automatically mute all participants when they join the meeting. */
+              mute_upon_entry?: boolean;
+              /** Start meetings with participant video on. */
+              participant_video?: boolean;
+              /** Personal meeting setting.  
+ n 
+`true` - Indicates that the **Enable Personal Meeting ID** setting is turned on. Users can choose to use personal meeting ID for their meetings.   
+   
+ 
+`false` - Indicates that the **Enable Personal Meeting ID** setting is [turned off](https://support.zoom.us/hc/en-us/articles/201362843-Personal-meeting-ID-PMI-and-personal-link#h_aa0335c8-3b06-41bc-bc1f-a8b84ef17f2a). If this setting is disabled, meetings that were scheduled with PMI will be invalid. Scheduled meetings will need to be manually updated.
+For Zoom Phone only:If a user has been assigned a desk phone, **Elevate to Zoom Meeting** on desk phone will be disabled.
+
+
+ */
+              personal_meeting?: boolean;
+              /** Generate and send new passcodes for newly scheduled or edited meetings. */
+              pstn_password_protected?: boolean;
+              /** If enabled, a random passcode will be generated on the user's end who starts the instant meeting. Other participants will have to enter the password to join the meeting. If you use PMI for your instant meetings, this option will be disabled. */
+              require_password_for_instant_meetings?: boolean;
+              /** Indicates whether a passcode is required for [PMI](https://support.zoom.us/hc/en-us/articles/203276937-Using-Personal-Meeting-ID-PMI-) meetings or not. 
+ 
+`none` - Do not require password for PMI meetings.  
+  
+`all` - Require participants to enter password for all PMI enabled meetings.  
+  `jbh_only` - Require password only for meetings where the **join before host** setting is enabled. */
+              require_password_for_pmi_meetings?: 'all' | 'jbh_only' | 'none';
+              /** Require a passcode for meetings which have already been scheduled
+               */
+              require_password_for_scheduled_meetings?: boolean;
+              /** This setting applies for regular meetings that do not use a PMI. If enabled, a password will be generated while a host schedules a new meeting and participants will be required to enter the password before they can join the meeting. */
+              require_password_for_scheduling_new_meetings?: boolean;
+              /** Receive desktop notification for upcoming meetings. */
+              upcoming_meeting_reminder?: boolean;
+              /** Indicates whether PMI is enabled for all instant meetings or not. */
+              use_pmi_for_instant_meetings?: boolean;
+              /** Indicates whether PMI is enabled for all scheduled meetings or not. */
+              use_pmi_for_schedule_meetings?: boolean;
+              /** Information about the [**Always display `Zoom Meeting` as the meeting topic**](https://support.zoom.us/hc/en-us/articles/201363253-Changing-account-settings#h_01EG9BJ646V2WJK1S3H2MP6YV6) setting. */
+              always_display_zoom_meeting_as_topic?: {
+                  /** Whether the **Always display `Zoom Meeting` as the meeting topic** setting is enabled. */
+                  enable?: boolean;
+                  /** Whether to display **Zoom Meeting** as the topic for already-scheduled meetings. */
+                  display_topic_for_scheduled_meetings?: boolean;
+              };
+              /** Information about the [**Always show `Zoom Webinar` as the webinar topic**](https://support.zoom.us/hc/en-us/articles/201363253-Changing-account-settings#h_01EG9BJ646V2WJK1S3H2MP6YV6) setting. */
+              always_display_zoom_webinar_as_topic?: {
+                  /** Whether the **Always show `Zoom Webinar` as the webinar topic** setting is enabled. */
+                  enable?: boolean;
+                  /** Whether to display **Zoom Webinar** as the topic for already-scheduled meetings. */
+                  display_topic_for_scheduled_webinars?: boolean;
+              };
+              /** Information about the **Enable continuous meeting chat** feature. */
+              continuous_meeting_chat?: {
+                  /** Whether to enable the **Enable continuous meeting chat** setting. */
+                  enable?: boolean;
+                  /** Whether to enable the **External users can be added** setting. */
+                  can_add_external_users?: boolean;
+                  /** Whether to enable the **Automatically add invited external users** setting. */
+                  auto_add_invited_external_users?: boolean;
+              };
+          };
+          /** Group Settings: Telephony. */
+          telephony?: {
+              /** Third party audio conference info. */
+              audio_conference_info?: string;
+              /** Indicates where most of the participants call into or call from during a meeting. */
+              telephony_regions?: {
+                  /** The account's selected telephony regions that indicate where most participants call into or call from during a meeting. */
+                  selection_values?: string;
+              };
+              /** Allow users to join the meeting using the existing 3rd party audio configuration. */
+              third_party_audio?: boolean;
+          };
+          /** The account's chat settings. */
+          chat?: {
+              /** Users can share files in chats and channels. */
+              share_files?: {
+                  /** Allow users of this account to send and receive files in chats and channels. When disabled, users can still take and share screenshots. */
+                  enable?: boolean;
+                  /** Allow users of this account to send and receive files in chats and channels. When disabled, users can still take and share screenshots. */
+                  share_option?: 'anyone' | 'account' | 'organization';
+              };
+              /** Chat emojis. */
+              chat_emojis?: {
+                  /** Allow users to use the emoji library in direct messages or group conversations. Choose between allowing users to use any emoji in the library, or choose to allow only pre-selected emojis. If the setting is disabled, users can still use keyboard shortcuts to add emojis. Users can change their emoji skin tone in Settings. */
+                  enable?: boolean;
+                  emojis_option?: 'all' | 'selected';
+              };
+              /** Allow users to record voice messages that can be sent in direct messages or group conversations. */
+              record_voice_messages?: boolean;
+              /** Allow users to record video messages that can be sent in direct messages or group conversations. If the file share setting is disabled, they will not be able to record and send video messages. */
+              record_video_messages?: boolean;
+              /** Allow users to take and send screenshots in direct messages or group conversations. */
+              screen_capture?: boolean;
+              /** Allow users to create public channels. */
+              create_public_channels?: boolean;
+              /** Allow users to create private channels. */
+              create_private_channels?: boolean;
+              /** Share links to messages and channels in Team Chat. */
+              share_links_in_chat?: boolean;
+              /** Schedule a meeting from chat or channel. */
+              schedule_meetings_in_chat?: boolean;
+              /** Set retention period for messages and files in Zoom's cloud. */
+              set_retention_period_in_cloud?: {
+                  /** By default, messages and files are stored in Zoom's cloud. Enable this setting to specify when they are deleted. When retention is disabled, messages sent by offline users can be received within 7 days before they are deleted. */
+                  enable?: boolean;
+                  /** Delete direct messages and group conversations after retention period. 'y' - year, 'm' - month, 'd' - day */
+                  retention_period_of_direct_messages_and_group_conversation?: string;
+                  /** Delete data in channels after retention period. 'y' - year, 'm' - month, 'd' - day */
+                  retention_period_of_channels?: string;
+              };
+              /** Store messages on local devices, excluding personal channel messages. */
+              set_retention_period_in_local?: {
+                  /** Specify how long your messages are saved on local devices. If this setting is disabled, messages are never deleted locally. */
+                  enable?: boolean;
+                  /** Delete direct messages and group conversations after retention period. 'y' - year, 'm' - month, 'd' - day */
+                  retention_period_of_direct_messages_and_group_conversation?: string;
+                  /** Delete data in channels after retention period. 'y' - year, 'm' - month, 'd' - day */
+                  retention_period_of_channels?: string;
+              };
+              /** Allow users to search others, when selecting multiple items, separate them with commas.
+               * ''-none.
+               * '1' - In the same account.
+               * '2' - Under the same master account, including all sub acounts.
+               * '3' - Under the same organization. */
+              allow_users_to_search_others_options?: string;
+              /** Allow users to add contacts. */
+              allow_users_to_add_contacts?: {
+                  /** By disabling this setting, users will not be able to add contacts. */
+                  enable?: boolean;
+                  /** The type of allowing users to add contacts.
+                   * 1 - Anyone, either internal and external contacts.
+                   * 2 - In the same organization.
+                   * 3 - In the same organization and specified domains.
+                   * 4 - In the same organization and specified users. */
+                  selected_option?: 1 | 2 | 3 | 4;
+                  /** The domains or emails, internal or external.
+                   * When the `selected_option` field value is `3`, the value is internal or external domains. Use a comma to separate multiple domains.
+                   * When the `selected_option` field value is `4`, the value is internal or external email addresses. Use a comma to separate multiple emails. */
+                  user_email_addresses?: string;
+              };
+              /** Allow users to chat with others. */
+              allow_users_to_chat_with_others?: {
+                  /** If you select 'In the same organization', users may still be able to chat with external users if they are added to channels or group chats with external users. */
+                  enable?: boolean;
+                  /** The type of allowing users to add contacts.
+                   * 1 - Anyone (internal and external contacts).
+                   * 2 - In the same organization.
+                   * 3 - In the same organization and specified domains.
+                   * 4 - In the same organization and specified users. */
+                  selected_option?: 1 | 2 | 3 | 4;
+                  /** The domains or emails, either internal or external.
+                   * When the `selected_option` field value is `3`, the value is internal or external domains. Use a comma to separate multiple domains.
+                   * When the `selected_option` field value is `4`, the value is internal or external email addresses. Use a comma to separate multiple emails. */
+                  user_email_addresses?: string;
+              };
+              /** Information about the Chat Etiquette tool. */
+              chat_etiquette_tool?: {
+                  /** Whether the **Chat Etiquette Tool** is enabled. */
+                  enable?: boolean;
+                  /** Information about the defined **Chat Etiquette Tool** policies. */
+                  policies?: {
+                      /** The policy's description. */
+                      description?: string;
+                      /** The policy ID. */
+                      id?: string;
+                      /** Whether the policy is locked by an account-level user. When it is locked, users cannot update the policy. */
+                      is_locked?: boolean;
+                      /** A list of defined rule keywords. */
+                      keywords?: string[];
+                      /** The policy name. */
+                      name?: string;
+                      /** The regular expression to match to the content of chat messages. */
+                      regular_expression?: string;
+                      /** The policy's current status.
+                       * `activated` - Activated.
+                       * `deactivated` - Deactivated. */
+                      status?: 'activated' | 'deactivated';
+                      /** The policy's trigger action.
+                       * `1` - Ask the user to confirm before they send the message.
+                       * `2` - Block the user's message. */
+                      trigger_action?: 1 | 2;
+                  }[];
+              };
+              /** Send data to third-party archiving service. */
+              send_data_to_third_party_archiving_service?: {
+                  /** Allow users to send data to third-party archiving service. */
+                  enable?: boolean;
+              };
+              /** Allow users to translate team chat messages. [Learn more].(https://support.zoom.us/hc/en-us/articles/12998089084685) */
+              translate_messages?: boolean;
+              /** Allow users to search GIF images from GIPHY when they compose messages. See GIPHY's website for more information about content ratings. */
+              search_and_send_animated_gif_images?: {
+                  /** Whether to allow users to search GIF images from GIPHY when they compose messages. */
+                  enable?: boolean;
+              };
+          };
+          /** Email and calendar related settings. */
+          mail_calendar?: {
+              /** Allow the Zoom client to manage both emails and calendar events for the user. */
+              email_calendar_management?: boolean;
+              /** Allow the Zoom client to manage user emails. */
+              email_management?: boolean;
+              /** Allow users to select Zoom as their email service provider. */
+              zoom_email_provider?: boolean;
+          };
+          /** General settings. */
+          general_setting?: {
+              /** Allow automatic direct sharing and connecting to Zoom Rooms using ultrasonic proximity signal. */
+              auto_zoom_room_proximity_connect?: boolean;
+          };
+      }
+    | {
+          /** Whether the [**Allow authentication exception**](https://support.zoom.us/hc/en-us/articles/360037117472#h_01F13A9N1FQFNVESC9C21NRHXY) setting is enabled. This lets hosts invite users who can bypass authentication. */
+          allow_authentication_exception?: boolean;
+          /** Meeting Authentication Options */
+          authentication_options?: {
+              /** Authentication default option */
+              default_option?: boolean;
+              /** Authentication domains */
+              domains?: string;
+              /** Authentication id */
+              id?: string;
+              /** Authentication name */
+              name?: string;
+              /**  Authentication type. Specify one of the following authentication types for the authentication profile:  
+ 
+ * `enforce_login`: This option allows any users to join the meeting or webinar, as long as they are signed into their Zoom account.
+ * `enforce_login_with_domains`: This option, allows you to specify a rule so that only those Zoom users whose email addresses contain a certain domain, can join the meeting or webinar. You can either add multiple domains using a comma in between and/or use a wildcard for listing domains.  
+ 
+ * `enforce_login_with_same_account`: This option allows users to join the meeting or webinar with the same Zoom account. */
+              type?:
+                  | 'enforce_login'
+                  | 'enforce_login_with_same_account'
+                  | 'enforce_login_with_domains';
+              /** Authentication visible */
+              visible?: boolean;
+          }[];
+          /** Only authenticated users can join meetings */
+          meeting_authentication?: boolean;
+      }
+    | {
+          /** Authentication Options */
+          authentication_options?: {
+              /** Authentication default option */
+              default_option?: boolean;
+              /** Authentication domains */
+              domains?: string;
+              /** Authentication id */
+              id?: string;
+              /** Authentication name */
+              name?: string;
+              /** Authentication type */
+              type?:
+                  | 'internally'
+                  | 'enforce_login'
+                  | 'enforce_login_with_domains';
+              /** Authentication visible */
+              visible?: boolean;
+          }[];
+          /** Only authenticated users can view cloud recordings */
+          recording_authentication?: boolean;
+      }
+    | {
+          meeting_security?: {
+              /** Whether all meetings are required to be secured with at least one security option. 
+
+ This setting can only be disabled by Enterprise, ISV, Business (with more than 100 licenses), and Education accounts. */
+              auto_security?: boolean;
+              /** Whether users in specific domains are blocked from joining meetings and webinars. */
+              block_user_domain?: boolean;
+              /** A list of blocked domains. */
+              block_user_domain_list?: string[];
+              /** Information about the Chat Etiquette Tool. */
+              chat_etiquette_tool?: {
+                  /** Whether the **Chat Etiquette Tool** is enabled. */
+                  enable?: boolean;
+                  /** Information about the defined **Chat Etiquette Tool** policies. */
+                  policies?: {
+                      /** The policy's description. */
+                      description?: string;
+                      /** The policy ID. */
+                      id?: string;
+                      /** Whether the policy is locked by an account-level user. When it is locked, users cannot update the policy. */
+                      is_locked?: boolean;
+                      /** A list of defined rule keywords. */
+                      keywords?: string[];
+                      /** The policy name. */
+                      name?: string;
+                      /** The regular expression to match to the content of chat messages. */
+                      regular_expression?: string;
+                      /** The policy's current status.
+                       * `activated` - Activated.
+                       * `deactivated` - Deactivated. */
+                      status?: 'activated' | 'deactivated';
+                      /** The policy's trigger action.
+                       * `1` - Ask the user to confirm before they send the message.
+                       * `2` - Block the user's message. */
+                      trigger_action?: 1 | 2;
+                  }[];
+              };
+              /** Whether the meeting password will be encrypted and included in the invitation link. The provided link will allow participants to join the meeting without having to enter the password. */
+              embed_password_in_join_link?: boolean;
+              /** The type of encryption used to start a meeting.
+               * `enhanced_encryption` - Enhanced encryption. Encryption data is stored in the cloud.
+               * `e2ee` - End-to-end encryption. The encryption key is stored on the local device and cannot be obtained by anyone else. E2EE also [**disables** certain features](https://support.zoom.us/hc/en-us/articles/360048660871), such as cloud recording, live streaming, and allowing participants to join before the host. */
+              encryption_type?: 'enhanced_encryption' | 'e2ee';
+              /** Whether end-to-end encryption is enabled for meetings. */
+              end_to_end_encrypted_meetings?: boolean;
+              /** Whether all instant and scheduled meetings that users can join via client or Zoom Rooms systems are password-protected. [Personal meeting ID (PMI)](https://support.zoom.us/hc/en-us/articles/203276937) meetings are **not** included in this setting. */
+              meeting_password?: boolean;
+              /** Information about the meeting and webinar [password requirements](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604). */
+              meeting_password_requirement?: {
+                  /** The maximum length of consecutive characters, like `abcdef`, allowed in a password.
+                   * `4` through `8` - The maximum consecutive characters length. The length is `n` minus `1`, where `n` is the provided value. For example, if you provide the `4` value, there can only be a maximum of `3` consecutive characters in a password (for example, `abc1x@8fdh`).
+                   * `0` - Do not apply a consecutive character restriction. */
+                  consecutive_characters_length?: 0 | 4 | 5 | 6 | 7 | 8;
+                  /** Whether the password must contain at least one letter character. */
+                  have_letter?: boolean;
+                  /** Whether the password must contain at least one numeric character. */
+                  have_number?: boolean;
+                  /** Whether the password must contain at least one special character. For example, `!`, `@`, and/or `#` characters. */
+                  have_special_character?: boolean;
+                  /** Whether the password must include uppercase and lowercase characters. */
+                  have_upper_and_lower_characters?: boolean;
+                  /** The password's minimum length. */
+                  length?: number;
+                  /** Whether the password must contain **only** numeric characters. */
+                  only_allow_numeric?: boolean;
+                  /** Whether users will be informed when the provided password is weak. */
+                  weak_enhance_detection?: boolean;
+              };
+              /** Whether to specify that only authenticated users can join the meeting from the web client. */
+              only_authenticated_can_join_from_webclient?: boolean;
+              /** Whether a password is required for participants joining by phone. 
+
+ If enabled and the meeting is password-protected, a numeric password is required for participants to join by phone. For meetings with alphanumeric passwords, a numeric password will be generated. */
+              phone_password?: boolean;
+              /** Whether all Personal Meeting ID (PMI) meetings that users can join via client or Zoom Rooms systems are password-protected. */
+              pmi_password?: boolean;
+              /** Whether a password is required for meetings that have already been scheduled. */
+              require_password_for_scheduled_meeting?: boolean;
+              /** Whether a password is required for webinars that have already been scheduled. */
+              require_password_for_scheduled_webinar?: boolean;
+              /** Whether participants are placed in the [**Waiting Room**](https://support.zoom.us/hc/en-us/articles/115000332726-Waiting-Room) when they join a meeting. 
+
+ When the **Waiting Room** feature is enabled, the [**Allow participants to join before host**](https://support.zoom.us/hc/en-us/articles/202828525-Allow-participants-to-join-before-host) setting is disabled. */
+              waiting_room?: boolean;
+              /** Information about the waiting room settings. */
+              waiting_room_settings?: {
+                  /** The type of participants to be admitted to the waiting room.
+                   * `0` - All attendees.
+                   * `1` - Users who are not in your account.
+                   * `2` - Users who are not in your account and are not part of your [allowed domains list](https://support.zoom.us/hc/en-us/articles/360037117472-Configuring-authentication-profiles#h_e3cf0d5f-eec7-4c2a-ad29-ef2a5079a7da). */
+                  participants_to_place_in_waiting_room?: 0 | 1 | 2;
+                  /** The users who can admit participants from the waiting room.
+                   * `0` - Host and co-hosts only.
+                   * `1` - Host, co-hosts, and anyone who bypassed the Waiting Room if the host and co-hosts are not present. */
+                  users_who_can_admit_participants_from_waiting_room?: 0 | 1;
+                  /** If the `participants_to_place_in_waiting_room` field is `2`, a comma-separated list of the domains that can bypass the waiting room (`example.com,example2.com`). */
+                  whitelisted_domains_for_waiting_room?: string;
+              };
+              /** Whether a password is generated when scheduling webinars. Participants must use the generated password to join the scheduled webinar. */
+              webinar_password?: boolean;
+          };
+      };
 
 /** Get livestream details - Response */
 export type ZoomApi$Get$Meeting$Live$Stream$Details$Response = {
@@ -1068,6 +3041,125 @@ export type ZoomApi$Get$Tracking$Sources$Response = {
         visitor_count?: number;
     }[];
 };
+
+/** Get meeting template detail - Response */
+export type ZoomApi$Get$User$Meeting$Templates$Response = {
+    /** Meeting template ID. */
+    id?: string;
+    /** Meeting template name. */
+    name?: string;
+    /** Meeting Template settings. */
+    settings?: {
+        in_meeting?: {
+            /** Play sound when participants join or leave.  
+ `host` - Heard by host only.  
+ `all` - Heard by host and all attendees.  
+ `none` - Disable. */
+            entry_exit_chime?: 'host' | 'all' | 'none';
+            /** Add a **Feedback** tab to the Windows Settings or Mac Preferences dialog. Enable users to provide feedback to Zoom at the end of the meeting. */
+            feedback?: boolean;
+            /** Add 'Polls' to the meeting controls. This allows the host to survey the attendees. */
+            polling?: boolean;
+            /** Whether to display a thumbs up or thumbs down feedback survey at the end of each meeting. */
+            post_meeting_feedback?: boolean;
+            /** Whether to allow hosts and participants to share their screen or content during meetings. */
+            screen_sharing?: boolean;
+            /** The type of user who can share their screen or content during meetings.
+             * `host` - Only hosts can screen share.
+             * `all` - Both hosts and participants can screen share. */
+            who_can_share_screen?: 'host' | 'all';
+            /** Indicates who is allowed to start sharing screen when someone else in the meeting is sharing their screen. The value can be one of the following:  
+ 
+`host`: Only a host can share the screen when someone else is sharing.  
+ 
+`all`: Anyone in the meeting is allowed to start sharing their screen when someone else is sharing. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+            who_can_share_screen_when_someone_is_sharing?: 'host' | 'all';
+            /** Whether the **Disable desktop screen sharing for meetings you host** setting is enabled. */
+            disable_screen_sharing_for_host_meetings?: boolean;
+            /** Allow participants to use annotation tools to add information to shared screens. */
+            annotation?: boolean;
+            /** Allow participants to share a whiteboard that includes annotation tools. */
+            whiteboard?: boolean;
+            /** Whether to enable the [**Remote control**](https://support.zoom.us/hc/en-us/articles/201362673-Requesting-or-giving-remote-control) setting. */
+            remote_control?: boolean;
+            /** Allow participants in a meeting to provide nonverbal feedback and express opinions by clicking on icons in the Participants panel. */
+            non_verbal_feedback?: boolean;
+            /** If the value of this field is set to `true`, meeting participants and webinar panelists are allowed to rename themselves during a meeting or a webinar.
+             */
+            allow_participants_to_rename?: boolean;
+            /** Allow the meeting host to split meeting participants into separate breakout rooms. */
+            breakout_room?: boolean;
+            /** Allow meeting host to provide 1:1 remote support to another participant. */
+            remote_support?: boolean;
+            /** Information about manual captioning settings. */
+            manual_captioning?: {
+                /** Whether to enable Zoom's [live transcription feature](https://support.zoom.us/hc/en-us/articles/207279736-Managing-closed-captioning-and-live-transcription#h_01FHGGHYJ4457H4GSZY0KM3NSB). */
+                auto_generated_captions?: boolean;
+                /** Whether the host can manually caption or let the host assign a participant to provide manual captioning. */
+                allow_to_type?: boolean;
+                /** Whether to [enable manual closed captioning](https://support.zoom.us/hc/en-us/articles/207279736-Managing-closed-captioning-and-live-transcription). */
+                manual_captions?: boolean;
+                /** Allow participants to save closed captions. */
+                save_captions?: boolean;
+            };
+            /** Information about closed captioning settings. */
+            closed_captioning?: {
+                /** Whether to allow live transcription service to transcribe meeting automatically. */
+                auto_transcribing?: boolean;
+                /** Whether to allow the host to type closed captions or assign a participant or 3rd-party service to provide closed captioning. */
+                enable?: boolean;
+                /** Whether to allow participants to save closed captions or transcripts. */
+                save_caption?: boolean;
+            };
+        };
+        recording?: {
+            /** Automatic recording:  
+ `local` - Record on local.  
+ `cloud` -  Record on cloud.  
+ `none` - Disabled. */
+            auto_recording?: 'local' | 'cloud' | 'none';
+        };
+        schedule_meeting?: {
+            /** Start meetings with host video on. */
+            host_video?: boolean;
+            /** Start meetings with the participant video on. Participants can change this setting during the meeting. */
+            participant_video?: boolean;
+            /** Mute participants upon entry. */
+            mute_upon_entry?: boolean;
+        };
+        meeting_security?: {
+            /** Whether participants are placed in the [**Waiting Room**](https://support.zoom.us/hc/en-us/articles/115000332726-Waiting-Room) when they join a meeting. 
+
+ When the **Waiting Room** feature is enabled, the [**Allow participants to join before host**](https://support.zoom.us/hc/en-us/articles/202828525-Allow-participants-to-join-before-host) setting is disabled. */
+            waiting_room?: boolean;
+        };
+    };
+};
+
+/** Get a user presence status - Response */
+export type ZoomApi$Get$User$Presence$Status$Response =
+    | {
+          /** The user's presence status in the Zoom Chat client. The status has to be `Do_Not_Disturb`. */
+          status: 'Do_No_Disturb';
+          /** The Do_Not_Disturb end date and time (UTC Time Zone). */
+          end_time: string;
+          /** The remaining time for `Do_Not_Disturb` status to end in seconds. */
+          remaining_time: number;
+      }
+    | {
+          /** The user's presence status in the Zoom Chat client. The status can be one of the following:   `Away`    `Available`    `Offline`    `In_A_Meeting`    `In_A_Call`    `In_A_Calendar_Event`    `Presenting`    `Out_of_Office`    `Busy`    `Do_Not_Disturb` */
+          status:
+              | 'Away'
+              | 'Do_Not_Disturb'
+              | 'Available'
+              | 'In_Calendar_Event'
+              | 'Presenting'
+              | 'In_A_Zoom_Meeting'
+              | 'On_A_Call'
+              | 'Out_of_Office'
+              | 'Busy';
+      };
 
 /** Get webinar's session branding - Response */
 export type ZoomApi$Get$Webinar$Branding$Response = {
@@ -1251,6 +3343,18 @@ The meeting's unique identifier in **long** format, represented as int64 data ty
     summary_content?: string;
     /** The URL to view the full summary document in Zoom Docs. */
     summary_doc_url?: string;
+};
+
+/** Get a division - Response */
+export type ZoomApi$Getdivision$Response = {
+    /** The division's id */
+    division_id?: string;
+    /** The division's name. */
+    division_name?: string;
+    /** The division's description. */
+    division_description?: string;
+    /** Is it Main Division */
+    is_main_division?: boolean;
 };
 
 /** Get history meeting and webinar list - Query parameters */
@@ -1466,6 +3570,16 @@ export type ZoomApi$Gethistorymeetingandwebinarlist$Response = {
     }[];
 };
 
+/** Get meeting summary templates - Response */
+export type ZoomApi$Getmeetingsummarytemplates$Response = {
+    /** summary template id */
+    meeting_summary_template_id: string;
+    /** summary template name */
+    name: string;
+    /** summary template description */
+    description: string;
+}[];
+
 /** Get remote support report - Query parameters */
 export type ZoomApi$Getremotesupportreport$Params = Partial<{
     /** The start date in `yyyy-MM-dd` format. The date range defined by the `from` and `to` parameters should only be one month, as the report includes only one month's worth of data at once. It is the date range for remote support to start. */
@@ -1542,6 +3656,579 @@ export type ZoomApi$Getzdmgroupinfo$Response = {
     next_page_token?: string;
     /** The total number of records returned from a single API call. */
     page_size?: number;
+};
+
+/** Add group admins - Request body */
+export type ZoomApi$Group$Admins$Create$Request = {
+    /** A list of the administrators to add to a group. */
+    admins?: {
+        /** The user's email. Use this value if you do not have the user's ID.
+
+If you pass the `id` value, the API ignores this parameter. */
+        email?: string;
+        /** The user's ID. */
+        id?: string;
+    }[];
+};
+
+/** Add group admins - Response */
+export type ZoomApi$Group$Admins$Create$Response = {
+    /** The timestamp at which the administrator was added to the group. */
+    added_at?: string;
+    /** The administrator IDs. */
+    ids?: string;
+};
+
+/** List group admins - Query parameters */
+export type ZoomApi$Group$Admins$Params = Partial<{
+    /** The number of records returned within a single API call. */
+    page_size: number;
+    /** Use the next page token to paginate through large result sets. A next page token is returned whenever the set of available results exceeds the current page size. This token's expiration period is 15 minutes. */
+    next_page_token: string;
+}>;
+
+/** List group admins - Response */
+export type ZoomApi$Group$Admins$Response = {
+    admins?: {
+        /** The user's email address. */
+        email?: string;
+        /** The user's display name. */
+        name?: string;
+    }[];
+    /** The next page token is used to paginate through large result sets. A next page token is returned when the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. */
+    next_page_token?: string;
+    /** The number of records returned in a single API call. */
+    page_size?: number;
+    /** The total number of records available across all pages. */
+    total_records?: number;
+};
+
+/** List group channels - Response */
+export type ZoomApi$Group$Channels$Response = {
+    /** The channels in a group. */
+    channels: {
+        /** The unique identifier of the channel.  */
+        channel_id: string;
+        /** The name of the channel. */
+        channel_name: string;
+        /** The member number of the channel. */
+        member_count: number;
+    }[];
+    /** The unique identifier of the group.  */
+    group_id: string;
+};
+
+/** Create a group - Request body */
+export type ZoomApi$Group$Create$Request = {
+    /** The group's name. */
+    name?: string;
+};
+
+/** Create a group - Response */
+export type ZoomApi$Group$Create$Response = {
+    /** The group ID. */
+    id?: string;
+    /** The group's name. */
+    name?: string;
+    /** The group's total member count. */
+    total_members?: number;
+};
+
+/** Update locked settings - Query parameters */
+export type ZoomApi$Group$Locked$Settings$Params = Partial<{
+    /** Optional query parameters.
+     * `meeting_security` - View the meeting security settings applied to the user's account. */
+    option: string;
+}>;
+
+/** Update locked settings - Request body */
+export type ZoomApi$Group$Locked$Settings$Request =
+    | {
+          /** The group's audio conference settings. */
+          audio_conferencing?: {
+              /** Whether the group has the [**Toll-free and Fee-based Toll Call**](https://support.zoom.us/hc/en-us/articles/360060950711-Enabling-Toll-free-and-Fee-based-Toll-Call#h_01F51844DRCX3K7BRTMZ40381R) setting enabled. */
+              toll_free_and_fee_based_toll_call?: boolean;
+              /** Whether the group has the [**Toll Call**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066909#h_01F51680NJ7YHZDXGJNSKDGM2P) setting enabled. */
+              toll_call?: boolean;
+              /** Whether the group has the [**Call Me and Invite by Phone**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067414#h_01F53VFZMDP4EJAF772N7NG2KY) setting enabled. */
+              call_me_and_invite_by_phone?: boolean;
+              /** Whether the group has the [**Personal Audio Conference**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0060449#h_01F5BPMNMERFWXN5S8ZJRZZCSE) setting enabled. */
+              personal_audio_conference?: boolean;
+              /** Whether the group has the [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5GT9P563K751K3JNAYE6E) setting enabled. */
+              participant_phone_masking?: boolean;
+          };
+          email_notification?: {
+              /** Notify the alternative host who is set or removed. */
+              alternative_host_reminder?: boolean;
+              /** Notify host and participants when the meeting is cancelled. */
+              cancel_meeting_reminder?: boolean;
+              /** Whether to notify the host when a cloud recording is available. */
+              cloud_recording_available_reminder?: boolean;
+              /** Notify the host when participants join the meeting before them. */
+              jbh_reminder?: boolean;
+              /** Notify the host there is a meeting is scheduled, rescheduled, or cancelled. */
+              schedule_for_reminder?: boolean;
+          };
+          in_meeting?: {
+              /** Allow participants who belong to your account to see that a guest (someone who does not belong to your account) is participating in the meeting/webinar. */
+              alert_guest_join?: boolean;
+              /** If the value of this field is set to `true`,  allow users to delete messages in the in-meeting chat.
+               */
+              allow_users_to_delete_messages_in_meeting_chat?: boolean;
+              /** Whether to allow livestreaming. */
+              allow_live_streaming?: boolean;
+              /** Show Zoom windows during screen share. */
+              allow_show_zoom_windows?: boolean;
+              /** Allow participants to use annotation tools to add information to shared screens. */
+              annotation?: boolean;
+              /** Allow host to put attendee on hold.
+
+**This field has been deprecated and is no longer supported.** */
+              attendee_on_hold?: boolean;
+              /** Enable users to see and add contacts to 'auto-answer group' in the contact list on chat. Any call from members of this group will be automatically answered. */
+              auto_answer?: boolean;
+              /** Whether to allow a live transcription service to transcribe meetings. */
+              auto_generated_captions?: boolean;
+              /** Automatically save all in-meeting chats. */
+              auto_saving_chat?: boolean;
+              /** Allow host to split meeting participants into separate, smaller rooms. */
+              breakout_room?: boolean;
+              /** Allow meeting participants to send chat message visible to all participants. */
+              chat?: boolean;
+              /** Allow participants to ask questions for the host and participants to answer. */
+              meeting_question_answer?: boolean;
+              /** Allow host to type closed captions or assign a participant/third party device to add closed captions. */
+              closed_caption?: boolean;
+              /** Allow the host to add co-hosts. Co-hosts have the same in-meeting controls as the host. */
+              co_host?: boolean;
+              /** Displays whether or not custom [data center regions](https://support.zoom.us/hc/en-us/articles/360042411451-Selecting-data-center-regions-for-hosted-meetings-and-webinars) have been selected for meetings/webinars hosted by this group. */
+              custom_data_center_regions?: boolean;
+              /** Whether to enable the **Disable desktop screen sharing for meetings you host** setting. */
+              disable_screen_sharing_for_host_meetings?: boolean;
+              /** Whether to enable the **Disable screen sharing when guests are in the meeting** setting. */
+              disable_screen_sharing_for_in_meeting_guests?: boolean;
+              /** Require that all meetings are encrypted using AES. */
+              e2e_encryption?: boolean;
+              /** Play sound when participants join or leave. */
+              entry_exit_chime?: string;
+              /** Allow another user to take control of the camera during a meeting. */
+              far_end_camera_control?: boolean;
+              /** Enable users to provide feedback to Zoom at the end of the meeting. */
+              feedback?: boolean;
+              /** Indicates whether [in-meeting file transfer](https://support.zoom.us/hc/en-us/articles/209605493-In-meeting-file-transfer) setting has been enabled for the users in the group or not. */
+              file_transfer?: boolean;
+              /** Whether to allow the viewing of full transcripts in the in-meeting side panel. */
+              full_transcript?: boolean;
+              /** Enable higher quality video for host and participants in the meeting. This will require more bandwidth. */
+              group_hd?: boolean;
+              /** Enable higher quality video for host and participants in the webinar. This will require more bandwidth. */
+              webinar_group_hd?: boolean;
+              /** Whether to allow hosts to assign participants as interpreters who can interpret one language into another in real-time. */
+              language_interpretation?: boolean;
+              /** Allow hosts to assign participants as sign language interpreters who can interpret one language into sign language in real-time. Hosts can assign interpreters when scheduling, or during the meeting itself. This feature is only available with version 5.11.3 or later. */
+              sign_language_interpretation?: boolean;
+              /** Set this field to true to use [webinar reactions](https://support.zoom.us/hc/en-us/articles/4803536268429). */
+              webinar_reactions?: boolean;
+              /** Whether to allow the host to present a survey to participants once a meeting has ended. This feature is only available in version 5.7.3 or higher. */
+              meeting_survey?: boolean;
+              /** Allow participants in a meeting can provide nonverbal feedback and express opinions by clicking on icons in the Participants panel. */
+              non_verbal_feedback?: boolean;
+              /** Allow users to select original sound during a meeting. */
+              original_audio?: boolean;
+              /** Add 'Polls' to the meeting controls. This allows the host to survey the attendees. */
+              polling?: boolean;
+              /** Display end-of-meeting experience feedback survey. */
+              post_meeting_feedback?: boolean;
+              /** Allow meeting participants to send a private 1:1 message to another participant. */
+              private_chat?: boolean;
+              /** During screen sharing, allow the person who is sharing to let others control the shared content. */
+              remote_control?: boolean;
+              /** Allow meeting host to provide 1:1 remote support to another participant. */
+              remote_support?: boolean;
+              /** Indicate whether the [**Request permission to unmute participants**](https://support.zoom.us/hc/en-us/articles/203435537-Muting-and-unmuting-participants-in-a-meeting#h_01EGK4XFWS1SJGZ71MYGKF7260) option should be enabled and locked for the group or not. */
+              request_permission_to_unmute_participants?: boolean;
+              /** Whether to allow participants to save closed captions or transcripts. */
+              save_caption?: boolean;
+              /** Whether participants can save closed captions or transcripts. */
+              save_captions?: boolean;
+              /** Allow host and participants to share their screen or content during meetings. */
+              screen_sharing?: boolean;
+              /** Allow users to invite participants by email only by default. */
+              sending_default_email_invites?: boolean;
+              /** Whether to allow participants to join a meeting directly from their browser and bypass the Zoom application download process. This is useful for participants who cannot download, install, or run applications. Note that the meeting experience from the browser is limited. */
+              show_a_join_from_your_browser_link?: boolean;
+              /** Allow participants to join a meeting directly from their browser. */
+              show_browser_join_link?: boolean;
+              /** Always show meeting controls during a meeting. */
+              show_meeting_control_toolbar?: boolean;
+              /** Whether the person sharing during a presentation can allow others to control the slide presentation. This feature is only available in version 5.8.3 or higher. */
+              slide_control?: boolean;
+              /** Allow users to select stereo audio during a meeting. */
+              stereo_audio?: boolean;
+              /** Allow  HTML formatting instead of plain text for meeting invitations scheduled with the Outlook plugin. */
+              use_html_format_email?: boolean;
+              /** Enable virtual background. */
+              virtual_background?: boolean;
+              /** Attendees cannot join a meeting until a host admits them individually from the waiting room. */
+              waiting_room?: boolean;
+              /** Whether to allow webinar participants to send chat messages. */
+              webinar_chat?: boolean;
+              /** Whether webinar livestreaming is enabled. */
+              webinar_live_streaming?: boolean;
+              /** Whether to allow the host to add polls before or during a webinar. */
+              webinar_polling?: boolean;
+              /** Whether attendees can ask the host and panelists questions in the webinar. */
+              webinar_question_answer?: boolean;
+              /** Whether to allow the host to present surveys to attendees once a webinar has ended. */
+              webinar_survey?: boolean;
+              /** Allow participants to share a whiteboard that includes annotation tools. */
+              whiteboard?: boolean;
+          };
+          other_options?: {
+              /** If `true`, iOS blurs the screenshot in the task switcher when multiple apps are open. Android hides the screenshot in the system-level list of recent apps. */
+              blur_snapshot?: boolean;
+          };
+          recording?: {
+              /** Make cloud recordings accessible to account members only. */
+              account_user_access_recording?: boolean;
+              /** Allow Zoom to automatically delete recordings permanently after a specified number of days. */
+              auto_delete_cmr?: boolean;
+              /** Record meetings automatically as they start. */
+              auto_recording?: boolean;
+              /** Allow hosts to record and save the meeting or webinar in the cloud. */
+              cloud_recording?: boolean;
+              /** Allow anyone with a link to the cloud recording to download. */
+              cloud_recording_download?: boolean;
+              /** Allow the host to delete the recordings. If this option is disabled, the recordings cannot be deleted by the host and only admin can delete them. */
+              host_delete_cloud_recording?: boolean;
+              /** Setting to allow cloud recording access only from specific IP address ranges.
+               */
+              ip_address_access_control?: {
+                  /** If set to `true`, the cloud recordings of this account can only be accessed by the IP addresses defined in the `ip_addresses_or_ranges` property.
+
+ */
+                  enable?: boolean;
+                  /** IP addresses or ranges that have access to the cloud recordings. Separate multiple IP ranges with comma. Use n.n.n.n, n.n.n.n/n or n.n.n.n - n.n.n.n syntax where n is a number.
+
+Example: `46.33.24.184, 48.99.100.2/25` or `200.181.108.17 - 220.181.108.157`
+
+ */
+                  ip_addresses_or_ranges?: string;
+              };
+              /** Allow hosts and participants to record the meeting to a local file. */
+              local_recording?: boolean;
+              recording_authentication?: boolean;
+              /** [Archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-Meeting-and-Webinar-data) settings. This setting can only be used if you have been granted archiving solution access by the Zoom support team. */
+              archive?: boolean;
+          };
+          schedule_meeting?: {
+              /** Determine how participants can join the audio portion of the meeting. */
+              audio_type?: boolean;
+              /** If the value is set to `true`, the meeting passcode will be encrypted and included in the join meeting link to allow participants to join with just one click without having to enter the passcode.
+               */
+              embed_password_in_join_link?: boolean;
+              /** If join before host option is enabled for a personal meeting, then enforce passcode requirement. */
+              force_pmi_jbh_password?: boolean;
+              /** Start meetings with host video on. */
+              host_video?: boolean;
+              /** Allow participants to join the meeting before the host arrives */
+              join_before_host?: boolean;
+              /** Only authenticated users can join meetings */
+              meeting_authentication?: boolean;
+              /** Automatically mute all participants when they join the meeting. */
+              mute_upon_entry?: boolean;
+              /** Start meetings with participant video on. */
+              participant_video?: boolean;
+              /** Turn the lock setting on or off for the **Enable Personal Meeting ID** setting for a group.  
+   
+ 
+`true` - Turn the **Enable Personal Meeting ID** setting **on** for all users in the group. Users can choose to use personal meeting ID for their meetings.   
+   
+ 
+`false` - Turn **off** the **Enable Personal Meeting ID** setting. **If this setting is [disabled](https://support.zoom.us/hc/en-us/articles/201362843-Personal-meeting-ID-PMI-and-personal-link?flash_digest=eb7ac62d8c7fb4daf285916e3e15d87537806133#h_aa0335c8-3b06-41bc-bc1f-a8b84ef17f2a), meetings that were scheduled with PMI by this group members will be invalid. Users will have to update previously scheduled PMI meetings.**  
+   
+ 
+For Zoom Phone only: If a user has been assigned a desk phone, **Elevate to Zoom Meeting** on desk phone will be disabled.
+
+
+ */
+              personal_meeting?: boolean;
+              /** Generate and send new passcodes for newly scheduled or edited meetings. */
+              pstn_password_protected?: boolean;
+              /** Require passcode for instant meetings. If you use PMI for your instant meetings, this option is disabled. */
+              require_password_for_instant_meetings?: boolean;
+              /** Require participants to enter passcode for PMI meetings. */
+              require_password_for_pmi_meetings?: boolean;
+              /** This setting applies for regular meetings that do not use PMI. If enabled, a passcode is generated while a host schedules a new meeting and participants will be required to enter the passcode before they can join the meeting. */
+              require_password_for_scheduling_new_meetings?: boolean;
+              /** Receive desktop notification for upcoming meetings. */
+              upcoming_meeting_reminder?: boolean;
+              /** Whether to enable the [**Enable continuous meeting chat**] setting. */
+              continuous_meeting_chat?: boolean;
+          };
+          /** Group Settings: Telephony. */
+          telephony?: {
+              /** Indicates where most of the participants call into or call from during a meeting. */
+              telephony_regions?: boolean;
+              /** Allow users to join the meeting using the existing 3rd party audio configuration. */
+              third_party_audio?: boolean;
+          };
+      }
+    | {
+          meeting_security?: {
+              /** Whether to enable the [**Approve or block entry for users from specific countries or regions**](https://support.zoom.us/hc/en-us/articles/360060086231-Joining-from-specific-countries-regions) setting. */
+              approved_or_denied_countries_or_regions?: boolean;
+              /** Whether to require that all meetings are secured with at least one security option. 
+
+ This setting can only be disabled by Enterprise, ISV, Business (with more than 100 licenses), and Education accounts. */
+              auto_security?: boolean;
+              /** Whether to block users in specific domains from joining meetings and webinars. */
+              block_user_domain?: boolean;
+              /** Whether the meeting passcode will be encrypted and included in the invitation link. The provided link will allow participants to join the meeting without having to enter the passcode. */
+              embed_password_in_join_link?: boolean;
+              /** The type of encryption to use when starting a meeting.
+               * `enhanced_encryption` - Use enhanced encryption. Encryption data is stored in the cloud.
+               * `e2ee` &mdash; End-to-end encryption. The encryption key is stored on the local device and cannot be obtained by anyone else. Enabling E2EE also [**disables** certain features](https://support.zoom.us/hc/en-us/articles/360048660871), such as cloud recording, live streaming, and allowing participants to join before the host. */
+              encryption_type?: 'enhanced_encryption' | 'e2ee';
+              /** Whether to enable end-to-end encryption for meetings. If enabled, you can specify the type of encryption in the `encryption_type` field. */
+              end_to_end_encrypted_meetings?: boolean;
+              /** Whether all instant and scheduled meetings that users can join via client or Zoom Rooms systems are passcode-protected. [Personal Meeting ID (PMI)](https://support.zoom.us/hc/en-us/articles/203276937) meetings are **not** included in this setting. */
+              meeting_password?: boolean;
+              /** Whether to specify that only authenticated users can join the meeting from the web client. */
+              only_authenticated_can_join_from_webclient?: boolean;
+              /** Whether to require a passcode for participants joining by phone. 
+
+ If enabled and the meeting is passcode-protected, a numeric passcode is required for participants to join by phone. For meetings with alphanumeric passcodes, a numeric passcode will be generated. */
+              phone_password?: boolean;
+              /** Whether all personal meeting ID (PMI) meetings that users can join via client or Zoom Rooms systems are passcode-protected. */
+              pmi_password?: boolean;
+              /** Whether participants are placed in the [**Waiting Room**](https://support.zoom.us/hc/en-us/articles/115000332726-Waiting-Room) when they join a meeting. 
+
+ If the **Waiting Room** feature is enabled, the [**Allow participants to join before host**](https://support.zoom.us/hc/en-us/articles/202828525-Allow-participants-to-join-before-host) setting is automatically disabled. */
+              waiting_room?: boolean;
+              /** Whether to generate a passcode when scheduling webinars. Participants must use the generated passcode to join the scheduled webinar. */
+              webinar_password?: boolean;
+          };
+      };
+
+/** Add group members - Request body */
+export type ZoomApi$Group$Members$Create$Request = {
+    /** List of Group members */
+    members?: {
+        /** User email. If the user ID is given then the user email should be ignored. */
+        email?: string;
+        /** User ID. */
+        id?: string;
+    }[];
+};
+
+/** Add group members - Response */
+export type ZoomApi$Group$Members$Create$Response = {
+    /** The timestamp when the group member was added. */
+    added_at?: string;
+    /** The IDs of the group members. */
+    ids?: string;
+};
+
+/** List group members  - Query parameters */
+export type ZoomApi$Group$Members$Params = Partial<{
+    /** The number of records returned within a single API call. */
+    page_size: number;
+    /** **Deprecated.** We will no longer support this field in a future release. Instead, use the `next_page_token` for pagination. */
+    page_number: number;
+    /** Use the next page token to paginate through large result sets. A next page token is returned whenever the set of available results exceeds the current page size. This token's expiration period is 15 minutes. */
+    next_page_token: string;
+}>;
+
+/** List group members  - Response */
+export type ZoomApi$Group$Members$Response = {
+    /** List of a Group Members */
+    members?: {
+        /** User's email address. */
+        email?: string;
+        /** First name of the user. */
+        first_name?: string;
+        /** Unique Identifier of the user.  */
+        id?: string;
+        /** Last name of the user. */
+        last_name?: string;
+        /** User type:   
+  `1` - Basic  
+  `2` - Licensed */
+        type?: number;
+    }[];
+    /** The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. */
+    next_page_token?: string;
+    /** The number of pages returned from this request. */
+    page_count?: number;
+    /** The page number of the current results. */
+    page_number?: number;
+    /** The number of records returned from a single API call. */
+    page_size?: number;
+    /** The total number of records available across all pages. */
+    total_records?: number;
+};
+
+/** Get a group - Response */
+export type ZoomApi$Group$Response = {
+    /** Group ID. */
+    id?: string;
+    /** Group name. */
+    name?: string;
+    /** Total count of members in the group. */
+    total_members?: number;
+};
+
+/** Get a group's webinar registration settings - Query parameters */
+export type ZoomApi$Group$Settings$Registration$Params = Partial<{
+    /** The registration type:
+     * `webinar` &mdash; webinar. */
+    type: 'webinar';
+}>;
+
+/** Get a group's webinar registration settings - Response */
+export type ZoomApi$Group$Settings$Registration$Response = {
+    /** When participants submit registration, do something. */
+    options?: {
+        /** Send an email to host when someone registers. */
+        host_email_notification?: boolean;
+        /** Close registration after event date. */
+        close_registration?: boolean;
+        /** Allow participants to join from multiple devices */
+        allow_participants_to_join_from_multiple_devices?: boolean;
+        /** Show social share buttons on registration page */
+        show_social_share_buttons?: boolean;
+    };
+    /** Array of Registrant Questions. */
+    questions?: {
+        /** Field name of the question. */
+        field_name?:
+            | 'last_name'
+            | 'address'
+            | 'city'
+            | 'country'
+            | 'zip'
+            | 'state'
+            | 'phone'
+            | 'industry'
+            | 'org'
+            | 'job_title'
+            | 'purchasing_time_frame'
+            | 'role_in_purchase_process'
+            | 'no_of_employees'
+            | 'comments';
+        /** Decide whether this field are required. */
+        required?: boolean;
+        /** Indicates whether or not the displayed fields are required to be filled out by registrants. */
+        selected?: boolean;
+    }[];
+    /** Approval type for the registration. */
+    approve_type?: 0 | 1;
+    /** Array of Registrant Custom Questions */
+    custom_questions?: {
+        /** Title of the custom question. */
+        title?: string;
+        /** Type of the question being asked. */
+        type?: 'short' | 'single_dropdown' | 'single_radio' | 'multiple';
+        /** Decide whether this field are required. */
+        required?: boolean;
+        /** Indicates whether or not the custom question is required to be answered by participants or not. */
+        selected?: boolean;
+        /** Answer choices for the custom question. Can not be used for `short` question type as this type of question requires registrants to type out the answer. */
+        answers?: string[];
+    }[];
+};
+
+/** Update a group's webinar registration settings - Query parameters */
+export type ZoomApi$Group$Settings$Registration$Update$Params = Partial<{
+    /** The registration type:
+     * `webinar` &mdash; webinar. */
+    type: 'webinar';
+}>;
+
+/** Update a group's webinar registration settings - Request body */
+export type ZoomApi$Group$Settings$Registration$Update$Request = {
+    /** When participants submit registration, do something. */
+    options?: {
+        /** Send an email to host when someone registers. */
+        host_email_notification?: boolean;
+        /** Close registration after event date. */
+        close_registration?: boolean;
+        /** Allow participants to join from multiple devices */
+        allow_participants_to_join_from_multiple_devices?: boolean;
+        /** Show social share buttons on registration page */
+        show_social_share_buttons?: boolean;
+    };
+    /** Array of Registrant Questions. */
+    questions?: {
+        /** Field name of the question. */
+        field_name?:
+            | 'last_name'
+            | 'address'
+            | 'city'
+            | 'country'
+            | 'zip'
+            | 'state'
+            | 'phone'
+            | 'industry'
+            | 'org'
+            | 'job_title'
+            | 'purchasing_time_frame'
+            | 'role_in_purchase_process'
+            | 'no_of_employees'
+            | 'comments';
+        /** Decide whether this field are required. */
+        required?: boolean;
+        /** Indicates whether or not the displayed fields are required to be filled out by registrants. */
+        selected?: boolean;
+    }[];
+    /** Approval type for the registration. */
+    approve_type?: 0 | 1;
+    /** Array of Registrant Custom Questions */
+    custom_questions?: {
+        /** Title of the custom question. */
+        title?: string;
+        /** Type of the question being asked. */
+        type?: 'short' | 'single_dropdown' | 'single_radio' | 'multiple';
+        /** Decide whether this field are required. */
+        required?: boolean;
+        /** Indicates whether or not the custom question is required to be answered by participants or not. */
+        selected?: boolean;
+        /** Answer choices for the custom question. Can not be used for `short` question type as this type of question requires registrants to type out the answer. */
+        answers?: string[];
+    }[];
+};
+
+/** Update a group - Request body */
+export type ZoomApi$Group$Update$Request = {
+    /** Group name. It must be unique to one account and less than 128 characters. */
+    name?: string;
+};
+
+/** List groups - Query parameters */
+export type ZoomApi$Groups$Params = Partial<{
+    /** The number of records returned in a single API call. The maximum is 300. */
+    page_size: number;
+    /** The next page token paginates through a set of large results. A next page token is returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. */
+    next_page_token: string;
+}>;
+
+/** List groups - Response */
+export type ZoomApi$Groups$Response = {
+    /** List of Group objects. */
+    groups?: ({
+        /** Group ID. */
+        id?: string;
+    } & {
+        /** Group name. */
+        name?: string;
+        /** Total number of members in this group. */
+        total_members?: number;
+    })[];
+    /** Total records. */
+    total_records?: number;
+    /** The next page token paginates through a large set results. A next page token returns whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. */
+    next_page_token?: string;
 };
 
 /** Use in-meeting controls - Request body */
@@ -1850,6 +4537,24 @@ Enable the "Tag Archiving Files for Deletion" feature in OP. Contact [Zoom Suppo
     total_records?: number;
 };
 
+/** List a user's collaboration devices - Response */
+export type ZoomApi$List$Collaboration$Devices$Response = {
+    /** Total number of records returned. */
+    total_records?: number;
+    collaboration_devices?: {
+        /** The device's unique identifier. */
+        id?: string;
+        /** Name of the Personal Zoom Room's device. */
+        device_name?: string;
+        /** Name of the Personal Zoom Room. */
+        room_name?: string;
+        /** The device's unique identifier. */
+        room_user_id?: string;
+        /** The device's status. The value can be either `Online` or `Offline`. */
+        status?: 'Online' | 'Offline';
+    }[];
+};
+
 /** List devices - Query parameters */
 export type ZoomApi$List$Devices$Params = Partial<{
     /** Filter devices by name or serial number. */
@@ -1941,6 +4646,64 @@ export type ZoomApi$List$Devices$Response = {
         last_online?: string;
         /** The owner of the phone device */
         user_email?: string;
+    }[];
+};
+
+/** List division members - Query parameters */
+export type ZoomApi$List$Division$Members$Params = Partial<{
+    /** Use the next page token to paginate through a large set of results. It returns whenever the set of available results exceeds the current page size. This token's expiration period is 15 minutes. */
+    next_page_token: string;
+    /** The number of records returned within a single API call. */
+    page_size: number;
+}>;
+
+/** List division members - Response */
+export type ZoomApi$List$Division$Members$Response = {
+    /** Use the next page token to paginate through a large set of results. It returns whenever the set of available results exceeds the current page size. This token's expiration period is 15 minutes. */
+    next_page_token?: string;
+    /** The number of records returned within a single API call. */
+    page_size?: number;
+    /** The total records of users under the division. */
+    total_records?: number;
+    /** List of a division's users. */
+    users?: {
+        /** The user's unique identifier. */
+        user_id?: string;
+        /** The user's display name. */
+        user_display_name?: string;
+        /** The user's email address. */
+        user_email?: string;
+    }[];
+};
+
+/** List divisions - Query parameters */
+export type ZoomApi$List$Divisions$Params = Partial<{
+    /** Use the next page token to paginate through a large set of results. It returns whenever the set of available results exceeds the current page size. This token's expiration period is 15 minutes. */
+    next_page_token: string;
+    /** The number of records returned within a single API call. */
+    page_size: number;
+}>;
+
+/** List divisions - Response */
+export type ZoomApi$List$Divisions$Response = {
+    /** Use the next page token to paginate through a large set of results. It returns whenever the set of available results exceeds the current page size. This token's expiration period is 15 minutes. */
+    next_page_token?: string;
+    /** The number of records returned within a single API call. */
+    page_size?: number;
+    /** The total records of divisions under the account. */
+    total_records?: number;
+    /** The information about the divisions. */
+    divisions?: {
+        /** The division's id */
+        division_id?: string;
+        /** The division's name. */
+        division_name?: string;
+        /** The division's description. */
+        division_description?: string;
+        /** Is it Main Division */
+        is_main_division?: boolean;
+        /** Total number of members in this division. */
+        total_members?: number;
     }[];
 };
 
@@ -7851,6 +10614,18 @@ export type ZoomApi$Tsp$Url$Update$Request = {
     audio_url?: string;
 };
 
+/** Update a group member - Request body */
+export type ZoomApi$Update$A$Group$Member$Request = {
+    /** The action to perform:
+     * `move` &mdash; Remove the group member from one group and move them to a different group.
+     * `set_primary` &mdash; Set the user's primary group. */
+    action: 'move' | 'set_primary';
+    /** The target group's ID. To get this value, use the [**List groups**](/docs/api-reference/zoom-api/methods#operation/groups) API.
+     * To set a user's primary group, use the designated primary group's `groupId` value.
+     * To move a group member from one group to another, use the `groupId` of the designated group. */
+    target_group_id?: string;
+};
+
 /** Update an archived file's auto-delete status - Request body */
 export type ZoomApi$Update$Archived$File$Request = {
     /** Whether to auto-delete the archived file. */
@@ -7872,11 +10647,1098 @@ export type ZoomApi$Update$Device$Request = {
     device_type?: 0 | 1 | 3;
 };
 
+/** Update a group's settings - Query parameters */
+export type ZoomApi$Update$Group$Settings$Params = Partial<{
+    /** Optional query parameters.
+     * `meeting_authentication` - [Meeting authentication settings](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars).
+     * `recording_authentication` - [Recording authentication settings](https://support.zoom.us/hc/en-us/articles/360037756671-Authentication-Profiles-for-Cloud-Recordings).
+     * `meeting_security` - Meeting security settings. */
+    option:
+        | 'meeting_authentication'
+        | 'recording_authentication'
+        | 'meeting_security';
+}>;
+
+/** Update a group's settings - Request body */
+export type ZoomApi$Update$Group$Settings$Request =
+    | {
+          /** The group's audio conference settings. */
+          audio_conferencing?: {
+              /** The group's [**Toll-free and Fee-based Toll Call**](https://support.zoom.us/hc/en-us/articles/360060950711-Enabling-Toll-free-and-Fee-based-Toll-Call#h_01F51844DRCX3K7BRTMZ40381R) settings. */
+              toll_free_and_fee_based_toll_call?: {
+                  /** Whether webinar attendees can dial in through the account's **Toll-free and Fee-based Toll Call** phone numbers. This feature is only available in version 5.2.2 and higher. */
+                  allow_webinar_attendees_dial?: boolean;
+                  /** Whether the group has the [**Toll-free and Fee-based Toll Call**](https://support.zoom.us/hc/en-us/articles/360060950711-Enabling-Toll-free-and-Fee-based-Toll-Call#h_01F51844DRCX3K7BRTMZ40381R) setting enabled. */
+                  enable?: boolean;
+                  /** The group's **Toll-free and Fee-based Toll Call** phone number information. */
+                  numbers?: {
+                      /** The phone number's [E.164 country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes). */
+                      code?: string;
+                      /** The phone number's [country code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries). */
+                      country_code?: string;
+                      /** The country name. */
+                      country_name?: string;
+                      /** The phone number's display number. */
+                      display_number?: string;
+                      /** The phone number. */
+                      number?: string;
+                  }[];
+              };
+              /** The group's [**Toll Call**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066909#h_01F51844DRCX3K7BRTMZ40381R) settings. */
+              toll_call?: {
+                  /** Whether the group has the [**Toll Call**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066909#h_01F51680NJ7YHZDXGJNSKDGM2P) setting enabled. */
+                  enable?: boolean;
+                  /** The group's **Toll Call** phone number information. */
+                  numbers?: {
+                      /** The phone number's [E.164 country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes). */
+                      code?: string;
+                      /** The phone number's [country code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries). */
+                      country_code?: string;
+                      /** The country name. */
+                      country_name?: string;
+                      /** The phone number's display number. */
+                      display_number?: string;
+                      /** The phone number. */
+                      number?: string;
+                  }[];
+              };
+              /** The group's [**Call Me and Invite by Phone**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067414#h_01F53VG7NCJDZ238VVXZDJ8QMH) settings. */
+              call_me_and_invite_by_phone?: {
+                  /** Whether the group has the [**Call Me and Invite by Phone**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067414#h_01F53VFZMDP4EJAF772N7NG2KY) setting enabled. */
+                  enable?: boolean;
+                  /** Require Call Me users to press 1 before being connected to the meeting.
+                   * `auto` - Automatically determine whether to require pressing 1 before connecting to the meeting.
+                   * `always` - Always require Call Me users to press 1 before connecting to the meeting.
+                   * `never` - Never require Call Me users to press 1 before connecting to the meeting. */
+                  require_press_1_for_call_me?: 'auto' | 'always' | 'never';
+                  /** The group's call out countries/regions settings. */
+                  call_out_countries?: {
+                      /** The list of selected countries/regions whose dial-in numbers will be listed in the email invitation. */
+                      selected_countries?: {
+                          /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                          code?: string;
+                          /** The name of the country or region. */
+                          name?: string;
+                      }[];
+                  };
+                  /** Whether webinar attendees can use Call Me to connect audio. This feature is only available in version 5.2.2 and higher. */
+                  allow_webinar_attendees_call_me?: boolean;
+              };
+              /** Whether the group has the [**Personal Audio Conference**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0060449#h_01F5BPMNMERFWXN5S8ZJRZZCSE) setting enabled. */
+              personal_audio_conference?: boolean;
+              /** The group's [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5GT9P563K751K3JNAYE6E) settings. */
+              participant_phone_masking?: {
+                  /** Whether the group has the [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5GT9P563K751K3JNAYE6E) setting enabled. */
+                  enable?: boolean;
+                  /** The type of phone number masking pattern to apply.
+                   * `mask_default` - Default masking pattern (Example: 888****666).
+                   * `mask_first_5` - Mask first five digits (Example: *****66666).
+                   * `mask_except_last_4` - Mask everything except last four digits (Example: *****6666). */
+                  masking_type?:
+                      | 'mask_default'
+                      | 'mask_first_5'
+                      | 'mask_except_last_4';
+              };
+              /** The group's [**Global Dial-in Countries/Regions**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0068094#h_01F5KK9J31ZXNW10BRH86NHX4G) settings. */
+              global_dial_in_countries?: {
+                  /** The list of selected countries/regions whose dial-in numbers will be listed in the email invitation. You can adjust the order that the dial-in numbers appear in the email invitation. */
+                  selected_countries?: {
+                      /** The code of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+                  /** Whether to include toll-free numbers in the email invitation for the selected countries/regions. */
+                  include_toll_free?: boolean;
+              };
+          };
+          email_notification?: {
+              /** Notify the alternative host who is set or removed. */
+              alternative_host_reminder?: boolean;
+              /** Notify host and participants when the meeting is cancelled. */
+              cancel_meeting_reminder?: boolean;
+              /** Whether to notify the host when a cloud recording is available. */
+              cloud_recording_available_reminder?: boolean;
+              /** Notify host when participants join the meeting before them. */
+              jbh_reminder?: boolean;
+              /** Whether to notify any alternative hosts when a cloud recording is available. */
+              recording_available_reminder_alternative_hosts?: boolean;
+              /** Whether to notify the person who scheduled the meeting or webinar for the host when a cloud recording is available. */
+              recording_available_reminder_schedulers?: boolean;
+              /** Notify the host there is a meeting is scheduled, rescheduled, or cancelled. */
+              schedule_for_reminder?: boolean;
+          };
+          in_meeting?: {
+              /** Allow participants who belong to your account to see that a guest (someone who does not belong to your account) is participating in the meeting/webinar. */
+              alert_guest_join?: boolean;
+              /** If the value of this field is set to `true`,  allow users to delete messages in the in-meeting chat.
+               */
+              allow_users_to_delete_messages_in_meeting_chat?: boolean;
+              /** Whether livestreaming is enabled. */
+              allow_live_streaming?: boolean;
+              /** Whether to allow participants to only chat with certain groups.
+* `1` - The participant cannot use chat.
+* `2` - Host and co-hosts only.
+ * `3` - The participant can chat with other participants publicly.
+* `4` - The participant can chat with other participants publicly and privately.
+
+**Note:** This setting is only available with client versions 5.7.3 and above. */
+              allow_participants_chat_with?: 1 | 2 | 3 | 4;
+              /** Show Zoom windows during screen share. */
+              allow_show_zoom_windows?: boolean;
+              /** Whether to allow participants to save meeting chats.
+               * `1` - Participants cannot save meeting chats.
+               * `2` - Participants can only save host and co-host meeting chats.
+               * `3` - Participants can save all meeting chats. */
+              allow_users_save_chats?: 1 | 2 | 3;
+              /** Allow participants to use annotation tools to add information to shared screens. */
+              annotation?: boolean;
+              /** Allow host to put attendee on hold.
+
+**This field has been deprecated and is no longer supported.** */
+              attendee_on_hold?: boolean;
+              /** Enable users to see and add contacts to 'auto-answer group' in the contact list on chat. Any call from members of this group will be automatically answered. */
+              auto_answer?: boolean;
+              /** Automatically save all in-meeting chats. */
+              auto_saving_chat?: boolean;
+              /** Allow host to split meeting participants into separate, smaller rooms. */
+              breakout_room?: boolean;
+              /** Whether the host can assign participants to breakout rooms when scheduling. This feature is **only** available in version 4.5.0 or higher. */
+              breakout_room_schedule?: boolean;
+              /** Allow meeting participants to send chat message visible to all participants. */
+              chat?: boolean;
+              /** Allow participants to ask questions for the host and participants to answer. */
+              meeting_question_answer?: boolean;
+              /** Allow host to type closed captions or assign a participant/third party device to add closed captions. */
+              closed_caption?: boolean;
+              /** Information about the group's closed captioning settings. */
+              closed_captioning?: {
+                  /** Whether to allow a live transcription service to transcribe meetings. */
+                  auto_transcribing?: boolean;
+                  /** Whether to allow the host to type closed captions or assign a participant or 3rd-party service to provide closed captioning. */
+                  enable?: boolean;
+                  /** Whether to allow participants to save closed captions or transcripts. */
+                  save_caption?: boolean;
+                  /** Whether to allow the use of an API token to integrate with 3rd-party closed captioning services. */
+                  third_party_captioning_service?: boolean;
+                  /** Whether to allow the viewing of full transcripts in the in-meeting side panel. */
+                  view_full_transcript?: boolean;
+              };
+              /** Allow the host to add co-hosts. Co-hosts have the same in-meeting controls as the host. */
+              co_host?: boolean;
+              /** If set to `true`, you can [select data center regions](https://support.zoom.us/hc/en-us/articles/360042411451-Selecting-data-center-regions-for-hosted-meetings-and-webinars) to be used by this group for hosting their real-time meeting and webinar traffic. These regions can be provided in the `data_center_regions` field. If set to `false`, the regions cannot be customized and the default regions will be used. */
+              custom_data_center_regions?: boolean;
+              /** Whether custom livestreaming is enabled. */
+              custom_live_streaming_service?: boolean;
+              /** The specific instructions to allow your account's meeting hosts to configure a custom livestream. */
+              custom_service_instructions?: string;
+              /** If the value of `custom_data_center_regions` is `true`, a comma-separated list of these [data center regions](https://support.zoom.us/hc/en-us/articles/360059254691-Datacenter-abbreviation-list) to opt in to.
+               * `AU` - Australia.
+               * `LA` - Latin America.
+               * `CA` - Canada.
+               * `CN` - China.
+               * `DE` - Germany.
+               * `HK` - Hong Kong SAR.
+               * `IN` - India.
+               * `IE` - Ireland.
+               * `TY` - Japan.
+               * `MX` - Mexico.
+               * `NL` - Netherlands.
+               * `SG` - Singapore.
+               * `US` - United States. */
+              data_center_regions?: (
+                  | 'AU'
+                  | 'LA'
+                  | 'CA'
+                  | 'CN'
+                  | 'DE'
+                  | 'HK'
+                  | 'IN'
+                  | 'IE'
+                  | 'TY'
+                  | 'MX'
+                  | 'NL'
+                  | 'SG'
+                  | 'US'
+              )[];
+              /** Whether to enable the **Disable desktop screen sharing for meetings you host** setting. */
+              disable_screen_sharing_for_host_meetings?: boolean;
+              /** Whether to enable the **Disable screen sharing when guests are in the meeting** setting. */
+              disable_screen_sharing_for_in_meeting_guests?: boolean;
+              /** Require that all meetings are encrypted using AES. */
+              e2e_encryption?: boolean;
+              /** Play sound when participants join or leave. */
+              entry_exit_chime?: 'host' | 'all' | 'none';
+              /** Allow another user to take control of the camera during a meeting. */
+              far_end_camera_control?: boolean;
+              /** Enable users to provide feedback to Zoom at the end of the meeting. */
+              feedback?: boolean;
+              /** Whether [in-meeting file transfer](https://support.zoom.us/hc/en-us/articles/209605493-In-meeting-file-transfer) setting has been enabled for the users in the group or not. */
+              file_transfer?: boolean;
+              /** Enable higher quality video for host and participants in Meeting. This will require more bandwidth. */
+              group_hd?: boolean;
+              /** Enable higher quality video for host and participants in Webinar. This will require more bandwidth. */
+              webinar_group_hd?: boolean;
+              /** Whether to allow participants to join a meeting directly from their desktop browser. Note that the meeting experience from the desktop browser is limited. */
+              join_from_desktop?: boolean;
+              /** Whether to allow participants to join a meeting directly from their mobile browser. Note that the meeting experience from the mobile browser is limited. */
+              join_from_mobile?: boolean;
+              /** Information about the [Translate captions](https://support.zoom.us/hc/en-us/articles/8158738379917-Managing-automated-captions-) settings in meetings. */
+              auto_generated_translation?: {
+                  /** Information about all spoken languages and translation languages in meetings. */
+                  language_item_pairList?: {
+                      /** A list of spoken languages and translation languages. */
+                      trans_lang_config?: {
+                          /** Language used in meetings. */
+                          speak_language?: {
+                              /** The language's name. */
+                              name?:
+                                  | 'Chinese (Simplified)'
+                                  | 'Dutch'
+                                  | 'English'
+                                  | 'French'
+                                  | 'German'
+                                  | 'Italian'
+                                  | 'Japanese'
+                                  | 'Korean'
+                                  | 'Portuguese'
+                                  | 'Russian'
+                                  | 'Spanish'
+                                  | 'Ukrainian';
+                              /** The language's code. */
+                              code?:
+                                  | 'zh'
+                                  | 'nl'
+                                  | 'en'
+                                  | 'fr'
+                                  | 'de'
+                                  | 'it'
+                                  | 'ja'
+                                  | 'ko'
+                                  | 'pt'
+                                  | 'ru'
+                                  | 'es'
+                                  | 'uk';
+                          };
+                          /** Information about all the translation languages. */
+                          translate_to?: {
+                              /** Whether to select all the translation languages. */
+                              all?: boolean;
+                              /** A list of the translation languages. */
+                              language_config?: {
+                                  /** The translation language's name. */
+                                  name?: 'English';
+                                  /** The translation language's code. */
+                                  code?: 'en';
+                              }[];
+                          };
+                      }[];
+                      /** Whether to select all spoken languages and translation languages */
+                      all?: boolean;
+                  };
+                  /** Whether to allow users to enable automated translated captions in these language pairs in meetings. */
+                  enable?: boolean;
+              };
+              /** Information about the [language interpretation](https://support.zoom.us/hc/en-us/articles/360034919791-Using-Language-Interpretation-in-your-meeting-or-webinar) settings. */
+              language_interpretation?: {
+                  /** A list of user-defined supported languages. */
+                  custom_languages?: string[];
+                  /** Whether to enable language interpretation by default. */
+                  enable_language_interpretation_by_default?: boolean;
+                  /** Whether to allow participants to speak in listening channel. */
+                  allow_participants_to_speak_in_listening_channel?: boolean;
+                  /** Whether to allow up to 25 custom languages when scheduling meetings. */
+                  allow_up_to_25_custom_languages_when_scheduling_meetings?: boolean;
+                  /** Whether to allow hosts to assign participants as interpreters who can interpret one language into another in real-time. */
+                  enable?: boolean;
+              };
+              /** Allow hosts to assign participants as sign language interpreters who can interpret one language into sign language in real-time. Hosts can assign interpreters when scheduling, or during the meeting itself. This feature is only available with version 5.11.3 or later. */
+              sign_language_interpretation?: {
+                  /** Whether to allow hosts to assign participants as sign language interpreters who can interpret one language into another in real-time. */
+                  enable?: boolean;
+                  /** Whether to enable sign language interpretation view by default in scheduler. */
+                  enable_sign_language_interpretation_by_default?: boolean;
+                  /** A list of user-defined supported languages. */
+                  custom_languages?: string[];
+              };
+              /** Whether Facebook livestreaming is enabled. */
+              live_streaming_facebook?: boolean;
+              /** Whether YouTube livestreaming is enabled. */
+              live_streaming_youtube?: boolean;
+              manual_captioning?: {
+                  /** Allow host to type or assign a participant to type. */
+                  allow_to_type?: boolean;
+                  /** Whether to allow a live transcription service to transcribe meetings. */
+                  auto_generated_captions?: boolean;
+                  /** Whether to allow the viewing of full transcripts in the in-meeting side panel. */
+                  full_transcript?: boolean;
+                  /** Allow host to type closed captions or assign a participant/third party device to add closed captions. */
+                  manual_captions?: boolean;
+                  /** Whether participants can save closed captions or transcripts. */
+                  save_captions?: boolean;
+                  /** Whether to allow the use of an API token to integrate with 3rd-party closed captioning services. */
+                  third_party_captioning_service?: boolean;
+              };
+              /** Whether meeting participants can [communicate using the emoji reactions](https://support.zoom.us/hc/en-us/articles/115001286183-Nonverbal-feedback-and-meeting-reactions) located in the **Reactions** menu in the meeting toolbar. */
+              meeting_reactions?: boolean;
+              /** Choose from these meeting reaction options.
+               * `all` - All emojis: Allow meeting participants to use any emoji available in Zoom chat as a reaction in a meeting.
+               * `selected` - Selected emojis: Allow meeting participants to use the 6 standard meeting reaction emojis: Clapping Hands, Thumbs Up, Heart, Tears of Joy, Open Mouth, Party Popper (Tada, Celebration)  */
+              meeting_reactions_emojis?: 'all' | 'selected';
+              /** Whether to allow hosts and panelists to use audible clap. */
+              allow_host_panelists_to_use_audible_clap?: boolean;
+              /** Set this field to `true` to use [webinar reactions](https://support.zoom.us/hc/en-us/articles/4803536268429). */
+              webinar_reactions?: boolean;
+              /** Whether to allow the host to present a survey to participants once a meeting has ended. This feature is only available in version 5.7.3 or higher. */
+              meeting_survey?: boolean;
+              /** Allow participants in a meeting can provide nonverbal feedback and express opinions by clicking on icons in the Participants panel. */
+              non_verbal_feedback?: boolean;
+              /** Show the list of H.323/SIP devices only to the host. */
+              only_host_view_device_list?: boolean;
+              /** Allow users to select original sound during a meeting. */
+              original_audio?: boolean;
+              /** Add 'Polls' to the meeting controls. This allows the host to survey the attendees. */
+              polling?: boolean;
+              /** Display end-of-meeting experience feedback survey. */
+              post_meeting_feedback?: boolean;
+              /** Allow meeting participants to send a private 1:1 message to another participant. */
+              private_chat?: boolean;
+              /** When each participant joins by telephone, allow the option to record and play their own voice as entry and exit chimes. */
+              record_play_own_voice?: boolean;
+              /** During screen sharing, allow the person who is sharing to let others control the shared content. */
+              remote_control?: boolean;
+              /** Allow meeting host to provide 1:1 remote support to another participant. */
+              remote_support?: boolean;
+              /** Indicate whether the [**Request permission to unmute participants**](https://support.zoom.us/hc/en-us/articles/203435537-Muting-and-unmuting-participants-in-a-meeting#h_01EGK4XFWS1SJGZ71MYGKF7260) option should be enabled for the group or not. */
+              request_permission_to_unmute_participants?: boolean;
+              /** Allow host and participants to share their screen or content during meetings. */
+              screen_sharing?: boolean;
+              /** Allow users to invite participants by email only by default. */
+              sending_default_email_invites?: boolean;
+              /** Whether to allow participants to join a meeting directly from their browser and bypass the Zoom application download process. This is useful for participants who cannot download, install, or run applications. Note that the meeting experience from the browser is limited. */
+              show_a_join_from_your_browser_link?: boolean;
+              /** Allow participants to join a meeting directly from their browser. */
+              show_browser_join_link?: boolean;
+              /** Show the list of H.323/SIP devices. */
+              show_device_list?: boolean;
+              /** Always show meeting controls during a meeting. */
+              show_meeting_control_toolbar?: boolean;
+              /** Whether the person sharing during a presentation can allow others to control the slide presentation. This feature is only available in version 5.8.3 or higher. */
+              slide_control?: boolean;
+              /** Allow users to select stereo audio during a meeting. */
+              stereo_audio?: boolean;
+              /** Allow HTML formatting instead of plain text for meeting invitations scheduled with the Outlook plugin. */
+              use_html_format_email?: boolean;
+              /** Enable virtual backgrounds. */
+              virtual_background?: boolean;
+              /** Attendees cannot join a meeting until a host admits them individually from the waiting room. */
+              waiting_room?: boolean;
+              webinar_chat?: {
+                  /** Allow webinar attendees to chat witn others in the webinar.
+                   * `1` - No one.
+                   * `2` - Host and all panelists.
+                   * `3` - Everyone. */
+                  allow_attendees_chat_with?: 1 | 2 | 3;
+                  /** Whether to automatically save chat messages to a local file on the host's computer when the webinar ends. */
+                  allow_auto_save_local_chat_file?: boolean;
+                  /** Allow webinar panelists to chat with others in the webinar.
+                   * `1` - Host and all panelists.
+                   * `2` - Everyone. */
+                  allow_panelists_chat_with?: 1 | 2;
+                  /** Whether to allow webinar panelists to send direct messages to other panelists. */
+                  allow_panelists_send_direct_message?: boolean;
+                  /** Whether webinar attendees can save chats.
+                   * `0` - Attendees cannot save chats.
+                   * `1` - Attendees can only save host and panelist chats.
+                   * `2` - Attendees can save all chats. */
+                  allow_users_save_chats?: 0 | 1 | 2;
+                  /** By default, who to allow webinar attendees to chat with.
+                   * `1` - Host and all panelists.
+                   * `2` - Everyone. */
+                  default_attendees_chat_with?: 1 | 2;
+                  /** Whether to allow webinar participants to send chat messages. */
+                  enable?: boolean;
+              };
+              webinar_live_streaming?: {
+                  /** The specific instructions to allow your account's meeting hosts to configure a custom livestream. */
+                  custom_service_instructions?: string;
+                  /** Whether webinar livestreaming is enabled. */
+                  enable?: boolean;
+                  /** Whether to notify users to watch the livestream. This does not apply to custom RTMP (real-time messaging protocol). */
+                  live_streaming_reminder?: boolean;
+                  /** The available livestreaming services.
+                   * `facebook`
+                   * `workplace_by_facebook`
+                   * `youtube`
+                   * `custom_live_streaming_service` */
+                  live_streaming_service?: (
+                      | 'facebook'
+                      | 'workplace_by_facebook'
+                      | 'youtube'
+                      | 'custom_live_streaming_service'
+                  )[];
+              };
+              /** Information about the account's meeting polling settings. */
+              meeting_polling?: {
+                  /** Whether to allow the host to add polls before or during a meeting. */
+                  enable?: boolean;
+                  /** Whether to allow host to create advanced polls and quizzes. Advanced polls and quizzes include single choice, multiple choice, drop down, matching, short answer, long answer, rank order, and fill-in-the-blank questions. Hosts can also set the correct answers for quizzes they create. */
+                  advanced_polls?: boolean;
+                  /** Whether to allow users to manage saved polls and quizzes from meetings. */
+                  manage_saved_polls_and_quizzes?: boolean;
+                  /** Whether to require answers to be anonymous. */
+                  require_answers_to_be_anonymous?: boolean;
+                  /** Whether to allow host to upload an image for each question. */
+                  allow_host_to_upload_image?: boolean;
+                  /** Whether to allow alternative hosts to add or edit polls and quizzes. */
+                  allow_alternative_host_to_add_edit?: boolean;
+              };
+              webinar_polling?: {
+                  /** Whether to allow host to create advanced polls and quizzes. Advanced polls and quizzes include single choice, multiple choice, drop down, matching, short answer, long answer, rank order, and fill-in-the-blank questions. Hosts can also set the correct answers for quizzes they create. */
+                  advanced_polls?: boolean;
+                  /** Whether to allow alternative hosts to add or edit polls and quizzes. */
+                  allow_alternative_host_to_add_edit?: boolean;
+                  /** Whether to allow users to manage saved polls and quizzes from Webinars */
+                  manage_saved_polls_and_quizzes?: boolean;
+                  /** Whether to require answers to be anonymous. */
+                  require_answers_to_be_anonymous?: boolean;
+                  /** Whether to allow host to upload an image for each question. */
+                  allow_host_to_upload_image?: boolean;
+                  /** Whether to allow the host to add polls before or during a webinar. */
+                  enable?: boolean;
+              };
+              /** Whether attendees can ask the host and panelists questions in the webinar. */
+              webinar_question_answer?: boolean;
+              /** Whether to allow the host to present surveys to attendees once a webinar has ended. */
+              webinar_survey?: boolean;
+              /** Allow participants to share a whiteboard that includes annotation tools. */
+              whiteboard?: boolean;
+              /** Indicates who can share their screen or content during meetings. The value can be one of the following:   
+ 
+`host`: Only host can share the screen.  
+ 
+`all`: Both hosts and attendees can share their screen during meetings. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              who_can_share_screen?: 'host' | 'all';
+              /** Indicates who is allowed to start sharing screen when someone else in the meeting is sharing their screen. The value can be one of the following:  
+ 
+`host`: Only a host can share the screen when someone else is sharing.  
+ 
+`all`: Anyone in the meeting is allowed to start sharing their screen when someone else is sharing. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              who_can_share_screen_when_someone_is_sharing?: 'host' | 'all';
+              /** Indicates how many participants can share at the same time. The value can be one of the following:  
+ 
+`one`: Only one participant can share at a time
+.  
+ 
+`multiple`: Multiple participants can share simultaneously (dual monitors recommended)
+. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              participants_share_simultaneously?: 'multiple' | 'one';
+              /** Whether Workplace by Facebook is enabled. */
+              workplace_by_facebook?: boolean;
+          };
+          other_options?: {
+              /** Whether to display the Zoom help badge on the bottom-right of the page. */
+              allow_users_contact_support_via_chat?: boolean;
+              /** Whether iOS blurs the screenshot in the task switcher when multiple apps are open. Android hides the screenshot in the system-level list of recent apps. */
+              blur_snapshot?: boolean;
+              /** Webinar registration options. */
+              webinar_registration_options?: {
+                  /** Allow host to enable **Show join info on registration confirmation page**. */
+                  allow_host_to_enable_join_info?: boolean;
+                  /** Allow host to enable **Show social share buttons on registration page**. */
+                  allow_host_to_enable_social_share_buttons?: boolean;
+                  /** Enable custom questions. */
+                  enable_custom_questions?: boolean;
+              };
+          };
+          profile?: {
+              recording_storage_location?: {
+                  /** Users can choose the country to store their recorded content. Content can include meeting, webinar, and phone recordings, as well as voicemail, transcripts, and custom greeting prompts. See [Managing the Communications Content storage location](https://support.zoom.us/hc/en-us/articles/360050781131) for details.
+
+Provide abbreviated country codes as the value for this field. See the [Countries abbreviation list](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) for details. */
+                  allowed_values?: string[];
+                  /** Abbreviated country code. */
+                  value?: string;
+              };
+          };
+          recording?: {
+              /** Make cloud recordings accessible to account members only. */
+              account_user_access_recording?: boolean;
+              /** [Archiving solution](https://support.zoom.us/hc/en-us/articles/360050431572-Archiving-Meeting-and-Webinar-data) settings. This setting can only be used if you have been granted archiving solution access by the Zoom Support team. */
+              archive?: {
+                  /** Enable the archiving feature. */
+                  enable?: boolean;
+                  settings?: {
+                      /** Include in-meeting or in-webinar audio in the archive. */
+                      audio_file?: boolean;
+                      /** Include closed caption or transcript in the archive. */
+                      cc_transcript_file?: boolean;
+                      /** Include in-meeting chat in the archive. */
+                      chat_file?: boolean;
+                      /** Include user email in in-meeting chat file. */
+                      chat_with_sender_email?: boolean;
+                      /** Include in-meeting or in-webinar video in the archive. */
+                      video_file?: boolean;
+                  };
+                  /** Archive types.
+
+* `1` - Only meetings are archived.  
+ 
+* `2` - Only webinars are archived.  
+ 
+* `3` - Both meetings and webinars are archived. */
+                  type?: 1 | 2 | 3;
+              };
+              /** Record meetings automatically as they start. */
+              auto_recording?: string;
+              /** Allow hosts to record and save the meeting or webinar in the cloud. */
+              cloud_recording?: boolean;
+              /** Allow anyone with a link to the cloud recording to download. */
+              cloud_recording_download?: boolean;
+              /** Allow only the host with a link to the cloud recording to download. */
+              cloud_recording_download_host?: boolean;
+              /** Allow the host to delete the recordings. If this option is disabled, the recordings cannot be deleted by the host and only admin can delete them. */
+              host_delete_cloud_recording?: boolean;
+              /** The account's [**Record active speaker, gallery view and shared screen separately**](https://support.zoom.us/hc/en-us/articles/360060316092-Changing-basic-and-advanced-cloud-recording-settings#h_01F4CYJTCTXNS2MXH00W9EFG6R) settings. */
+              record_files_separately?: {
+                  /** Whether recording only the active speaker is enabled. */
+                  active_speaker?: boolean;
+                  /** Whether recording only the gallery view is enabled. */
+                  gallery_view?: boolean;
+                  /** Whether recording only shared screen is enabled. */
+                  shared_screen?: boolean;
+              };
+              /** Whether participants' names display in the recording. */
+              display_participant_name?: boolean;
+              /** Whether thumbnails of the presenter are recorded when they are sharing their screen. */
+              recording_thumbnails?: boolean;
+              /** Whether recordings will be optimized for a 3rd party video editor. This can increase the file size and the time it takes to generate recording files. */
+              optimize_recording_for_3rd_party_video_editor?: boolean;
+              /** Whether the [recording highlights](https://support.zoom.us/hc/en-us/articles/360060802432) feature is enabled. */
+              recording_highlight?: boolean;
+              /** Whether panelist chats are saved to the recording. */
+              save_panelist_chat?: boolean;
+              /** Whether poll results shared during the meeting or webinar are saved. This also includes poll results shared during the meeting or webinar. */
+              save_poll_results?: boolean;
+              /** Whether [closed captions](https://support.zoom.us/hc/en-us/articles/207279736) are saved as a VTT (Video Track Text) file. */
+              save_close_caption?: boolean;
+              /** Setting to allow cloud recording access only from specific IP address ranges.
+               */
+              ip_address_access_control?: {
+                  /** If set to `true`, this account's the cloud recordings can only be accessed by the IP addresses defined in the `ip_addresses_or_ranges` property.
+
+ */
+                  enable?: boolean;
+                  /** IP addresses or ranges that have access to the cloud recordings. Separate multiple IP ranges with comma. Use `n.n.n.n`, `n.n.n.n/n` or `n.n.n.n - n.n.n.n` syntax where n is a number.
+
+Examples: `46.33.24.184, 48.99.100.2/25` or `200.181.108.17 - 220.181.108.157`
+
+ */
+                  ip_addresses_or_ranges?: string;
+              };
+              /** Allow hosts and participants to record the meeting to a local file. */
+              local_recording?: boolean;
+              /** all sub-options for local recording */
+              local_recording_options?: {
+                  /** Internal meeting participants */
+                  internal_meeting_participants?: boolean;
+                  /** Auto approve their permission requests */
+                  internal_auto_approve_requests?: boolean;
+                  /** External meeting participants */
+                  external_meeting_participants?: boolean;
+                  /** Auto approve their permission requests */
+                  external_auto_approve_requests?: boolean;
+                  /** Meeting participants with specified domains */
+                  participants_with_specified_domains?: boolean;
+                  /** Enter the domain information */
+                  participants_with_specified_domains_content?: string;
+                  /** Auto approve their permission requests */
+                  participants_specified_domains_auto_approve_requests?: boolean;
+                  /** Save chat messages from the meeting / webinar */
+                  save_chat_messages?: boolean;
+                  /** Save closed caption as a VTT file */
+                  save_closed_caption?: boolean;
+              };
+              /** If set to `true`, meeting hosts can't view their meeting cloud recordings. Only the admins who have recording management privilege can access them.
+
+ */
+              prevent_host_access_recording?: boolean;
+              /** Whether to record one audio file for all participants. */
+              record_audio_file?: boolean;
+              /** When someone is sharing their screen, active speaker will show on the top right corner of the shared screen. */
+              record_gallery_view?: boolean;
+              /** Record active speaker with shared screen. */
+              record_speaker_view?: boolean;
+              /** Automatically transcribe the audio of a meeting or webinar for cloud recordings. */
+              recording_audio_transcript?: boolean;
+              /** By selecting this option, your recording will have meeting smart chapters, and next steps. You are directing Zoom to access, process, and use your account's recording data for the purpose of analysis and insights. */
+              smart_recording?: {
+                  /** By selecting this option, meeting details in the audio transcript will be highlighted. Hosts can modify highlighted sections and generate a video summary (highlighted sections may have a 3-second offset) based on these sections. The summary is for informational purposes only and may not be complete. */
+                  create_recording_highlights?: boolean;
+                  /** By selecting this option, your recording will have chapters with overview. Hosts can edit the chapters. */
+                  create_smart_chapters?: boolean;
+                  /** By selecting this option, there will be a summary of actions to take after the recorded meeting. */
+                  create_next_steps?: boolean;
+              };
+              /** Save chat messages from the meeting or webinar. */
+              save_chat_text?: boolean;
+              /** Add a timestamp to the recording. */
+              show_timestamp?: boolean;
+              /** You can update the setting name: Recording notifications - Zoom clients */
+              recording_notification_for_zoom_client?: {
+                  /** This field updates child setting name is [Show a disclaimer to participants when a recording starts]. All participants or Guest only. */
+                  disclaimer_to_participants?:
+                      | 'All participants'
+                      | 'Guest only';
+                  /** This field updates child setting name is [Play voice prompt for]. All participants or Guest only or No one */
+                  play_voice_prompt?:
+                      | 'All participants'
+                      | 'Guest only'
+                      | 'No one';
+                  /** This field updates the child setting name is [Ask host to confirm before starting a recording], true: enable, false: disable */
+                  ask_host_to_confirm?: boolean;
+              };
+              /** Viewers can see the transcript */
+              viewer_see_transcript?: boolean;
+              /** Viewers see chat */
+              viewer_see_chat?: boolean;
+              /** Allow 3rd-party recording */
+              allow_cmr_3rd_party_bot?: boolean;
+              /** Upload recording to the cloud */
+              upload_recording?: boolean;
+              /** add water marker for recording */
+              water_marker_recording?: boolean;
+              /** Allow users to retain, access,and manage transcripts generated by AI Companion features for use by other AI Companion services. */
+              durable_meeting_transcript?: {
+                  /** Main setting value */
+                  durable_meeting_transcript?: boolean;
+                  /** Allow hosts to access and manage transcripts */
+                  allow_host_access_meeting_transcript?: boolean;
+              };
+              /** Allow cloud recording sharing */
+              allow_share?: boolean;
+              /** Require users to authenticate before viewing cloud recordings */
+              authenticated_view_cloud_recoding?: {
+                  /** Main setting value */
+                  authenticated_can_view_cloud_recordings?: boolean;
+                  /** Default authentication option */
+                  default_authenticate_content?:
+                      | 'Signed-in users in my account'
+                      | 'Sign in to Zoom'
+                      | 'Sign in to Zoom with specified domains'
+                      | 'Sign in to external Single Sign-On (SSO)'
+                      | 'Only people with access';
+              };
+              /** Embed passcode in the shareable link for one-click access */
+              embed_passcode_in_shareable_link?: boolean;
+              /** Allow invitees to access recordings without the passcode */
+              allow_invitees_access_recordings_without_passcode?: boolean;
+              /** Set recording as on-demand by default */
+              recording_as_on_demand?: boolean;
+              /** Push notification to subscription URL when a cloud recording is available */
+              notification_subscription_url_when_recording_available?: boolean;
+              /** Recording notifications - Phone users */
+              recording_notifications_phone_users?: {
+                  /** Require phone-only users to press 1 to consent to being recorded */
+                  require_press_one_consent_to_record?: boolean;
+                  /** Multiple notifications for phone users */
+                  multiple_notifications_phone_users?: boolean;
+              };
+              /** When the cloud recording is going to be permanently deleted from trash */
+              cloud_recording_permanently_deleted?: {
+                  /** Main setting value */
+                  cloud_recording_permanently_deleted_from_trash?: boolean;
+                  /** Selected email reminder */
+                  email_reminder_type?:
+                      | '7 days before deletion'
+                      | 'Weekly digest on Monday';
+              };
+              /** Recording storage email notifications */
+              recording_storage_email_notifications?: boolean;
+              /** Allow users to add cloud recordings to Zoom Clips */
+              allow_add_cloud_recordings_to_zoom_clips?: boolean;
+              /** Allow Zoom Revenue Accelerator to manage recording files with separate auto-delete settings */
+              allow_revenue_accelerator_manage_recording_separate_auto_delete?: boolean;
+          };
+          schedule_meeting?: {
+              /** Determine how participants can join the audio portion of the meeting. */
+              audio_type?: string;
+              /** If the value is set to `true`, the meeting passcode will be encrypted and included in the join meeting link to allow participants to join with just one click without having to enter the passcode.
+               */
+              embed_password_in_join_link?: boolean;
+              /** If join before host option is enabled for a personal meeting, then enforce passcode requirement. */
+              force_pmi_jbh_password?: boolean;
+              /** Start meetings with host video on. */
+              host_video?: boolean;
+              /** Allow participants to join the meeting before the host arrives */
+              join_before_host?: boolean;
+              /** Automatically mute all participants when they join the meeting. */
+              mute_upon_entry?: boolean;
+              /** Start meetings with participant video on. */
+              participant_video?: boolean;
+              /** Generate and send new passcodes for newly scheduled or edited meetings. */
+              pstn_password_protected?: boolean;
+              /** Require passcode from all participants before joining a meeting. */
+              require_password_for_all_meetings?: boolean;
+              /** If enabled, a random passcode will be generated on the user's end who starts the instant meeting. Other participants will have to enter the passcode to join the meeting. If you use personal meeting ID (PMI) for your instant meetings, this option will be disabled. */
+              require_password_for_instant_meetings?: boolean;
+              /** Indicates whether a passcode is required for [PMI](https://support.zoom.us/hc/en-us/articles/203276937-Using-Personal-Meeting-ID-PMI-) meetings or not. 
+ 
+`none` - Do not require passcode for PMI meetings.  
+  
+`all` - Require participants to enter passcode for all PMI enabled meetings.  
+  `jbh_only`: Require passcode only for meetings where the **join before host** setting is enabled. */
+              require_password_for_pmi_meetings?: 'all' | 'jbh_only' | 'none';
+              /** Require a passcode for meetings which have already been scheduled.
+               */
+              require_password_for_scheduled_meetings?: boolean;
+              /** This setting applies for regular meetings that do not use PMI. If enabled, a passcode will be generated while a host schedules a new meeting and participants will be required to enter the passcode before they can join the meeting.  */
+              require_password_for_scheduling_new_meetings?: boolean;
+              /** Receive desktop notification for upcoming meetings. */
+              upcoming_meeting_reminder?: boolean;
+              /** Information about the [**Always display `Zoom Meeting` as the meeting topic**](https://support.zoom.us/hc/en-us/articles/201363253-Changing-account-settings#h_01EG9BJ646V2WJK1S3H2MP6YV6) setting. */
+              always_display_zoom_meeting_as_topic?: {
+                  /** Whether to enable the **Always display `Zoom Meeting` as the meeting topic** setting. */
+                  enable?: boolean;
+                  /** Whether to display **Zoom Meeting** as the topic for already-scheduled meetings. */
+                  display_topic_for_scheduled_meetings?: boolean;
+              };
+              /** Information about the [**Always show `Zoom Webinar` as the webinar topic**](https://support.zoom.us/hc/en-us/articles/201363253-Changing-account-settings#h_01EG9BJ646V2WJK1S3H2MP6YV6) setting. */
+              always_display_zoom_webinar_as_topic?: {
+                  /** Whether to enable the **Always show `Zoom Webinar` as the webinar topic** setting. */
+                  enable?: boolean;
+                  /** Whether to display **Zoom Webinar** as the topic for already-scheduled meetings. */
+                  display_topic_for_scheduled_webinars?: boolean;
+              };
+              /** Information about the **Enable continuous meeting chat** feature. */
+              continuous_meeting_chat?: {
+                  /** Whether to enable the **Enable continuous meeting chat** setting. */
+                  enable?: boolean;
+                  /** Whether to enable the **External users can be added** setting. */
+                  can_add_external_users?: boolean;
+                  /** Whether to enable the **Automatically add invited external users** setting. */
+                  auto_add_invited_external_users?: boolean;
+              };
+          };
+          /** Group Settings: Telephony. */
+          telephony?: {
+              /** Third party audio conference info. */
+              audio_conference_info?: string;
+              /** Allow users to join the meeting using the existing 3rd party audio configuration. */
+              third_party_audio?: boolean;
+          };
+          /** The account's chat settings. */
+          chat?: {
+              /** Users can share files in chats and channels. */
+              share_files?: {
+                  /** Allow users of this account to send and receive files in chats and channels. When disabled, users can still take and share screenshots. */
+                  enable?: boolean;
+                  /** Allow users of this account to send and receive files in chats and channels. When disabled, users can still take and share screenshots. */
+                  share_option?: 'anyone' | 'account' | 'organization';
+              };
+              /** Chat emojis. */
+              chat_emojis?: {
+                  /** Allow users to use the emoji library in direct messages or group conversations. Choose between allowing users to use any emoji in the library, or choose to allow only pre-selected emojis. If the setting is disabled, users can still use keyboard shortcuts to add emojis. Users can change their emoji skin tone in Settings. */
+                  enable?: boolean;
+                  emojis_option?: 'all' | 'selected';
+              };
+              /** Allow users to record voice messages that can be sent in direct messages or group conversations. */
+              record_voice_messages?: boolean;
+              /** Allow users to record video messages that can be sent in direct messages or group conversations. If the file share setting is disabled, they will not be able to record and send video messages. */
+              record_video_messages?: boolean;
+              /** Allow users to take and send screenshots in direct messages or group conversations. */
+              screen_capture?: boolean;
+              /** Allow users to create public channels. */
+              create_public_channels?: boolean;
+              /** Allow users to create private channels. */
+              create_private_channels?: boolean;
+              /** Share links to messages and channels in Team Chat. */
+              share_links_in_chat?: boolean;
+              /** Schedule a meeting from chat or channel. */
+              schedule_meetings_in_chat?: boolean;
+              /** Set retention period for messages and files in Zoom's cloud. */
+              set_retention_period_in_cloud?: {
+                  /** By default, messages and files are stored in Zoom's cloud. Enable this setting to specify when they are deleted. When retention is disabled, messages sent by offline users can be received within 7 days before they are deleted. */
+                  enable?: boolean;
+                  /** Delete direct messages and group conversations after retention period. 'y' - year, 'm' - month, 'd' - day */
+                  retention_period_of_direct_messages_and_group_conversation?: string;
+                  /** Delete data in channels after retention period. 'y' - year, 'm' - month, 'd' - day */
+                  retention_period_of_channels?: string;
+              };
+              /** Store messages on local devices, excluding personal channel messages. */
+              set_retention_period_in_local?: {
+                  /** Specify how long your messages are saved on local devices. If this setting is disabled, messages are never deleted locally. */
+                  enable?: boolean;
+                  /** Delete direct messages and group conversations after retention period. 'y' - year, 'm' - month, 'd' - day */
+                  retention_period_of_direct_messages_and_group_conversation?: string;
+                  /** Delete data in channels after retention period. 'y' - year, 'm' - month, 'd' - day */
+                  retention_period_of_channels?: string;
+              };
+              /** Allow users to search others, when selecting multiple items, separate them with commas.
+               * ''-none.
+               * '1' - In the same account.
+               * '2' - Under the same master account, including all sub acounts.
+               * '3' - Under the same organization. */
+              allow_users_to_search_others_options?: string;
+              /** Allow users to add contacts. */
+              allow_users_to_add_contacts?: {
+                  /** By disabling this setting, users will not be able to add contacts. */
+                  enable?: boolean;
+                  /** The type of allowing users to add contacts:
+                   * 1 - Anyone (internal and external contacts).
+                   * 2 - In the same organization.
+                   * 3 - In the same organization and specified domains.
+                   * 4 - In the same organization and specified users. */
+                  selected_option?: 1 | 2 | 3 | 4;
+                  /** The domains or emails (internal or external).
+                   * When the `selected_option` field value is `3`, the value is internal or external domains. Use a comma to separate multiple domains. Example: company.com.
+                   * When the `selected_option` field value is `4`, the value is internal or external email addresses. Use a comma to separate multiple emails. */
+                  user_email_addresses?: string;
+              };
+              /** Allow users to chat with others. */
+              allow_users_to_chat_with_others?: {
+                  /** If you select 'In the same organization', users may still be able to chat with external users if they are added to channels or group chats with external users. */
+                  enable?: boolean;
+                  /** The type of allowing users to add contacts:
+                   * 1 - Anyone (internal and external contacts).
+                   * 2 - In the same organization.
+                   * 3 - In the same organization and specified domains.
+                   * 4 - In the same organization and specified users. */
+                  selected_option?: 1 | 2 | 3 | 4;
+                  /** The domains or emails (internal or external).
+                   * When the `selected_option` field value is `3`, the value is internal or external domains. Use a comma to separate multiple domains. Example: company.com.
+                   * When the `selected_option` field value is `4`, the value is internal or external email addresses. Use a comma to separate multiple emails. */
+                  user_email_addresses?: string;
+              };
+              /** Information about the **Chat Etiquette** Tool. */
+              chat_etiquette_tool?: {
+                  /** Whether to enable the **Chat Etiquette Tool**. This value defaults to `false`. 
+
+ The **Chat Etiquette Tool** allows you to define specific keywords and text patterns in chat to prevent users from inadvertently sharing unwanted messages. */
+                  enable?: boolean;
+                  /** Information about the defined **Chat Etiquette Tool** policies. */
+                  policies?: {
+                      /** The policy ID. */
+                      id?: string;
+                      /** The policy's current status:
+                       * `activated` - Activated.
+                       * `deactivated` - Deactivated. */
+                      status?: 'activated' | 'deactivated';
+                  }[];
+              };
+              /** Send data to third-party archiving service. */
+              send_data_to_third_party_archiving_service?: {
+                  /** Allow users to send data to third-party archiving service. */
+                  enable?: boolean;
+              };
+              /** Allow users to translate team chat messages. [Learn more].(https://support.zoom.us/hc/en-us/articles/12998089084685) */
+              translate_messages?: boolean;
+              /** Allow users to search GIF images from GIPHY when they compose messages. See GIPHY's website for more information about content ratings. */
+              search_and_send_animated_gif_images?: {
+                  /** Whether to allow users to search GIF images from GIPHY when they compose messages. */
+                  enable?: boolean;
+              };
+          };
+      }
+    | {
+          /** Meeting Authentication Options */
+          authentication_option?: {
+              /** Authentication action */
+              action?: 'update' | 'show' | 'hide';
+              /** Authentication default option */
+              default_option?: boolean;
+              /** Authentication domains */
+              domains?: string;
+              /** Authentication id */
+              id?: string;
+              /** Authentication name */
+              name?: string;
+              /**  Authentication type. Specify one of the following authentication types for the authentication profile:  
+ 
+ * `enforce_login`: This option allows any users to join the meeting or webinar, as long as they are signed into their Zoom account.
+ * `enforce_login_with_domains`: This option, allows you to specify a rule so that only those Zoom users whose email addresses contain a certain domain, can join the meeting or webinar. You can either add multiple domains using a comma in between and/or use a wildcard for listing domains.  
+ 
+ * `enforce_login_with_same_account`: This option allows users to join the meeting or webinar with the same Zoom account. */
+              type?:
+                  | 'enforce_login'
+                  | 'enforce_login_with_same_account'
+                  | 'enforce_login_with_domains';
+          };
+          /** Only authenticated users can join meetings */
+          meeting_authentication?: boolean;
+      }
+    | {
+          /** Authentication Options */
+          authentication_option?: {
+              /** Authentication action */
+              action?: 'update' | 'show' | 'hide';
+              /** Authentication default option */
+              default_option?: boolean;
+              /** Authentication domains */
+              domains?: string;
+              /** Authentication id */
+              id?: string;
+              /** Authentication name */
+              name?: string;
+              /** Authentication type */
+              type?:
+                  | 'internally'
+                  | 'enforce_login'
+                  | 'enforce_login_with_domains';
+          };
+          /** Only authenticated users can view cloud recordings */
+          recording_authentication?: boolean;
+      }
+    | {
+          meeting_security?: {
+              /** Whether to require that all meetings are secured with at least one security option. 
+
+ This setting can only be disabled by Enterprise, ISV, Business (with more than 100 licenses), and Education accounts. */
+              auto_security?: boolean;
+              /** Whether to block users in specific domains from joining meetings and webinars. */
+              block_user_domain?: boolean;
+              /** The domain to block, up to 20 domains. For example, the `*.example.com` domain. */
+              block_user_domain_list?: string[];
+              /** Information about the **Chat Etiquette** Tool. */
+              chat_etiquette_tool?: {
+                  /** Whether to enable the **Chat Etiquette Tool**. This value defaults to `false`. 
+
+ The **Chat Etiquette Tool** allows you to define specific keywords and text patterns in chat to prevent users from inadvertently sharing unwanted messages. */
+                  enable?: boolean;
+                  /** Information about the defined **Chat Etiquette Tool** policies. */
+                  policies?: {
+                      /** The policy ID. */
+                      id?: string;
+                      /** The policy's current status:
+                       * `activated` - Activated.
+                       * `deactivated` - Deactivated. */
+                      status?: 'activated' | 'deactivated';
+                  }[];
+              };
+              /** Whether the meeting passcode will be encrypted and included in the invitation link. The provided link will allow participants to join the meeting without having to enter the passcode. */
+              embed_password_in_join_link?: boolean;
+              /** The type of encryption to use when starting a meeting:
+               * `enhanced_encryption` - Use enhanced encryption. Encryption data is stored in the cloud.
+               * `e2ee` - End-to-end encryption. The encryption key is stored on the local device and cannot be obtained by anyone else. Enabling E2EE also [**disables** certain features](https://support.zoom.us/hc/en-us/articles/360048660871), such as cloud recording, live streaming, and allowing participants to join before the host. */
+              encryption_type?: 'enhanced_encryption' | 'e2ee';
+              /** Whether to enable end-to-end encryption for meetings. If enabled, you can specify the type of encryption in the `encryption_type` field. */
+              end_to_end_encrypted_meetings?: boolean;
+              /** Whether all instant and scheduled meetings that users can join via client or Zoom Rooms systems are passcode-protected. [Personal Meeting ID (PMI)](https://support.zoom.us/hc/en-us/articles/203276937) meetings are **not** included in this setting. */
+              meeting_password?: boolean;
+              /** Information about the meeting and webinar [passcode requirements](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604). */
+              meeting_password_requirement?: {
+                  /** The maximum length of consecutive characters (for example, `abcdef`) allowed in a passcode.
+                   * `4` through `8` - The maximum consecutive characters length. The length is `n` minus `1`, where `n` is the provided value. For example, if you provide the `4` value, there can only be a maximum of `3` consecutive characters in a passcode, such as `abc1x@8fdh`.
+                   * `0` - Do not apply a consecutive character restriction. */
+                  consecutive_characters_length?: 0 | 4 | 5 | 6 | 7 | 8;
+                  /** Whether the passcode must contain at least one alphabetic character. */
+                  have_letter?: boolean;
+                  /** Whether the passcode must contain at least one numeric character. */
+                  have_number?: boolean;
+                  /** Whether the passcode must contain at least one special character. For example, `!`, `@`, and/or `#` characters. */
+                  have_special_character?: boolean;
+                  /** Whether the passcode must include uppercase and lowercase characters. */
+                  have_upper_and_lower_characters?: boolean;
+                  /** The passcode's minimum length. */
+                  length?: number;
+                  /** Whether the passcode must contain **only** numeric characters. */
+                  only_allow_numeric?: boolean;
+                  /** Whether users will be informed when the provided passcode is weak. */
+                  weak_enhance_detection?: boolean;
+              };
+              /** Whether to specify that only authenticated users can join the meeting from the web client. */
+              only_authenticated_can_join_from_webclient?: boolean;
+              /** Whether to require a passcode for participants joining by phone. 
+
+ If enabled and the meeting is passcode-protected, a numeric passcode is required for participants to join by phone. For meetings with alphanumeric passcodes, a numeric passcode will be generated. */
+              phone_password?: boolean;
+              /** Whether all PMI meetings that users can join via client or Zoom Rooms systems are passcode-protected. */
+              pmi_password?: boolean;
+              /** Whether to require a passcode for meetings that have already been scheduled. */
+              require_password_for_scheduled_meeting?: boolean;
+              /** Whether to require a passcode for webinars that have already been scheduled. */
+              require_password_for_scheduled_webinar?: boolean;
+              /** Whether participants are placed in the [**waiting room**](https://support.zoom.us/hc/en-us/articles/115000332726-Waiting-Room) when they join a meeting. 
+
+ If the **Waiting Room** feature is enabled, the [**Allow participants to join before host**](https://support.zoom.us/hc/en-us/articles/202828525-Allow-participants-to-join-before-host) setting is automatically disabled. */
+              waiting_room?: boolean;
+              /** Information about the waiting room settings. */
+              waiting_room_settings?: {
+                  /** The type of participants to be admitted to the waiting room.
+                   * `0` - All attendees.
+                   * `1` - Users who are not in your account.
+                   * `2` - Users who are not in your account and are not part of your [allowed domains list](https://support.zoom.us/hc/en-us/articles/360037117472-Configuring-authentication-profiles#h_e3cf0d5f-eec7-4c2a-ad29-ef2a5079a7da). */
+                  participants_to_place_in_waiting_room?: 0 | 1 | 2;
+                  /** The users who can admit participants from the waiting room.
+                   * `0` - Host and co-hosts only.
+                   * `1` - Host, co-hosts, and anyone who bypassed the waiting room if the host and co-hosts are not present. */
+                  users_who_can_admit_participants_from_waiting_room?: 0 | 1;
+                  /** If the `participants_to_place_in_waiting_room` field is `2`, a comma-separated list of the domains that can bypass the waiting room, such as `example.com,example2.com`. */
+                  whitelisted_domains_for_waiting_room?: string;
+              };
+              /** Whether to generate a passcode when scheduling webinars. Participants must use the generated passcode to join the scheduled webinar. */
+              webinar_password?: boolean;
+          };
+      };
+
 /** Update a live meeting message - Request body */
 export type ZoomApi$Update$Meeting$Chat$Message$By$Id$Request = {
     /** The content of the chat message. */
     message_content: string;
 };
+
+/** Update a user's presence status - Request body */
+export type ZoomApi$Update$Presence$Status$Request =
+    | {
+          /** The user's presence status. 
+* `Away`
+* `Available` 
+* `In_Calendar_Event` 
+* `Presenting` 
+* `In_A_Zoom_Meeting` 
+* `On_A_Call` 
+* `Out_of_Office`
+* `Busy`
+
+Users who are on Zoom Client with a version **lower than 5.3.0** can update the status from: 
+* `Away` to `Do_Not_Disturb` 
+* `Available` to `Do_Not_Disturb` 
+
+Users who are on **Zoom Client 5.3.0 or higher** can update the status from: 
+* `Do_Not_Disturb` to `Away`
+* `Do_Not_Disturb` to `Available` 
+* `Available` to `Away` 
+* `Away` to `Available` */
+          status:
+              | 'Away'
+              | 'Available'
+              | 'In_Calendar_Event'
+              | 'Presenting'
+              | 'In_A_Zoom_Meeting'
+              | 'On_A_Call'
+              | 'Out_of_Office'
+              | 'Busy';
+      }
+    | {
+          /** The user's presence status. 
+* `Do_Not_Disturb` 
+
+Users who are on Zoom client with a version **lower than 5.3.0** can update the status from: 
+* `Away` to `Do_Not_Disturb` 
+* `Available` to `Do_Not_Disturb` 
+
+Users who are on **Zoom client 5.3.0 or higher** can update the status from: 
+* `Do_Not_Disturb` to `Away`
+* `Do_Not_Disturb` to `Available` 
+* `Available` to `Away` 
+* `Away` to `Available` */
+          status: 'Do_No_Disturb';
+          /** If updating the user's status to `Do_Not_Disturb`, the duration that the status should remain as `Do_Not_Disturb`, in minutes. Duration value must be between 1 and 1440 minutes (24 hours). If duration is not set, the default value is 20 minutes. */
+          duration?: number;
+      };
 
 /** Update SIP phone - Request body */
 export type ZoomApi$Update$S$I$P$Phone$Phones$Request = {
@@ -7944,6 +11806,14 @@ export type ZoomApi$Update$Webinar$Branding$Name$Tag$Request = {
     set_default_for_all_panelists?: boolean;
 };
 
+/** Update a division - Request body */
+export type ZoomApi$Updateadivision$Request = {
+    /** The division's name. */
+    division_name?: string;
+    /** The division's description. */
+    division_description?: string;
+};
+
 /** Upgrade ZPA firmware or app - Request body */
 export type ZoomApi$Upgrade$Zpas$App$Request = {
     /** The ZDM group ID. */
@@ -7967,6 +11837,38 @@ export type ZoomApi$Upgrade$Zpas$App$Request = {
               /** Upgrade app. */
               upgrade_type: 'UPGRADE_APP';
           };
+};
+
+/** Upload Virtual Background files - Response */
+export type ZoomApi$Upload$Group$V$B$Response = {
+    /** The file's ID. */
+    id?: string;
+    /** Whether the file is the default Virtual Background file. */
+    is_default?: boolean;
+    /** The file's name. */
+    name?: string;
+    /** The file's size, in bytes. */
+    size?: number;
+    /** The file type. */
+    type?: string;
+};
+
+/** Upload Virtual Background files - Response */
+export type ZoomApi$Upload$V$Buser$Response = {
+    /** The virtual background file's ID. */
+    id?: string;
+    /** Whether the virtual background file is set as the default virtual background:
+     * `true` &mdash; The default virtual background.
+     * `false` &mdash; Not the default virtual background. */
+    is_default?: boolean;
+    /** The virtual background file's name. */
+    name?: string;
+    /** The virtual background file's size, in bytes. */
+    size?: number;
+    /** The virtual background file's file type:
+     * `image` &mdash; An image file.
+     * `video` &mdash; A video file. */
+    type?: 'image' | 'video';
 };
 
 /** Upload a webinar's branding virtual background - Response */
@@ -7997,6 +11899,324 @@ export type ZoomApi$Upload$Webinar$Branding$Wallpaper$Response = {
     type?: 'image';
 };
 
+/** Add assistants - Request body */
+export type ZoomApi$User$Assistant$Create$Request = {
+    /** List of user's assistants. */
+    assistants?: {
+        /** Assistant's email address. */
+        email?: string;
+        /** Assistant's user ID. */
+        id?: string;
+        /** The assistant can manage my private events. */
+        can_manage_host_private_event?: boolean;
+    }[];
+};
+
+/** Add assistants - Response */
+export type ZoomApi$User$Assistant$Create$Response = {
+    add_at?: string;
+    /** User ID. */
+    ids?: string;
+};
+
+/** List user assistants - Response */
+export type ZoomApi$User$Assistants$Response = {
+    /** List of the user's assistants. */
+    assistants?: {
+        /** Assistant's email address. */
+        email?: string;
+        /** Assistant's user ID. */
+        id?: string;
+        /** The assistant can manage my private events. */
+        can_manage_host_private_event?: boolean;
+    }[];
+};
+
+/** Create users - Request body */
+export type ZoomApi$User$Create$Request = {
+    /** The action to take to create the new user.
+     * `create` - The user receives an email from Zoom containing a confirmation link. The user must then use the link to activate their Zoom account. The user can then set or change their password.
+     * `autoCreate` - This action is for Enterprise customers with a managed domain. autoCreate creates an email login type for users.
+     * `custCreate` - Users created with this action do not have passwords and will **not** have the ability to log into the Zoom web portal or the Zoom client. These users can still host and join meetings using the `start_url` and `join_url` respectively. To use this option, you must [contact the Integrated Software Vendor (ISV) sales team](https://explore.zoom.us/en/isv/#isv).
+     * `ssoCreate` - This action is provided for the enabled &ldquo;Pre-provisioning SSO User&rdquo; option. A user created this way has no password. If it is **not** a Basic user, a personal vanity URL with the username (no domain) of the provisioning email is generated. If the username or PMI is invalid or occupied, it uses a random number or random personal vanity URL. */
+    action: 'create' | 'autoCreate' | 'custCreate' | 'ssoCreate';
+    user_info?: {
+        /** User email address. */
+        email: string;
+        /** The user's first name. Cannot contain more than 5 Chinese characters. */
+        first_name?: string;
+        /** The user's last name. Cannot contain more than 5 Chinese characters. */
+        last_name?: string;
+        /** The user's display name. Cannot contain more than 10 Chinese characters. */
+        display_name?: string;
+        /** User password. Only used for the &quot;autoCreate&quot; function. The password has to have a minimum of 8 characters and maximum of 32 characters. By default (basic requirement), password must have at least one letter (a, b, c..), at least one number (1, 2, 3...) and include both uppercase and lowercase letters. It should not contain only one identical character repeatedly ('11111111' or 'aaaaaaaa') and it cannot contain consecutive characters ('12345678' or 'abcdefgh').
+
+**Note:** If the account owner or admin has enabled [enhanced password requirements](https://support.zoom.us/hc/en-us/articles/360034675592-Advanced-security-settings#h_fa9186e4-6818-4f7a-915c-2e25c19f0acd), the value provided in this field must meet those requirements. These requirements can be retrieved by calling the [**Get account settings**](/docs/api-reference/zoom-api/ma#operation/accountSettings) API and referring to the `password_requirement` field present in the `security` object. */
+        password?: string;
+        /** User type.  
+ `1` - Basic.  
+ `2` - Licensed.   
+ `4` - Unassigned without Meetings Basic.    
+ <del>`99` - None. this can only be set with `ssoCreate`.</del> */
+        type: 1 | 2 | 4 | 99;
+        /** List of Division IDs to be updated (currently only a single division is supported) */
+        division_ids?: string[];
+        /** Information about the user's features. */
+        feature?: {
+            /** Whether the user has the **Zoom Phone** feature enabled. */
+            zoom_phone?: boolean;
+            /** The Zoom Workplace plan option.  
+ `16` - Zoom Workplace Business Plus with US/CA Unlimited.  
+ `32` - Zoom Workplace Business Plus with UK/IR Unlimited.  
+ `64` - Zoom Workplace Business Plus with AU/NZ Unlimited.  
+ `128` - Zoom Workplace Business Plus with Japan Unlimited.  
+ `33554432` - Zoom Workplace Business Plus with Global Select.  
+ `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited.  
+ `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited.  
+ `536870912` - Zoom Workplace Enterprise Premier with UK/IR Unlimited.  
+ `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited.  
+ `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited.  
+   
+ The Zoom One plan option for Gov accounts:  
+ `16` - Zoom One Business Plus. 
+ 
+ The Zoom One plan option for Education accounts:  
+ `18014398509481984` - Zoom One for Education School and Campus.  
+ `72057594037927936` - Zoom One for Education Enterprise Essentials.  
+ `576460752303423488` - Zoom One for Education Enterprise Student.  
+ `144115188075855872` - Zoom One for Education Enterprise Plus.  
+ `137438953472` - Zoom One for Education School and Campus Plus with US/CA Unlimited.  
+ `1099511627776` -Zoom One for Education School and Campus Plus with AU/NZ Unlimited.  
+ `549755813888` - Zoom One for Education School and Campus Plus with UK/IR Unlimited.  
+ `274877906944` - Zoom One for Education School and Campus Plus with Japan Unlimited.  
+ `2199023255552` - Zoom One for Education School and Campus Plus with Global Select.  
+ `4294967296` - Zoom One for Education Enterprise Premier with US/CA Unlimited.  
+ `34359738368` - Zoom One for Education Enterprise Premier with AU/NZ Unlimited.  
+ `17179869184` -Zoom One for Education Enterprise Premier with UK/IR Unlimited.  
+ `8589934592` - Zoom One for Education Enterprise Premier with with Japan Unlimited.  
+ `68719476736` - Zoom One for Education Enterprise Premier with Global Select. */
+            zoom_one_type?:
+                | 16
+                | 32
+                | 64
+                | 128
+                | 33554432
+                | 134217728
+                | 268435456
+                | 536870912
+                | 1073741824
+                | 4398046511104
+                | 4294967296
+                | 8589934592
+                | 17179869184
+                | 34359738368
+                | 68719476736
+                | 137438953472
+                | 274877906944
+                | 549755813888
+                | 1099511627776
+                | 2199023255552
+                | 18014398509481984
+                | 72057594037927940
+                | 144115188075855870
+                | 576460752303423500;
+        };
+        /** The Zoom United type. The license option.
+         * `1` - Zoom United Pro-United with US/CA Unlimited.
+         * `2` - Zoom United Pro-United with UK/IR Unlimited.
+         * `4` - Zoom United Pro-United with AU/NZ Unlimited.
+         * `8` - Zoom United Pro-United with Global Select.
+         * `16` - Zoom United Pro-United with Zoom Phone Pro.
+         * `32` - Zoom United Biz-United with US/CA Unlimited.
+         * `64` - Zoom United Biz-United with UK/IR Unlimited.
+         * `128` - Zoom United Biz-United with AU/NZ Unlimited.
+         * `256` - Zoom United Biz-United with Global Select.
+         * `512` - Zoom United Biz-United with Zoom Phone Pro.
+         * `1024` - Zoom United Ent-United with US/CA Unlimited.
+         * `2048` - Zoom United Ent-United with UK/IR Unlimited.
+         * `4096` - Zoom United Ent-United with AU/NZ Unlimited.
+         * `8192` - Zoom United Ent-United with Global Select.
+         * `16384` - Zoom United Ent-United with Zoom Phone Pro.
+         * `32768` - Zoom United Pro-United with JP Unlimited.
+         * `65536` - Zoom United Biz-United with JP Unlimited.
+         * `131072` - Zoom United Ent-United with JP Unlimited. */
+        plan_united_type?:
+            | '1'
+            | '2'
+            | '4'
+            | '8'
+            | '16'
+            | '32'
+            | '64'
+            | '128'
+            | '256'
+            | '512'
+            | '1024'
+            | '2048'
+            | '4096'
+            | '8192'
+            | '16384'
+            | '32768'
+            | '65536'
+            | '131072';
+        /** A list of license information used to specify the appropriate license type, license option, and license subscription reference ID or name during user creation. */
+        license_info_list?: {
+            /** License type name.
+The `MEETING` license is associated with the paid user type, while the `ZOOM_WORKPLACE_BUNDLE` license corresponds to the Zoom Workplace series licenses. */
+            license_type: 'MEETING' | 'ZOOM_WORKPLACE_BUNDLE';
+            /** License option.
+
+For the `MEETING` parameter, setting the corresponding value indicates that the user is converted to a licensed user. The specific values are as follows:
+User's plan type.  
+ `2` - Licensed.  
+
+For the `ZOOM_WORKPLACE_BUNDLE` parameter, setting the corresponding value assigns the user a Zoom Workplace series license. The specific values are as follows:
+The user's Zoom Workplace plan option.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus with US/CA Unlimited.  
+ `32` - Zoom Workplace Business Plus with UK/IR Unlimited.  
+ `64` - Zoom Workplace Business Plus with AU/NZ Unlimited.  
+ `128` - Zoom Workplace Business Plus with Japan Unlimited.  
+ `33554432` - Zoom Workplace Business Plus with Global Select.  
+ `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited.  
+ `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited.  
+ `536870912` - Zoom Workplace Enterprise Premier with UK/IR Unlimited.  
+ `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited.  
+ `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited.
+
+ The Zoom Workplace plan option for Govermnemt accounts.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus. 
+
+ The Zoom Workplace plan option for Education accounts.  
+ `18014398509481984` - Zoom Workplace for Education School and Campus.  
+ `72057594037927936` - Zoom Workplace for Education Enterprise Essentials.  
+ `576460752303423488` - Zoom Workplace for Education Enterprise Student. 
+ `144115188075855872` - Zoom Workplace for Education Enterprise Plus.  
+ `137438953472` - Zoom Workplace for Education School and Campus Plus with US/CA Unlimited.  
+ `1099511627776` - Zoom Workplace for Education School and Campus Plus with AU/NZ Unlimited.  
+ `549755813888` - Zoom Workplace for Education School and Campus Plus with UK/IR Unlimited.  
+ `274877906944` - Zoom Workplace for Education School and Campus Plus with Japan Unlimited.  
+ `2199023255552` - Zoom Workplace for Education School and Campus Plus with Global Select.  
+ `4294967296` - Zoom Workplace for Education Enterprise Premier with US/CA Unlimited.  
+ `34359738368` - Zoom Workplace for Education Enterprise Premier with AU/NZ Unlimited.  
+ `17179869184` -Zoom Workplace for Education Enterprise Premier with UK/IR Unlimited.  
+ `8589934592` - Zoom Workplace for Education Enterprise Premier with with Japan Unlimited.  
+ `68719476736` - Zoom Workplace for Education Enterprise Premier with Global Select.
+ */
+            license_option:
+                | 2
+                | 4
+                | 8
+                | 16
+                | 32
+                | 64
+                | 128
+                | 33554432
+                | 134217728
+                | 1073741824
+                | 536870912
+                | 268435456
+                | 4398046511104
+                | 18014398509481984
+                | 72057594037927940
+                | 576460752303423500
+                | 144115188075855870
+                | 137438953472
+                | 1099511627776
+                | 549755813888
+                | 274877906944
+                | 2199023255552
+                | 4294967296
+                | 34359738368
+                | 17179869184
+                | 8589934592
+                | 68719476736;
+            /** The subscription ID associated with the corresponding license. */
+            subscription_id: string;
+        }[];
+    };
+};
+
+/** Create users - Response */
+export type ZoomApi$User$Create$Response = {
+    /** User email address. */
+    email?: string;
+    /** The user's first name. */
+    first_name?: string;
+    /** User ID. */
+    id?: string;
+    /** The user's last name. */
+    last_name?: string;
+    /** User type.  
+ `1` - Basic.  
+ `2` - Licensed.  
+ `4` - Unassigned without Meetings Basic.   
+ <del>`99` - None. This can only be set with `ssoCreate`.</del>
+ */
+    type?: 1 | 2 | 4 | 99;
+};
+
+/** Delete a user - Query parameters */
+export type ZoomApi$User$Delete$Params = Partial<{
+    /** Whether the email address passed for the `userId` value is an encrypted email address. 
+
+ * `true` - The email address is encrypted. 
+ * `false` - The email address is not encrypted. 
+
+ If you do not query this parameter, this value defaults to null (`false`). */
+    encrypted_email: boolean;
+    /** Delete action options. 
+ `disassociate` - Disassociate a user.  
+ `delete`-  Permanently delete a user.  
+ Note: To delete pending user in the account, use `disassociate` */
+    action: 'disassociate' | 'delete';
+    /** Transfer email. This field is **required** if the user has Zoom Events/Sessions feature. After you delete or disassociate the user, the user's hub assets on Zoom Events site will be transferred to the target user. 
+For detailed behavior and requirements, refer to the `transfer_events` field description. */
+    transfer_email: string;
+    /** Transfer meeting. */
+    transfer_meeting: boolean;
+    /** Transfer webinar. */
+    transfer_webinar: boolean;
+    /** Transfer recording. */
+    transfer_recording: boolean;
+    /** When deleting a user, whether to transfer all their [Zoom Whiteboard](https://support.zoom.us/hc/en-us/articles/4410916881421) data to another user. */
+    transfer_whiteboard: boolean;
+    /** Transfer clip files. */
+    transfer_clipfiles: boolean;
+    /** Transfer notes. */
+    transfer_notes: boolean;
+    /** Transfer visitors. */
+    transfer_visitors: boolean;
+    /** Transfer docs. */
+    transfer_docs: boolean;
+    /** Indicates whether to transfer Zoom Events.
+
+When `transfer_events` is set to `true`, the `transfer_email` field is required. Upon user deletion or disassociation, the user’s Zoom Events hub assets will be transferred to the specified target user.
+When `transfer_events` is set to `false`, the `transfer_email` field is not required, and no asset transfer will be performed. */
+    transfer_events: boolean;
+}>;
+
+/** Check a user email - Query parameters */
+export type ZoomApi$User$Email$Params = Partial<{
+    /** The email address to be verified. */
+    email: string;
+}>;
+
+/** Check a user email - Response */
+export type ZoomApi$User$Email$Response = {
+    /** Indicates whether or not the email already exists in Zoom. */
+    existed_email?: boolean;
+};
+
+/** Update a user's email - Request body */
+export type ZoomApi$User$Email$Update$Request = {
+    /** User's email. The length should be less than 128 characters. */
+    email: string;
+};
+
 /** List a user's PAC accounts - Response */
 export type ZoomApi$User$P$A$Cs$Response = {
     /** Information about the PAC accounts. */
@@ -8022,6 +12242,2883 @@ export type ZoomApi$User$P$A$Cs$Response = {
         /** The participant password, up to six characters in length. */
         participant_password?: string;
     }[];
+};
+
+/** Get a user - Query parameters */
+export type ZoomApi$User$Params = Partial<{
+    /** The user's login method. 
+* `0` - Facebook OAuth 
+* `1` - Google OAuth. 
+* `24` - Apple OAuth. 
+* `27` - Microsoft OAuth. 
+* `97` - Mobile device. 
+* `98` - RingCentral OAuth. 
+* `99` - API user. 
+* `100` - Zoom Work email. 
+* `101` - Single Sign-On (SSO). 
+
+These login methods are only available in China. 
+* `11` - Phone number. 
+* `21` - WeChat. 
+* `23` - Alipay. */
+    login_type: 0 | 1 | 11 | 21 | 23 | 24 | 27 | 97 | 98 | 99 | 100 | 101;
+    /** Whether the email address passed for the `userId` value is an encrypted email address. 
+
+ * `true` - The email address is encrypted. 
+ * `false` - The email address is not encrypted. 
+
+ If you do not query this parameter, this value defaults to null (`false`). */
+    encrypted_email: boolean;
+    /** Whether the queried `userId` value is an employee unique ID. 
+* `true` - The queried ID is an employee's unique ID. 
+* `false` - The queried ID is not an employee's unique ID. 
+
+This value defaults to `false` (null). */
+    search_by_unique_id: boolean;
+}>;
+
+/** Update a user's password - Request body */
+export type ZoomApi$User$Password$Request = {
+    /** User password. Should be fewer than 32 characters.
+
+**Note** If the account owner or admin has enabled [enhanced password requirements](https://support.zoom.us/hc/en-us/articles/360034675592-Advanced-security-settings#h_fa9186e4-6818-4f7a-915c-2e25c19f0acd), the value provided in this field must meet those requirements. Retrieve these requirements by calling the [**Get account settings](/api-reference/zoom-api/ma#operation/accountSettings) API and referring to the `password_requirement` field present in the `security` object. */
+    password: string;
+};
+
+/** Get user permissions - Response */
+export type ZoomApi$User$Permission$Response = {
+    /** [List of user permissions.](https://developers.zoom.us/docs/api/rest/other-references/privileges/) */
+    permissions?: string[];
+};
+
+/** Upload a user's profile picture - Response */
+export type ZoomApi$User$Picture$Response = Record<string, any>;
+
+/** Get a user - Response */
+export type ZoomApi$User$Response = {
+    /** User ID. */
+    id?: string;
+} & {
+    /** User create time. */
+    created_at?: string;
+    /** Department. */
+    dept?: string;
+    /** User's email address. */
+    email?: string;
+    /** User's first name. */
+    first_name?: string;
+    /** User last login client version. */
+    last_client_version?: string;
+    /** User last login time. */
+    last_login_time?: string;
+    /** User's last name. */
+    last_name?: string;
+    /** [Personal Meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi). */
+    pmi?: number;
+    /** User's [role](https://support.zoom.us/hc/en-us/articles/115001078646-Role-Based-Access-Control) name. */
+    role_name?: string;
+    /** The time zone of the user. */
+    timezone?: string;
+    /** User's plan type. 
+ `1` - Basic.  
+ `2` - Licensed.  
+ `4` - Unassigned without Meetings Basic.  
+ <del>`99` - None. This can only be set with `ssoCreate`.</del> */
+    type: 1 | 2 | 4 | 99;
+    /** Use the [personal meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi) for instant meetings. */
+    use_pmi?: boolean;
+    /** User's display name. */
+    display_name?: string;
+} & {
+    /** User's account ID. */
+    account_id?: string;
+    /** The user's account number. */
+    account_number?: number;
+    /** The user's CMS ID. Only enabled for Kaltura integration. */
+    cms_user_id?: string;
+    /** The user's company. */
+    company?: string;
+    /** The date and time when this user's latest login type was created. */
+    created_at?: string;
+    /** The date and time when this user was created. */
+    user_created_at?: string;
+    /** Custom attributes that have been assigned to the user. */
+    custom_attributes?: {
+        /** The custom attribute's identifier. */
+        key?: string;
+        /** The custom attribute's name. */
+        name?: string;
+        /** The custom attribute's value. */
+        value?: string;
+    }[];
+    /** The employee's unique ID. This field only returns when
+     * SAML single sign-on (SSO) is enabled.
+     * The `login_type` value is `101` (SSO).
+     */
+    employee_unique_id?: string;
+    /** IDs of the web groups that the user belongs to.  */
+    group_ids?: string[];
+    /** List of division IDs the user belongs to. Currently, only a single division is supported. */
+    division_ids?: string[];
+    /** IM IDs of the groups that the user belongs to. */
+    im_group_ids?: string[];
+    jid?: string;
+    /** The user's job title. */
+    job_title?: string;
+    /** The user's cost center. */
+    cost_center?: string;
+    /** Default language for the Zoom Web Portal. */
+    language?: string;
+    /** The user's location. */
+    location?: string;
+    /** The user's login method.
+
+`0` - Facebook OAuth.
+`1` - Google OAuth.
+`24` - Apple OAuth.
+`27` - Microsoft OAuth.
+`97` - Mobile device.
+`98` - RingCentral OAuth.
+`99` - API user.
+`100` - Zoom Work email.
+`101` - Single Sign-On (SSO).
+
+These login methods are only available in China.
+
+`11` - Phone number.
+`21` - WeChat.
+`23` - Alipay. */
+    login_types?: (0 | 1 | 11 | 21 | 23 | 24 | 27 | 97 | 98 | 99 | 100 | 101)[];
+    /** The user's manager. */
+    manager?: string;
+    /** User's personal meeting URL. */
+    personal_meeting_url?: string;
+    /** This field has been **deprecated** and will not be supported in the future. Use the **phone_numbers** field instead of this field.   
+  User's country for the company phone number. */
+    phone_country?: string;
+    /** This field has been **deprecated** and will not be supported in the future. Use the **phone_numbers** field instead of this field.
+ The user's phone number. */
+    phone_number?: string;
+    phone_numbers?: {
+        /** The phone number's ISO country code. For example, United States phone numbers' value will be `+1`. */
+        code?: string;
+        /** The phone number's [country ID](/docs/api/references/abbreviations/#countries). For example, if the `number` field contains a Brazil-based number, this value is `BR`. */
+        country?: string;
+        /** The phone number's label.
+         * `Mobile`
+         * `Office`
+         * `Home`
+         * `Fax` */
+        label?: 'Mobile' | 'Office' | 'Home' | 'Fax';
+        /** The user's phone number. */
+        number?: string;
+        /** Whether Zoom has verified the phone number. */
+        verified?: boolean;
+    }[];
+    /** The URL for user's profile picture. */
+    pic_url?: string;
+    /** This field is returned if the user is enrolled in the [Zoom United](https://zoom.us/pricing/zoom-bundles) plan.
+     * `1` - Zoom United Pro-United with US/CA Unlimited.
+     * `2` - Zoom United Pro-United with UK/IR Unlimited.
+     * `4` - Zoom United Pro-United with AU/NZ Unlimited.
+     * `8` - Zoom United Pro-United with Global Select.
+     * `16` - Zoom United Pro-United with Zoom Phone Pro.
+     * `32` - Zoom United Biz-United with US/CA Unlimited.
+     * `64` - Zoom United Biz-United with UK/IR Unlimited.
+     * `128` - Zoom United Biz-United with AU/NZ Unlimited.
+     * `256` - Zoom United Biz-United with Global Select.
+     * `512` - Zoom United Biz-United with Zoom Phone Pro.
+     * `1024` - Zoom United Ent-United with US/CA Unlimited.
+     * `2048` - Zoom United Ent-United with UK/IR Unlimited.
+     * `4096` - Zoom United Ent-United with AU/NZ Unlimited.
+     * `8192` - Zoom United Ent-United with Global Select.
+     * `16384` - Zoom United Ent-United with Zoom Phone Pro.
+     * `32768` - Zoom United Pro-United with JP Unlimited.
+     * `65536` - Zoom United Biz-United with JP Unlimited.
+     * `131072` - Zoom United Ent-United with JP Unlimited. */
+    plan_united_type?:
+        | '1'
+        | '2'
+        | '4'
+        | '8'
+        | '16'
+        | '32'
+        | '64'
+        | '128'
+        | '256'
+        | '512'
+        | '1024'
+        | '2048'
+        | '4096'
+        | '8192'
+        | '16384'
+        | '32768'
+        | '65536'
+        | '131072';
+    /** The user's pronouns. */
+    pronouns?: string;
+    /** The user's display pronouns setting.
+     * `1` - Ask the user every time they join meetings and webinars.
+     * `2` - Always display pronouns in meetings and webinars.
+     * `3` - Do not display pronouns in meetings and webinars. */
+    pronouns_option?: 1 | 2 | 3;
+    /** Unique identifier of the user's assigned [role](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/roles). */
+    role_id?: string;
+    /** Status of user's account. */
+    status?: 'pending' | 'active' | 'inactive';
+    /** Displays `true` if user has enabled a [personal meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi) for instant meetings, `false` otherwise. */
+    use_pmi?: boolean;
+    /** Personal meeting room URL, if the user has one. */
+    vanity_url?: string;
+    /** Displays whether user is verified or not.
+ 
+`1` - Account verified.  
+ 
+`0` - Account not verified. */
+    verified?: number;
+    /** The user's cluster. */
+    cluster?: string;
+    /** The user's Zoom Workplace plan option.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus with US/CA Unlimited.  
+ `32` - Zoom Workplace Business Plus with UK/IR Unlimited.  
+ `64` - Zoom Workplace Business Plus with AU/NZ Unlimited.  
+ `128` - Zoom Workplace Business Plus with Japan Unlimited.  
+ `33554432` - Zoom Workplace Business Plus with Global Select.  
+ `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited.  
+ `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited.  
+ `536870912` - Zoom Workplace Enterprise Premier with UK/IR Unlimited.  
+ `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited.  
+ `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited.
+
+ The Zoom One plan option for Govermnemt accounts.  
+ `4` - Zoom One Enterprise.  
+ `8` - Zoom One Enterprise Plus.  
+ `16` - Zoom One Business Plus. 
+
+ The Zoom One plan option for Education accounts.  
+ `18014398509481984` - Zoom One for Education School and Campus.  
+ `72057594037927936` - Zoom One for Education Enterprise Essentials.  
+ `576460752303423488` - Zoom One for Education Enterprise Student. 
+ `144115188075855872` - Zoom One for Education Enterprise Plus.  
+ `137438953472` - Zoom One for Education School and Campus Plus with US/CA Unlimited.  
+ `1099511627776` - Zoom One for Education School and Campus Plus with AU/NZ Unlimited.  
+ `549755813888` - Zoom One for Education School and Campus Plus with UK/IR Unlimited.  
+ `274877906944` - Zoom One for Education School and Campus Plus with Japan Unlimited.  
+ `2199023255552` - Zoom One for Education School and Campus Plus with Global Select.  
+ `4294967296` - Zoom One for Education Enterprise Premier with US/CA Unlimited.  
+ `34359738368` - Zoom One for Education Enterprise Premier with AU/NZ Unlimited.  
+ `17179869184` -Zoom One for Education Enterprise Premier with UK/IR Unlimited.  
+ `8589934592` - Zoom One for Education Enterprise Premier with with Japan Unlimited.  
+ `68719476736` - Zoom One for Education Enterprise Premier with Global Select. */
+    zoom_one_type?: number;
+    /** Detailed license subscription information. This list is returned only for accounts with multiple subscription plans enabled that contain duplicate plans. */
+    license_info_list?: {
+        /** License type name.
+The `MEETING` license is associated with the paid user type, while the `ZOOM_WORKPLACE_BUNDLE` license corresponds to the Zoom Workplace series licenses. */
+        license_type?: 'MEETING' | 'ZOOM_WORKPLACE_BUNDLE';
+        /** License option.
+
+For the `MEETING` parameter, setting the corresponding value indicates that the user is converted to a licensed user. The specific values are as follows:
+User's plan type.  
+ `2` - Licensed. 
+
+For the `ZOOM_WORKPLACE_BUNDLE` parameter, setting the corresponding value assigns the user a Zoom Workplace series license. The specific values are as follows:
+The user's Zoom Workplace plan option.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus with US/CA Unlimited.  
+ `32` - Zoom Workplace Business Plus with UK/IR Unlimited.  
+ `64` - Zoom Workplace Business Plus with AU/NZ Unlimited.  
+ `128` - Zoom Workplace Business Plus with Japan Unlimited.  
+ `33554432` - Zoom Workplace Business Plus with Global Select.  
+ `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited.  
+ `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited.  
+ `536870912` - Zoom Workplace Enterprise Premier with UK/IR Unlimited.  
+ `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited.  
+ `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited.
+
+ The Zoom Workplace plan option for Govermnemt accounts.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus. 
+
+ The Zoom Workplace plan option for Education accounts.  
+ `18014398509481984` - Zoom Workplace for Education School and Campus.  
+ `72057594037927936` - Zoom Workplace for Education Enterprise Essentials.  
+ `576460752303423488` - Zoom Workplace for Education Enterprise Student. 
+ `144115188075855872` - Zoom Workplace for Education Enterprise Plus.  
+ `137438953472` - Zoom Workplace for Education School and Campus Plus with US/CA Unlimited.  
+ `1099511627776` - Zoom Workplace for Education School and Campus Plus with AU/NZ Unlimited.  
+ `549755813888` - Zoom Workplace for Education School and Campus Plus with UK/IR Unlimited.  
+ `274877906944` - Zoom Workplace for Education School and Campus Plus with Japan Unlimited.  
+ `2199023255552` - Zoom Workplace for Education School and Campus Plus with Global Select.  
+ `4294967296` - Zoom Workplace for Education Enterprise Premier with US/CA Unlimited.  
+ `34359738368` - Zoom Workplace for Education Enterprise Premier with AU/NZ Unlimited.  
+ `17179869184` -Zoom Workplace for Education Enterprise Premier with UK/IR Unlimited.  
+ `8589934592` - Zoom Workplace for Education Enterprise Premier with with Japan Unlimited.  
+ `68719476736` - Zoom Workplace for Education Enterprise Premier with Global Select. */
+        license_option?:
+            | 2
+            | 4
+            | 8
+            | 16
+            | 32
+            | 64
+            | 128
+            | 33554432
+            | 134217728
+            | 1073741824
+            | 536870912
+            | 268435456
+            | 4398046511104
+            | 18014398509481984
+            | 72057594037927940
+            | 576460752303423500
+            | 144115188075855870
+            | 137438953472
+            | 1099511627776
+            | 549755813888
+            | 274877906944
+            | 2199023255552
+            | 4294967296
+            | 34359738368
+            | 17179869184
+            | 8589934592
+            | 68719476736;
+        /** Subscription ID with the corresponding license. */
+        subscription_id?: string;
+    }[];
+};
+
+/** List user schedulers - Response */
+export type ZoomApi$User$Schedulers$Response = {
+    /** List of users for whom the current user can schedule meetings. */
+    schedulers?: {
+        /** Email address of the scheduler. */
+        email?: string;
+        /** Unique Identifier (User ID) of the Scheduler. */
+        id?: string;
+        /** PMI of the meeting host in long (int64) format. */
+        pmi?: number;
+    }[];
+};
+
+/** Get user settings - Query parameters */
+export type ZoomApi$User$Settings$Params = Partial<{
+    /** The user's login method. 
+* `0` - Facebook OAuth 
+* `1` - Google OAuth 
+* `24` - Apple OAuth 
+* `27` - Microsoft OAuth 
+* `97` - Mobile device 
+* `98` - RingCentral OAuth 
+* `99` - API user 
+* `100` - Zoom Work email 
+* `101` - Single Sign-On (SSO) 
+
+These login methods are only available in China: 
+* `11` - Phone number 
+* `21` - WeChat 
+* `23` - Alipay */
+    login_type: 0 | 1 | 11 | 21 | 23 | 24 | 27 | 97 | 98 | 99 | 100 | 101;
+    /** Optional query parameters.
+     * `meeting_authentication` - Use this query parameter to view the [meeting authentication settings](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars) applied to the user's account.
+     * `recording_authentication` - Use this query parameter to view the [recording authentication settings](https://support.zoom.us/hc/en-us/articles/360037756671-Authentication-Profiles-for-Cloud-Recordings) applied to the user's account.
+     * `meeting_security` - Use this query parameter to view the meeting security settings applied to the user's account. */
+    option:
+        | 'meeting_authentication'
+        | 'recording_authentication'
+        | 'meeting_security';
+    /** Provide the name of the field to filter the response. For example, if you provide `host_video` as the value of this field, you'll get a response similar to this.  
+ 
+{
+   schedule_meeting: {
+        host_video: false
+    }
+}
+  
+ To provide multiple values, separate them with commas, like `host_video,participant_video`. */
+    custom_query_fields: string;
+}>;
+
+/** Get user settings - Response */
+export type ZoomApi$User$Settings$Response =
+    | {
+          /** The user's audio conference settings. */
+          audio_conferencing?: {
+              /** The user's [**Toll-free and Fee-based Toll Call**](https://support.zoom.us/hc/en-us/articles/360060950711-Enabling-Toll-free-and-Fee-based-Toll-Call#h_01F5190TYM8736XHQX683YQYSY) settings. */
+              toll_free_and_fee_based_toll_call?: {
+                  /** Whether webinar attendees can dial in through the account's **Toll-free and Fee-based Toll Call** phone numbers. This feature is only available in version 5.2.2 and higher. */
+                  allow_webinar_attendees_dial?: boolean;
+                  /** Whether the user has the [**Toll-free and Fee-based Toll Call**](https://support.zoom.us/hc/en-us/articles/360060950711-Enabling-Toll-free-and-Fee-based-Toll-Call#h_01F5190TYM8736XHQX683YQYSY) setting enabled. */
+                  enable?: boolean;
+                  /** The user's **Toll-free and Fee-based Toll Call** phone number information. */
+                  numbers?: {
+                      /** The phone number's [E.164 country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes). */
+                      code?: string;
+                      /** The phone number's [country code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries). */
+                      country_code?: string;
+                      /** The country name. */
+                      country_name?: string;
+                      /** The phone number's display number. */
+                      display_number?: string;
+                      /** The phone number. */
+                      number?: string;
+                  }[];
+              };
+              /** The user's [**Toll Call**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066909#h_01F5190TYM8736XHQX683YQYSY) settings. */
+              toll_call?: {
+                  /** Whether the user has the [**Toll Call**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066909#h_01F5190TYM8736XHQX683YQYSY) setting enabled. */
+                  enable?: boolean;
+                  /** The user's **Toll Call** phone number information. */
+                  numbers?: {
+                      /** The phone number's [E.164 country calling code](https://en.wikipedia.org/wiki/List_of_country_calling_codes). */
+                      code?: string;
+                      /** The phone number's [country code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries). */
+                      country_code?: string;
+                      /** The country name. */
+                      country_name?: string;
+                      /** The phone number's display number. */
+                      display_number?: string;
+                      /** The phone number. */
+                      number?: string;
+                  }[];
+              };
+              /** The user's [**Call Me and Invite by Phone**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067414#h_01F53VGF2WET7M37JDCVHKYB9A) settings. */
+              call_me_and_invite_by_phone?: {
+                  /** Whether the user has the [**Call Me and Invite by Phone**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067414#h_01F53VGF2WET7M37JDCVHKYB9A) setting enabled. */
+                  enable?: boolean;
+                  /** Require Call Me users to press 1 before being connected to the meeting.
+                   * `auto` - Automatically determine whether to require pressing 1 before connecting to the meeting.
+                   * `always` - Always require Call Me users to press 1 before connecting to the meeting.
+                   * `never` - Never require Call Me users to press 1 before connecting to the meeting. */
+                  require_press_1_for_call_me?: 'auto' | 'always' | 'never';
+                  /** Whether webinar attendees can use Call Me to connect audio. This feature is only available in version 5.2.2 and higher. */
+                  allow_webinar_attendees_call_me?: boolean;
+                  /** The user's call out countries/regions settings. */
+                  call_out_countries?: {
+                      /** The list of all available countries/regions that can be enabled for call out. */
+                      allowed_countries?: {
+                          /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                          code?: string;
+                          /** The name of the country or region. */
+                          name?: string;
+                      }[];
+                      /** The list of countries/regions that users can call out to. */
+                      selected_countries?: {
+                          /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                          code?: string;
+                          /** The name of the country or region. */
+                          name?: string;
+                      }[];
+                  };
+              };
+              /** Whether the user has the [**Personal Audio Conference**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0060449#h_01F5BPN225WWQGQMYJDKXZ80A5) setting enabled. */
+              personal_audio_conference?: boolean;
+              /** The user's [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5HBEEEXRXR9SN5ZBNWN30) settings. */
+              participant_phone_masking?: {
+                  /** Whether the user has the [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5HBEEEXRXR9SN5ZBNWN30) setting enabled. */
+                  enable?: boolean;
+                  /** The type of phone number masking pattern to apply.
+                   * `mask_default` - Default masking pattern (Example: 888****666).
+                   * `mask_first_5` - Mask first five digits (Example: *****66666).
+                   * `mask_except_last_4` - Mask everything except last four digits (Example: *****6666). */
+                  masking_type?:
+                      | 'mask_default'
+                      | 'mask_first_5'
+                      | 'mask_except_last_4';
+              };
+              /** The user's [**Global Dial-in Countries/Regions**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0068094#h_01F5KKA1Y2CWNT35HF5C0JZY89) settings. */
+              global_dial_in_countries?: {
+                  /** The list of all available countries/regions that can be selected for displaying dial-in numbers in the meeting invitation. */
+                  allowed_countries?: {
+                      /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+                  /** The list of selected countries/regions whose dial-in numbers will be listed in the email invitation. */
+                  selected_countries?: {
+                      /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+                  /** Whether to include toll-free numbers in the email invitation for the selected countries/regions. */
+                  include_toll_free?: boolean;
+              };
+          };
+          email_notification?: {
+              /** When an alternative host is set or removed from a meeting. */
+              alternative_host_reminder?: boolean;
+              /** When a meeting is cancelled. */
+              cancel_meeting_reminder?: boolean;
+              /** Whether to notify the host when a cloud recording is available. */
+              cloud_recording_available_reminder?: boolean;
+              /** When attendees join meeting before host. */
+              jbh_reminder?: boolean;
+              /** Whether to notify any alternative hosts when a cloud recording is available. */
+              recording_available_reminder_alternative_hosts?: boolean;
+              /** Whether to notify the person who scheduled the meeting or webinar for the host when a cloud recording is available. */
+              recording_available_reminder_schedulers?: boolean;
+              /** This setting notifies the host there is a meeting is scheduled, rescheduled, or cancelled. */
+              schedule_for_reminder?: boolean;
+          };
+          feature?: {
+              /** The host meeting in China. */
+              cn_meeting?: boolean;
+              /** The user's assigned [Concurrent Meeting](https://support.zoom.us/hc/en-us/articles/206122046) type: 
+* `Basic` 
+* `Plus` 
+* `None` 
+
+ **Note:** This feature requires a Concurrent Meeting Basic or Plus plan subscription. */
+              concurrent_meeting?: 'Basic' | 'Plus' | 'None';
+              /** The host meeting in India. */
+              in_meeting?: boolean;
+              /** The large meeting feature. */
+              large_meeting?: boolean;
+              /** The large meeting capacity. It can be 500 or 1000, depending on if the user has a large meeting capacity plan subscription or not. */
+              large_meeting_capacity?: number;
+              /** The user's meeting capacity. */
+              meeting_capacity?: number;
+              /** The webinar feature. */
+              webinar?: boolean;
+              /** The webinar capacity. It can be 100, 500, 1000, 3000, 5000 or 10000, depending on if the user has a webinar capacity plan subscription or not. */
+              webinar_capacity?: number;
+              /** Whether the Zoom Events feature is enabled for the user. */
+              zoom_events?: boolean;
+              /** The user's Zoom Events plan capacity: `500`, `1000`, `3000`, `5000`, `10000`, `20000`, `30000`, or `50000`. */
+              zoom_events_capacity?:
+                  | 500
+                  | 1000
+                  | 3000
+                  | 5000
+                  | 10000
+                  | 20000
+                  | 30000
+                  | 50000;
+              /** Whether to enable the Zoom Events Unlimited feature for the user. */
+              zoom_events_unlimited?: boolean;
+              /** The capacity list of user's Zoom Events Unlimited plan - `100`, `500`, `1000`, `3000`, `5000`, `10000`, `20000`, `30000`, or `50000`. The first entry is always the largest. */
+              zoom_events_unlimited_capacities?: (
+                  | 100
+                  | 500
+                  | 1000
+                  | 3000
+                  | 5000
+                  | 10000
+                  | 20000
+                  | 30000
+                  | 50000
+              )[];
+              /** Whether to enable the Zoom Sessions Unlimited feature for the user. */
+              zoom_sessions_unlimited?: boolean;
+              /** The capacity list of user's Zoom Sessions Unlimited plan - `100`, `500`, `1000`, `3000`, `5000`, `10000`, `20000`, `30000`, or `50000`. The first entry is always the largest. */
+              zoom_sessions_unlimited_capacities?: (
+                  | 100
+                  | 500
+                  | 1000
+                  | 3000
+                  | 5000
+                  | 10000
+                  | 20000
+                  | 30000
+                  | 50000
+              )[];
+              /** Whether to enable the Zoom Events Pay Per Attendee feature for the user. */
+              zoom_events_pay_per_attendee?: boolean;
+              /** Whether to enable the Zoom Sessions Pay Per Attendee feature for the user. */
+              zoom_sessions_pay_per_attendee?: boolean;
+              /** The Zoom phone feature. */
+              zoom_phone?: boolean;
+              /** Whether the user has a Zoom Revenue Accelerator license. For information about a Zoom Revenue Accelerator license, contact [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003). */
+              zoom_iq_for_sales?: boolean;
+              /** Whether the user has a Zoom Revenue Accelerator license. For information about a Zoom Revenue Accelerator license, contact [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003). */
+              zoom_revenue_accelerator?: boolean;
+              /** Whether the user has a Zoom Whiteboard license. */
+              zoom_whiteboard?: boolean;
+              /** Whether the user has a Zoom Whiteboard Plus license. */
+              zoom_whiteboard_plus?: boolean;
+              /** Whether the user has a Zoom Translated Captions license. */
+              zoom_translated_captions?: boolean;
+              /** Whether the user has a Zoom Customer Managed Key license. */
+              zoom_customer_managed_key?: boolean;
+              /** Whether the user has a Zoom Huddles license. */
+              zoom_huddles?: boolean;
+              /** Whether the user has a Zoom Quality Management license. */
+              zoom_quality_management?: boolean;
+              /** Whether the user has a Zoom Workforce Management license. */
+              zoom_workforce_management?: boolean;
+              /** Whether the user has a Zoom Scheduler license. */
+              zoom_scheduler?: boolean;
+              /** Whether the user has a Zoom Clips Plus license. */
+              zoom_clips_plus?: boolean;
+              /** Whether the user has a Zoom Mail Calendar license. */
+              zoom_mail_calendar?: boolean;
+              /** Whether the user has a Zoom Compliance Management license. */
+              zoom_compliance_management?: boolean;
+              /** Whether the user has a Zoom Docs license. */
+              zoom_docs?: boolean;
+              /** Whether the user has a Zoom Canvas license. */
+              zoom_canvas?: boolean;
+              /** A list of license information used to return the user's corresponding license type, license option, and license subscription reference ID. */
+              license_info_list?: {
+                  /** The corresponding type for the user's existing license. */
+                  license_type?:
+                      | 'ZOOM_WHITEBOARD'
+                      | 'ZOOM_TRANSLATED_CAPTIONS'
+                      | 'ZOOM_SCHEDULER'
+                      | 'ZOOM_CLIPS'
+                      | 'ZOOM_VISITOR_MANAGEMENT'
+                      | 'ZOOM_CMK'
+                      | 'ZOOM_DOCS'
+                      | 'ZOOM_REVENUE_ACCELERATOR'
+                      | 'ZOOM_COMPLIANCE_MANAGEMENT'
+                      | 'ZOOM_WORKFORCE_MANAGEMENT'
+                      | 'ZOOM_QUALITY_MANAGEMENT'
+                      | 'ZOOM_HEALTHCARE_CLINICAL_NOTES'
+                      | 'ZOOM_EVENTS_NEW_SAAS'
+                      | 'ZOOM_EVENTS_CONSUMPTION'
+                      | 'ZOOM_WEBINARS_PLUS'
+                      | 'ZOOM_WEBINARS_PLUS_CONSUMPTION'
+                      | 'ZOOM_CUSTOM_AI_COMPANION'
+                      | 'CX_INSIGHTS'
+                      | 'ZOOM_ENHANCED_MEDIA'
+                      | 'EDU_STUDENT';
+                  /** License option
+For the parameters with **licenseType** as **ZOOM_WHITEBOARD:**
+  `2` - Zoom Whiteboard.
+  `65536` - Zoom Whiteboard Plus.
+
+For the parameters with **licenseType** as **ZOOM_TRANSLATED_CAPTIONS**:
+  `2048` - Zoom Translated Captions.
+  
+For the parameters with **licenseType** as **ZOOM_SCHEDULER**:
+  `2199023255552` - Zoom Scheduler.
+
+For the parameters with **licenseType** as **ZOOM_CLIPS**:
+  `1` - Zoom Clips Plus.
+
+For the parameters with **licenseType** as **ZOOM_VISITOR_MANAGEMENT**:
+  `2147483648` - Zoom Visitor Management.
+
+For the parameters with **licenseType** as **ZOOM_CMK**:
+  `131072` - Zoom Customer Managed Key.
+
+<del>For the parameters with **licenseType** as **ZOOM_DOCS**:
+  `281474976710656` - Zoom Docs.
+</del>
+
+For the parameters with **licenseType** as **ZOOM_CANVAS**:
+  `281474976710656` - Zoom Canvas.
+
+For the parameters with **licenseType** as **ZOOM_REVENUE_ACCELERATOR**:
+  `1` - Zoom Revenue Accelerator.
+
+For the parameters with **licenseType** as **ZOOM_COMPLIANCE_MANAGEMENT**:
+  `8796093022208` - Zoom Compliance Management.
+  `17592186044416` - Zoom Compliance Management Plus.
+
+For the parameters with **licenseType** as **ZOOM_WORKFORCE_MANAGEMENT**:
+  `549755813888` - Zoom Workforce Management.
+
+For the parameters with **licenseType** as **ZOOM_QUALITY_MANAGEMENT**:
+  `1099511627776` - Zoom Quality Management.
+  `35184372088832` - Zoom Advanced Quality Management.
+
+For the parameters with **licenseType** as **ZOOM_HEALTHCARE_CLINICAL_NOTES**:
+  `512` - Zoom Workplace for Clinicians Unlimited.
+  `4503599627370496` - Zoom Workplace for Clinicians - Pay Per Notes.
+
+For the parameters with **licenseType** as **ZOOM_EVENTS_NEW_SAAS**:
+  `2` - Zoom Events Unlimited - 100 attendees.
+  `4` - Zoom Events Unlimited - 500 attendees.
+  `8` - Zoom Events Unlimited - 1000 attendees.
+  `16` - Zoom Events Unlimited - 3000 attendees.
+  `32` - Zoom Events Unlimited - 5000 attendees.
+  `64` - Zoom Events Unlimited - 10000 attendees.
+  `128` - Zoom Events Unlimited - 20000 attendees.
+  `256` - Zoom Events Unlimited - 30000 attendees.
+  `512` - Zoom Events Unlimited - 50000 attendees.
+
+For the parameters with **licenseType** as **ZOOM_EVENTS_CONSUMPTION**:
+  `1` - Zoom Events - Pay Per Attendee.
+
+For the parameters with **licenseType** as **ZOOM_WEBINARS_PLUS**:
+  `2048` - Zoom Webinars Plus Unlimited - 100 attendees.
+  `4096` - Zoom Webinars Plus Unlimited - 500 attendees.
+  `8192` - Zoom Webinars Plus Unlimited - 1000 attendees.
+  `16384` - Zoom Webinars Plus Unlimited - 3000 attendees.
+  `32768` - Zoom Webinars Plus Unlimited - 5000 attendees.
+  `65536` - Zoom Webinars Plus Unlimited - 10000 attendees.
+  `131072` - Zoom Webinars Plus Unlimited - 20000 attendees.
+  `262144` - Zoom Webinars Plus Unlimited - 30000 attendees.
+  `524288` - Zoom Webinars Plus Unlimited - 50000 attendees.
+
+For the parameters with **licenseType** as **ZOOM_WEBINARS_PLUS_CONSUMPTION**:
+  `1024` - Zoom Webinars Plus - Pay Per Attendee.
+
+For the parameters with **licenseType** as **ZOOM_CUSTOM_AI_COMPANION**:
+  `256` - Zoom Custom AI Companion.
+  `4096` - Zoom AI Companion.
+
+For the parameters with **licenseType** as **CX_INSIGHTS_LEADER**:
+  `1099511627776` - CX Insights Leader.
+
+For the parameters with **licenseType** as **ZOOM_ENHANCED_MEDIA**:
+  `4503599627370496` - Zoom Enhanced Media.
+
+For the parameters with **licenseType** as **EDU_STANDARD_STUDENT**:
+  `1152921504606846976` - Education Standard Student. */
+                  license_option?:
+                      | 1
+                      | 2
+                      | 4
+                      | 8
+                      | 16
+                      | 32
+                      | 64
+                      | 128
+                      | 256
+                      | 512
+                      | 1024
+                      | 2048
+                      | 4096
+                      | 8192
+                      | 16384
+                      | 32768
+                      | 65536
+                      | 131072
+                      | 262144
+                      | 524288
+                      | 2147483648
+                      | 549755813888
+                      | 1099511627776
+                      | 2199023255552
+                      | 8796093022208
+                      | 17592186044416
+                      | 35184372088832
+                      | 281474976710656
+                      | 4503599627370496;
+                  /** The subscription ID associated with the corresponding license. */
+                  subscription_id?: string;
+              }[];
+              /** The capacity list of user's Zoom Webinars Plus Unlimited plan - `100`, `500`, `1000`, `3000`, `5000`, `10000`, `20000`, `30000`, or `50000`. The first entry is always the largest. */
+              zoom_webinars_plus_unlimited_capacities?: (
+                  | 100
+                  | 500
+                  | 1000
+                  | 3000
+                  | 5000
+                  | 10000
+                  | 20000
+                  | 30000
+                  | 50000
+              )[];
+              /** Whether to enable the Zoom Webinars Plus Unlimited feature for the user. */
+              zoom_webinars_plus_unlimited?: boolean;
+          };
+          in_meeting?: {
+              /** Allow the host to enable [**Focus Mode**](https://support.zoom.us/hc/en-us/articles/360061113751-Using-focus-mode) when scheduling a meeting. This value defaults to `null`. */
+              allow_host_to_enable_focus_mode?: boolean;
+              /** If the value of this field is set to `true`,  allow users to delete messages in the in-meeting chat.
+               */
+              allow_users_to_delete_messages_in_meeting_chat?: boolean;
+              /** Whether to allow live streaming. */
+              allow_live_streaming?: boolean;
+              /** Whether to display a thumbs up or thumbs down feedback survey at the end of each meeting. */
+              post_meeting_feedback?: boolean;
+              /** Whether to enable the [**Zoom Whiteboard**](https://support.zoom.us/hc/en-us/articles/4410916881421) feature. */
+              whiteboard?: boolean;
+              /** Specify who participants can chat with:
+* `1` - The participant cannot use chat.
+* `2` - The participant can chat with the host and co-hosts only.
+ * `3` - The participant can chat with other participants publicly.
+* `4` - The participant can chat with other participants publicly and privately.
+
+**Note:** This setting is only available with client versions 5.7.3 and above. */
+              allow_participants_chat_with?: 1 | 2 | 3 | 4;
+              /** This setting specifies how participants can save meeting chats:
+               * `1` - Participants cannot save meeting chats.
+               * `2` - Participants can only save host and co-host meeting chats.
+               * `3` - Participants can save all meeting chats. */
+              allow_users_save_chats?: 1 | 2 | 3;
+              /** This setting allows participants to use annotation tools. */
+              annotation?: boolean;
+              /** This setting allows host to put attendee on hold.
+
+**This field has been deprecated and is no longer supported.** */
+              attendee_on_hold?: boolean;
+              /** Whether the [**Focus Mode**](https://support.zoom.us/hc/en-us/articles/360061113751-Using-focus-mode) feature is enabled. When enabled, this feature only displays the host and co-hosts' video and profile pictures during a meeting. 
+
+ This value defaults to `false`. */
+              attention_mode_focus_mode?: boolean;
+              /** This setting auto saves all in-meeting chats. */
+              auto_saving_chat?: boolean;
+              /** This setting allows the host to split meeting participants into separate breakout rooms. */
+              breakout_room?: boolean;
+              /** Whether the host can assign participants to breakout rooms when scheduling. This feature is only available in version 4.5.0 or higher. */
+              breakout_room_schedule?: boolean;
+              /** This setting enables chat during meeting for all participants. */
+              chat?: boolean;
+              /** This setting allows participants to ask questions for the host and participants to answer. */
+              meeting_question_answer?: boolean;
+              /** This setting enables closed captions. */
+              closed_caption?: boolean;
+              /** The information about the user's closed captioning settings. */
+              closed_captioning?: {
+                  /** Whether to allow a live transcription service to transcribe meetings. */
+                  auto_transcribing?: boolean;
+                  /** Whether to allow the host to type closed captions or assign a participant or 3rd-party service to provide closed captioning. */
+                  enable?: boolean;
+                  /** Whether to allow participants to save closed captions or transcripts. */
+                  save_caption?: boolean;
+                  /** Whether to allow the use of an API token to integrate with 3rd-party closed captioning services. */
+                  third_party_captioning_service?: boolean;
+                  /** Whether to allow the viewing of full transcripts in the in-meeting side panel. */
+                  view_full_transcript?: boolean;
+              };
+              /** This setting allows the host to add co-hosts. */
+              co_host?: boolean;
+              /** If set to `true`, you can [select data center regions](https://support.zoom.us/hc/en-us/articles/360042411451-Selecting-data-center-regions-for-hosted-meetings-and-webinars) to use for hosting your real-time meeting and webinar traffic. These regions can be provided in the `data_center_regions` field. If set to `false`, the regions cannot be customized and the default regions will be used. */
+              custom_data_center_regions?: boolean;
+              /** Whether to allow custom live streaming. */
+              custom_live_streaming_service?: boolean;
+              /** The custom live streaming service instructions. */
+              custom_service_instructions?: string;
+              /** If the value of `custom_data_center_regions` is `true`, a comma-separated list of the following [data center regions](https://support.zoom.us/hc/en-us/articles/360059254691-Datacenter-abbreviation-list) to opt in to.
+               * `AU` - Australia.
+               * `LA` - Latin America.
+               * `CA` - Canada.
+               * `CN` - China.
+               * `DE` - Germany.
+               * `HK` - Hong Kong SAR.
+               * `IN` - India.
+               * `IE` - Ireland.
+               * `TY` - Japan.
+               * `MX` - Mexico.
+               * `NL` - Netherlands.
+               * `SG` - Singapore.
+               * `US` - United States. */
+              data_center_regions?: (
+                  | 'AU'
+                  | 'LA'
+                  | 'CA'
+                  | 'CN'
+                  | 'DE'
+                  | 'HK'
+                  | 'IN'
+                  | 'IE'
+                  | 'TY'
+                  | 'MX'
+                  | 'NL'
+                  | 'SG'
+                  | 'US'
+              )[];
+              /** This setting enables the **Disable desktop screen sharing for meetings you host** setting. */
+              disable_screen_sharing_for_host_meetings?: boolean;
+              /** This setting enables the **Disable screen sharing when guests are in the meeting** setting. */
+              disable_screen_sharing_for_in_meeting_guests?: boolean;
+              /** Zoom requires encryption for all data between the Zoom cloud, Zoom client, and Zoom Room. Require encryption for 3rd party endpoints (H323/SIP). */
+              e2e_encryption?: boolean;
+              /** This setting plays sound when participants join or leave:  
+ `host` - When host joins or leaves.  
+ `all` - When any participant joins or leaves.  
+ `none` - No join or leave sound. */
+              entry_exit_chime?: 'host' | 'all' | 'none';
+              /** This setting allows another user to take control of the camera. */
+              far_end_camera_control?: boolean;
+              /** This setting enables option to send feedback to Zoom at the end of the meeting. */
+              feedback?: boolean;
+              /** Whether the [in-meeting file transfer](https://support.zoom.us/hc/en-us/articles/209605493-In-meeting-file-transfer) setting has been enabled for the user or not. */
+              file_transfer?: boolean;
+              /** This setting enables group HD video in Meeting. */
+              group_hd?: boolean;
+              /** This setting enables group HD video in Webinar. */
+              webinar_group_hd?: boolean;
+              /** This setting allows participants to join a meeting directly from their desktop browser. Note that the meeting experience from the desktop browser is limited. */
+              join_from_desktop?: boolean;
+              /** This setting allows participants to join a meeting directly from their mobile browser. Note that the meeting experience from the mobile browser is limited. */
+              join_from_mobile?: boolean;
+              /** The information about the [language interpretation](https://support.zoom.us/hc/en-us/articles/360034919791-Using-Language-Interpretation-in-your-meeting-or-webinar) settings. */
+              language_interpretation?: {
+                  /** A list of user-defined supported languages. */
+                  custom_languages?: string[];
+                  /** Whether enable language interpretation by default. */
+                  enable_language_interpretation_by_default?: boolean;
+                  /** Whether to allow participants to speak in listening channel. */
+                  allow_participants_to_speak_in_listening_channel?: boolean;
+                  /** Whether to allow up to 25 custom languages when scheduling meetings. */
+                  allow_up_to_25_custom_languages_when_scheduling_meetings?: boolean;
+                  /** This setting allows hosts to assign participants as interpreters who can interpret one language into another in real-time. */
+                  enable?: boolean;
+                  /** A list of system-supported languages. */
+                  languages?: (
+                      | 'English'
+                      | 'Chinese'
+                      | 'Japanese'
+                      | 'German'
+                      | 'French'
+                      | 'Russian'
+                      | 'Portuguese'
+                      | 'Spanish'
+                      | 'Korean'
+                  )[];
+              };
+              /** This setting allows hosts to assign participants as sign language interpreters who can interpret one language into sign language in real-time. Hosts can assign interpreters when scheduling, or during the meeting itself. This feature is only available with version 5.11.3 or later. */
+              sign_language_interpretation?: {
+                  /** Whether to allow hosts to assign participants as sign language interpreters who can interpret one language into another in real-time. */
+                  enable?: boolean;
+                  /** Whether to enable sign language interpretation view by default in scheduler. */
+                  enable_sign_language_interpretation_by_default?: boolean;
+                  /** A list of system-supported languages. */
+                  languages?: (
+                      | 'American'
+                      | 'Chinese'
+                      | 'French'
+                      | 'German'
+                      | 'Japanese'
+                      | 'Russian'
+                      | 'Brazilian'
+                      | 'Spanish'
+                      | 'Mexican'
+                      | 'British'
+                  )[];
+                  /** A list of user-defined supported languages. */
+                  custom_languages?: string[];
+              };
+              /** Whether to allow Facebook live streaming. */
+              live_streaming_facebook?: boolean;
+              /** Whether to allow YouTube live streaming. */
+              live_streaming_youtube?: boolean;
+              /** The information about manual captioning settings. */
+              manual_captioning?: {
+                  /** This setting allows the host to manually caption or let the host assign a participant to provide manual captioning. */
+                  allow_to_type?: boolean;
+                  /** This setting enables Zoom's [live transcription feature](https://support.zoom.us/hc/en-us/articles/207279736-Managing-closed-captioning-and-live-transcription#h_01FHGGHYJ4457H4GSZY0KM3NSB). */
+                  auto_generated_captions?: boolean;
+                  /** This setting enables the viewing of full transcripts in the in-meeting side panel. */
+                  full_transcript?: boolean;
+                  /** This setting [enables manual closed captioning](https://support.zoom.us/hc/en-us/articles/207279736-Managing-closed-captioning-and-live-transcription). */
+                  manual_captions?: boolean;
+                  /** This setting allows participants to [save closed captions or transcripts](https://support.zoom.us/hc/en-us/articles/360060958752). 
+
+ **Note:** If the `full_transcript` field is set to `false`, participants **cannot** save captions. */
+                  save_captions?: boolean;
+                  /** This setting allows the use of an API token to integrate with a [3rd-party device](https://support.zoom.us/hc/en-us/articles/115002212983) to provide closed captioning. */
+                  third_party_captioning_service?: boolean;
+              };
+              /** This setting allows meeting participants to [communicate using the emoji reactions](https://support.zoom.us/hc/en-us/articles/115001286183-Nonverbal-feedback-and-meeting-reactions) located in the **Reactions** menu in the meeting toolbar. */
+              meeting_reactions?: boolean;
+              /** This setting enables you to choose from these meeting reaction options.
+               * `all` - All emojis: Allow meeting participants to use any emoji available in Zoom chat as a reaction in a meeting.
+               * `selected` - Selected emojis: Allow meeting participants to use the 6 standard meeting reaction emojis: Clapping Hands, Thumbs Up, Heart, Tears of Joy, Open Mouth, Party Popper (Tada, Celebration). */
+              meeting_reactions_emojis?: 'all' | 'selected';
+              /** Whether to allow host and panelist to use audible clap. */
+              allow_host_panelists_to_use_audible_clap?: boolean;
+              /** You can set this field to true to use [webinar reactions](https://support.zoom.us/hc/en-us/articles/4803536268429). */
+              webinar_reactions?: boolean;
+              /** This setting allows the host to present a survey to participants once a meeting has ended. This feature is only available in version 5.7.3 or higher. */
+              meeting_survey?: boolean;
+              /** This setting enables non-verbal feedback through screens. */
+              non_verbal_feedback?: boolean;
+              /** This setting adds polls to the meeting controls. */
+              polling?: boolean;
+              /** This setting enables 1:1 private chat between participants during meetings. */
+              private_chat?: boolean;
+              /** This setting records and plays their own voice. */
+              record_play_voice?: boolean;
+              /** This setting enables remote control during screensharing. */
+              remote_control?: boolean;
+              /** This setting allows host to provide 1:1 remote support to a participant. */
+              remote_support?: boolean;
+              /** Whether the [**Request permission to unmute participants**](https://support.zoom.us/hc/en-us/articles/203435537-Muting-and-unmuting-participants-in-a-meeting#h_01EGK4XFWS1SJGZ71MYGKF7260) option has been enabled for the user or not. */
+              request_permission_to_unmute_participants?: boolean;
+              /** This setting allows host and participants to share their screen or content during meetings
+               */
+              screen_sharing?: boolean;
+              /** This setting shares dual camera. */
+              share_dual_camera?: boolean;
+              /** The setting allows participants to join a meeting directly from their browser and bypass the Zoom application download process. This is useful for participants who cannot download, install, or run applications. Note that the meeting experience from the browser is limited. */
+              show_a_join_from_your_browser_link?: boolean;
+              /** This setting allows you to always show meeting controls during a meeting. */
+              show_meeting_control_toolbar?: boolean;
+              /** This setting allows the person sharing during a presentation to allow others to control the slide presentation. This feature is only available in version 5.8.3 or higher. */
+              slide_control?: boolean;
+              /** If the value of `custom_data_center_regions` is `true`, a comma-separated list of the following [data center regions](https://support.zoom.us/hc/en-us/articles/360059254691-Datacenter-abbreviation-list) to **not** opt in to:
+               * `EU` - Europe.
+               * `HK` - Hong Kong.
+               * `AU` - Australia.
+               * `IN` - India.
+               * `LA` - Latin America.
+               * `TY` - Tokyo.
+               * `CN` - China.
+               * `US` - United States.
+               * `CA` - Canada. */
+              unchecked_data_center_regions?: (
+                  | 'EU'
+                  | 'HK'
+                  | 'AU'
+                  | 'IN'
+                  | 'TY'
+                  | 'CN'
+                  | 'US'
+                  | 'CA'
+                  | 'DE'
+                  | 'NL'
+                  | 'LA'
+              )[];
+              /** This setting enables virtual background. */
+              virtual_background?: boolean;
+              /** The settings to manage virtual background. */
+              virtual_background_settings?: {
+                  /** This setting allows the user to upload custom backgrounds. */
+                  allow_upload_custom?: boolean;
+                  /** This setting allows the use of videos for virtual backgrounds. */
+                  allow_videos?: boolean;
+                  /** This setting enables virtual background. */
+                  enable?: boolean;
+                  files?: {
+                      /** The unique identifier of the file. */
+                      id?: string;
+                      /** Whether or not this file is the default virtual background file. */
+                      is_default?: boolean;
+                      /** The file name. */
+                      name?: string;
+                      /** The file size. */
+                      size?: number;
+                      /** The file type. */
+                      type?: string;
+                  }[];
+              };
+              /** This setting enables the waiting room. If enabled, attendees can only join after host approves. */
+              waiting_room?: boolean;
+              webinar_chat?: {
+                  /** This setting indicates who webinar attendees can chat with.
+                   * `1` - No one.
+                   * `2` - Host and all panelists.
+                   * `3` - Everyone. */
+                  allow_attendees_chat_with?: 1 | 2 | 3;
+                  /** Automatically saves chat messages to a local file on the host's computer when the webinar ends. */
+                  allow_auto_save_local_chat_file?: boolean;
+                  /** This setting indicates who the webinar panelists can chat with.
+                   * `1` - Host and all panelists.
+                   * `2` - Everyone. */
+                  allow_panelists_chat_with?: 1 | 2;
+                  /** This setting allows webinar panelists to send direct messages to other panelists. */
+                  allow_panelists_send_direct_message?: boolean;
+                  /** This setting indicates how webinar attendees can save chats.
+                   * `0` - Attendees cannot save chats.
+                   * `1` - Attendees can only save host and panelist chats.
+                   * `2` - Attendees can save all chats. */
+                  allow_users_save_chats?: 0 | 1 | 2;
+                  /** By default, it indicates who the webinar attendees can chat with.
+                   * `1` - Host and all panelists.
+                   * `2` - Everyone. */
+                  default_attendees_chat_with?: 1 | 2;
+                  /** This setting allows the webinar participants to send chat messages. */
+                  enable?: boolean;
+              };
+              webinar_live_streaming?: {
+                  /** The specific instructions to allow your account's meeting hosts to configure a custom live stream. */
+                  custom_service_instructions?: string;
+                  /** Whether webinar live streaming is enabled. */
+                  enable?: boolean;
+                  /** Whether to notify users to watch the live stream. This does not apply to custom RTMP (real-time messaging protocol). */
+                  live_streaming_reminder?: boolean;
+                  /** The available live streaming services:
+                   * `facebook`
+                   * `workplace_by_facebook`
+                   * `youtube`
+                   * `custom_live_streaming_service` */
+                  live_streaming_service?: (
+                      | 'facebook'
+                      | 'workplace_by_facebook'
+                      | 'youtube'
+                      | 'custom_live_streaming_service'
+                  )[];
+              };
+              /** The information about the account's meeting polling settings. */
+              meeting_polling?: {
+                  /** Whether to allow the host to create advanced polls and quizzes. Advanced polls and quizzes include single choice, multiple choice, drop down, matching, short answer, long answer, rank order, and fill-in-the-blank questions. The host can also set the correct answers for quizzes they create. */
+                  advanced_polls?: boolean;
+                  /** Whether to allow alternative hosts to add or edit polls and quizzes. */
+                  allow_alternative_host_to_add_edit?: boolean;
+                  /** Whether to require answers to be anonymous. */
+                  require_answers_to_be_anonymous?: boolean;
+                  /** Whether to allow host to upload an image for each question. */
+                  allow_host_to_upload_image?: boolean;
+                  /** Whether to allow the host to add polls before or during a meeting. */
+                  enable?: boolean;
+              };
+              /** The information about the user's webinar polling settings. */
+              webinar_polling?: {
+                  /** This setting allows the host to create advanced polls and quizzes. Advanced polls and quizzes include single choice, multiple choice, drop down, matching, short answer, long answer, rank order, and fill-in-the-blank questions. Hosts can also set the correct answers for quizzes they create. */
+                  advanced_polls?: boolean;
+                  /** Whether to allow alternative hosts to add or edit polls and quizzes. */
+                  allow_alternative_host_to_add_edit?: boolean;
+                  /** Whether to require answers to be anonymous. */
+                  require_answers_to_be_anonymous?: boolean;
+                  /** Whether to allow host to upload an image for each question. */
+                  allow_host_to_upload_image?: boolean;
+                  /** This setting allows the host to add polls before or during a webinar. */
+                  enable?: boolean;
+              };
+              /** This setting allows the host to present surveys to attendees once a webinar has ended. */
+              webinar_survey?: boolean;
+              /** This setting indicates who can share their screen or content during meetings. The value can be one of the following:   
+ 
+`host`: Only host can share the screen.  
+ 
+`all`: Both hosts and attendees can share their screen during meetings. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              who_can_share_screen?: 'host' | 'all';
+              /** This setting indicates who is allowed to start sharing screen when someone else in the meeting is sharing their screen. The value can be one of the following:  
+ 
+`host`: Only a host can share the screen when someone else is sharing.  
+ 
+`all`: Anyone in the meeting is allowed to start sharing their screen when someone else is sharing. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              who_can_share_screen_when_someone_is_sharing?: 'host' | 'all';
+              /** This setting indicates how many participants can share at the same time. The value can be one of the following:  
+ 
+`one`: Only one participant can share at a time
+.  
+ 
+`multiple`: Multiple participants can share simultaneously (dual monitors recommended). */
+              participants_share_simultaneously?: 'multiple' | 'one';
+              /** Whether to allow Workplace by Facebook live streaming. */
+              workplace_by_facebook?: boolean;
+              /** Users can move to a new device without leaving the meeting they're in. */
+              transfer_meetings_between_devices?: boolean;
+              /** This setting enables the [**Show Zoom windows during screen share**](https://support.zoom.us/hc/en-us/articles/360061383571-Showing-Zoom-windows-during-screen-share) feature. */
+              allow_show_zoom_windows?: boolean;
+              /** As a host, you can generate a summary. Summaries are sent after the meeting has ended based on the share options. */
+              meeting_summary_with_ai_companion?: {
+                  /** Whether to allow hosts to generate a summary. */
+                  enable?: boolean;
+                  /** Whether to turn on meeting summary automatically when meetings start */
+                  auto_enable?: boolean;
+                  /** Defines who will receive a summary after this meeting.
+                   * `1` - Only meeting host.
+                   * `2` - Only meeting host, co-hosts, and alternative hosts.
+                   * `3` - Only meeting host and meeting invitees in our organization.
+                   * `4` - All meeting invitees including those outside of our organization. */
+                  who_will_receive_summary?: 1 | 2 | 3 | 4;
+              };
+              /** As a webinar host, you can generate a summary. Summaries are sent after the webinar ends based on the share options. */
+              webinar_summary_with_ai_companion?: {
+                  /** Whether to allow webinar hosts to generate a summary. */
+                  enable?: boolean;
+                  /** Whether to automatically turn on webinar summary when webinars start. */
+                  auto_enable?: boolean;
+                  /** Defines who will receive a summary after the webinar.
+                   * `1` - Only the webinar host.
+                   * `2` - Only the webinar host, co-hosts, and panelists in your organization.
+                   * `3` - The webinar host, co-hosts, and all panelists, including those outside your organization. */
+                  who_will_receive_summary?: 1 | 2 | 3;
+              };
+              /** Allow hosts and invited participants to ask questions to AI Companion during a meeting. Questions are answered based on the conversation transcript. */
+              ai_companion_questions?: {
+                  /** Whether to allow hosts and invited participants to ask questions to AI Companion during a meeting. */
+                  enable?: boolean;
+                  /** Whether to automatically allow access when the meeting starts */
+                  auto_enable?: boolean;
+                  /** Defines who can ask questions about this meeting's transcript.
+                   * `1` - All participants and invitees.
+                   * `2` - All participants only from when they join.
+                   * `3` - Only meeting host.
+                   * `4` - Participants and invitees in our organization.
+                   * `5` - Participants in our organization only from when they join. */
+                  who_can_ask_questions?: 1 | 2 | 3 | 4 | 5;
+              };
+              /** Allow webinar hosts and panelists to ask questions to AI Companion during a webinar. Questions are answered based on the conversation transcript. */
+              webinar_ai_companion_questions?: {
+                  /** Whether to allow webinar hosts and panelists to ask questions to AI Companion during a webinar. */
+                  enable?: boolean;
+                  /** Whether to automatically allow access when the webinar starts. */
+                  auto_enable?: boolean;
+                  /** Defines who can ask questions about the webinar's transcript.
+                   * `0` - Hosts and all panelists.
+                   * `1` - Hosts and all panelists in your organization.
+                   * `2` - Only the webinar host, co-hosts, and alternative hosts.
+                   * `3` - All participants. */
+                  who_can_ask_questions?: 0 | 1 | 2 | 3;
+              };
+          };
+          profile?: {
+              recording_storage_location?: {
+                  /** Users can choose the country to store their recorded content. Content can include meeting, webinar, and phone recordings, as well as voicemail, transcripts, and custom greeting prompts. See [Managing the Communications Content storage location](https://support.zoom.us/hc/en-us/articles/360050781131) for details.
+
+Provide abbreviated country codes as the value for this field. See the [Countries abbreviation list](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) for details. */
+                  allowed_values?: string[];
+                  /** The abbreviated country code. */
+                  value?: string;
+              };
+          };
+          recording?: {
+              /** This setting asks the host to confirm the disclaimer. */
+              ask_host_to_confirm_disclaimer?: boolean;
+              /** This field can be used if `recording_disclaimer` is set to true. This field indicates whether or not you would like to ask participants for consent when a recording starts. The value can be one of the following:  
+ 
+* `true`: Ask participants for consent when a recording starts.   
+ 
+* `false`: Do not ask participants for consent when a recording starts. */
+              ask_participants_to_consent_disclaimer?: boolean;
+              /** The auto delete cloud recordings setting. */
+              auto_delete_cmr?: boolean;
+              /** When the `auto_delete_cmr` value is `true`, this value is the number of days before the auto-deletion of cloud recordings.
+               * `30` - 30 days.
+               * `60` - 60 days.
+               * `90` - 90 days.
+               * `120` - 120 days. */
+              auto_delete_cmr_days?: 30 | 60 | 90 | 120;
+              /** The account's [**Record active speaker, gallery view and shared screen separately**](https://support.zoom.us/hc/en-us/articles/360060316092-Changing-basic-and-advanced-cloud-recording-settings#h_01F4CYJTCTXNS2MXH00W9EFG6R) settings. */
+              record_files_separately?: {
+                  /** This setting records the active speaker only. */
+                  active_speaker?: boolean;
+                  /** This setting records the gallery view only. */
+                  gallery_view?: boolean;
+                  /** This setting records the shared screen only. */
+                  shared_screen?: boolean;
+              };
+              /** This setting displays the participants' names in the recording. */
+              display_participant_name?: boolean;
+              /** This setting records thumbnails of the presenter when they are sharing their screen. */
+              recording_thumbnails?: boolean;
+              /** This setting optimizes recordings for a third-party video editor. This may increase the file size and the time it takes to generate recording files. */
+              optimize_recording_for_3rd_party_video_editor?: boolean;
+              /** This setting enables the [recording highlights](https://support.zoom.us/hc/en-us/articles/360060802432) feature. */
+              recording_highlight?: boolean;
+              /** This setting saves the panelist chat to the recording. This setting also saves messages sent by panelists during a webinar to either all panelists or all panelists and attendees to the recording. */
+              save_panelist_chat?: boolean;
+              /** This setting saves poll results shared during the meeting or webinar. It also includes poll results shared during the meeting or webinar. */
+              save_poll_results?: boolean;
+              /** This setting saves [closed captions](https://support.zoom.us/hc/en-us/articles/207279736) as a VTT (Video Track Text) file. */
+              save_close_caption?: boolean;
+              /** The automatic recording:  
+ `local` - Record on local.  
+ `cloud` - Record on cloud.  
+ `none` - Disabled. */
+              auto_recording?: 'local' | 'cloud' | 'none';
+              /** The cloud recording. */
+              cloud_recording?: boolean;
+              /** The host can pause or stop the auto recording in the cloud. */
+              host_pause_stop_recording?: boolean;
+              /** This setting allows the cloud recording access only from specific IP address ranges.
+               */
+              ip_address_access_control?: {
+                  /** If set to `true`, the cloud recordings of this account can only be accessed by the IP addresses defined in the `ip_addresses_or_ranges` property.
+
+ */
+                  enable?: boolean;
+                  /** The IP addresses or ranges that have access to the cloud recordings. Separate multiple IP ranges with comma. Use n.n.n.n, n.n.n.n/n or n.n.n.n - n.n.n.n syntax where n is a number.
+
+Example: `46.33.24.184, 48.99.100.2/25` or `200.181.108.17 - 220.181.108.157`
+
+ */
+                  ip_addresses_or_ranges?: string;
+              };
+              /** The local recording. */
+              local_recording?: boolean;
+              /** This setting records one audio file for all participants. */
+              record_audio_file?: boolean;
+              /** This setting records the gallery view. */
+              record_gallery_view?: boolean;
+              /** This setting records the active speaker view. */
+              record_speaker_view?: boolean;
+              /** The audio transcript. */
+              recording_audio_transcript?: boolean;
+              /** The setting shows a disclaimer to participants before a recording starts
+This field has been deprecated. The replacement field is recording_notification_for_zoom_client. */
+              recording_disclaimer?: boolean;
+              /** By selecting this option, your recording will have meeting smart chapters, and next steps. You are directing Zoom to access, process, and use your account's recording data for the purpose of analysis and insights. */
+              smart_recording?: {
+                  /** By selecting this option, the meeting details in the audio transcript will be highlighted. Hosts can modify highlighted sections and generate a video summary (highlighted sections may have a 3-second offset) based on these sections. The summary is for informational purposes only and may not be complete. */
+                  create_recording_highlights?: boolean;
+                  /** By selecting this option, your recording will have chapters with overview. Hosts can edit the chapters. */
+                  create_smart_chapters?: boolean;
+                  /** By selecting this option, there will be a summary of actions to take after the recorded meeting. */
+                  create_next_steps?: boolean;
+              };
+              /** This object represents the minimum passcode requirements set for recordings via Account Recording Settings. */
+              recording_password_requirement?: {
+                  /** The passcode must contain at least one alphabetical letter (a, b, c..). */
+                  have_letter?: boolean;
+                  /** The passcode must contain at least one number(1, 2, 3..). */
+                  have_number?: boolean;
+                  /** The passcode must contain at least one special character(!, @, #..). */
+                  have_special_character?: boolean;
+                  /** The minimum required length for the passcode. */
+                  length?: number;
+                  /** The passcode must contain only numeric characters. */
+                  only_allow_numeric?: boolean;
+              };
+              /** This setting saves chat text from the meeting. */
+              save_chat_text?: boolean;
+              /** This setting shows the timestamp on the video. */
+              show_timestamp?: boolean;
+              /** setting name: Recording notifications - Zoom clients */
+              recording_notification_for_zoom_client?: {
+                  /** Child setting name is [Show a disclaimer to participants when a recording starts], the value is option name you selected. */
+                  disclaimer_to_participants?: string;
+                  /** Child setting name is [Play voice prompt for], the value is option name you selected. */
+                  play_voice_prompt?: string;
+                  /** Child setting name is [Ask host to confirm before starting a recording], the value is option name you selected */
+                  ask_host_to_confirm?: boolean;
+              };
+              /** Allow Zoom Revenue Accelerator to manage recording files with separate auto-delete settings */
+              allow_revenue_accelerator_manage_recording_separate_auto_delete?: boolean;
+              /** When the cloud recording is going to be permanently deleted from trash */
+              cloud_recording_permanently_deleted?: {
+                  /** Main setting value */
+                  cloud_recording_permanently_deleted_from_trash?: boolean;
+                  /** Selected email reminder */
+                  email_reminder_type?:
+                      | '7 days before deletion'
+                      | 'Weekly digest on Monday';
+              };
+              /** Allow 3rd-party recording */
+              allow_cmr_3rd_party_bot?: boolean;
+              /** add water marker for recording */
+              water_marker_recording?: boolean;
+              /** Viewers can see the transcript */
+              viewer_see_transcript?: boolean;
+              /** Allow invitees to access recordings without the passcode */
+              allow_invitees_access_recordings_without_passcode?: boolean;
+              /** Set recording as on-demand by default */
+              recording_as_on_demand?: boolean;
+              /** Recording notifications - Phone users */
+              recording_notifications_phone_users?: {
+                  /** Require phone-only users to press 1 to consent to being recorded */
+                  require_press_one_consent_to_record?: boolean;
+                  /** Multiple notifications for phone users */
+                  multiple_notifications_phone_users?: boolean;
+              };
+              /** Upload recording to the cloud */
+              upload_recording?: boolean;
+              /** Allow users to add cloud recordings to Zoom Clips */
+              allow_add_cloud_recordings_to_zoom_clips?: boolean;
+              /** Allow cloud recording sharing */
+              allow_share?: boolean;
+              /** Viewers see chat */
+              viewer_see_chat?: boolean;
+              /** Require users to authenticate before viewing cloud recordings */
+              authenticated_view_cloud_recoding?: {
+                  /** Main setting value */
+                  authenticated_can_view_cloud_recordings?: boolean;
+                  /** Default authentication option */
+                  default_authenticate_content?:
+                      | 'Signed-in users in my account'
+                      | 'Sign in to Zoom'
+                      | 'Sign in to Zoom with specified domains'
+                      | 'Sign in to external Single Sign-On (SSO)'
+                      | 'Only people with access';
+              };
+              /** Push notification to subscription URL when a cloud recording is available */
+              notification_subscription_url_when_recording_available?: boolean;
+              /** Recording storage email notifications */
+              recording_storage_email_notifications?: boolean;
+              /** all sub-options for local recording */
+              local_recording_options?: {
+                  /** Internal meeting participants */
+                  internal_meeting_participants?: boolean;
+                  /** Auto approve their permission requests */
+                  internal_auto_approve_requests?: boolean;
+                  /** External meeting participants */
+                  external_meeting_participants?: boolean;
+                  /** Auto approve their permission requests */
+                  external_auto_approve_requests?: boolean;
+                  /** Meeting participants with specified domains */
+                  participants_with_specified_domains?: boolean;
+                  /** Enter the domain information */
+                  participants_with_specified_domains_content?: string;
+                  /** Auto approve their permission requests */
+                  participants_specified_domains_auto_approve_requests?: boolean;
+                  /** Save chat messages from the meeting / webinar */
+                  save_chat_messages?: boolean;
+                  /** Save closed caption as a VTT file */
+                  save_closed_caption?: boolean;
+              };
+              /** Embed passcode in the shareable link for one-click access */
+              embed_passcode_in_shareable_link?: boolean;
+          };
+          schedule_meeting?: {
+              /** This setting determines how participants can join the audio portion of the meeting:  
+ `both` - Telephony and VoIP.  
+ `telephony` - Audio PSTN telephony only.  
+ `voip` - VoIP only.  
+ `thirdParty` - Third party audio conference. */
+              audio_type?: 'both' | 'telephony' | 'voip' | 'thirdParty';
+              /** The passcode for already scheduled meetings
+               */
+              default_password_for_scheduled_meetings?: string;
+              /** This setting encrypts the meeting passcode and includes it in the join meeting link to allow participants to join with just one click without having to enter the passcode.
+               */
+              embed_password_in_join_link?: boolean;
+              /** This setting requires a passcode for personal meetings if attendees can join before host. */
+              force_pmi_jbh_password?: boolean;
+              /** This setting starts meetings with host video on. */
+              host_video?: boolean;
+              /** This setting joins the meeting before host arrives. */
+              join_before_host?: boolean;
+              /** The account wide meeting or webinar [passcode requirements](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604). */
+              meeting_password_requirement?: {
+                  consecutive_characters_length?: 0 | 4 | 5 | 6 | 7 | 8;
+                  /** The passcode must contain at least 1 letter (such as a,b,c...).
+                   */
+                  have_letter?: boolean;
+                  /** The passcode must contain at least 1 number (such as 1,2,3...). */
+                  have_number?: boolean;
+                  /** The passcode must have at least one special character (!,@,#...). */
+                  have_special_character?: boolean;
+                  /** The passcode must include both uppercase and lowercase characters. */
+                  have_upper_and_lower_characters?: boolean;
+                  /** The minimum length that the meeting/webinar passcode must have. */
+                  length?: number;
+                  /** The passcode must only contain numbers and no other characters. */
+                  only_allow_numeric?: boolean;
+                  /** This setting informs users if the provided passcode is weak. */
+                  weak_enhance_detection?: boolean;
+              };
+              /** This setting starts meetings with participants video on. */
+              participants_video?: boolean;
+              /** The personal meeting setting.  
+
+ 
+`true` - Indicates that the **Enable [Personal Meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi)** setting is turned on. Users can choose to use a PMI for their meetings.   
+
+ 
+`false` - Indicates that the **Enable Personal Meeting ID** setting is [turned off](https://support.zoom.us/hc/en-us/articles/201362843-Personal-meeting-ID-PMI-and-personal-link#h_aa0335c8-3b06-41bc-bc1f-a8b84ef17f2a). If this setting is disabled, meetings that were scheduled with PMI will be invalid. Scheduled meetings will need to be manually updated.
+For Zoom Phone only:If a user has been assigned a desk phone, **Elevate to Zoom Meeting** on desk phone will be disabled.
+
+
+ */
+              personal_meeting?: boolean;
+              /** The PMI passcode.
+               */
+              pmi_password?: string;
+              /** This setting generates and requires a passcode for participants who join by phone. */
+              pstn_password_protected?: boolean;
+              /** This setting requires a passcode for instant meetings. If you use PMI for your instant meetings, this option will be disabled. This setting is always enabled for free accounts and Pro accounts with a single host and cannot be modified for these accounts.
+               */
+              require_password_for_instant_meetings?: boolean;
+              /** This setting requires a passcode for the Personal Meeting ID (PMI). This setting is always enabled for free accounts and Pro accounts with a single host and cannot be modified for these accounts.
+               */
+              require_password_for_pmi_meetings?: 'jbh_only' | 'all' | 'none';
+              /** This setting requires a passcode for meetings which have already been scheduled.
+               */
+              require_password_for_scheduled_meetings?: boolean;
+              /** This setting requires a passcode when scheduling new meetings.This setting is always enabled for free accounts and Pro accounts with a single host and cannot be modified for these accounts.
+               */
+              require_password_for_scheduling_new_meetings?: boolean;
+              /** This setting uses a [Personal Meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi) when starting an instant meeting. */
+              use_pmi_for_instant_meetings?: boolean;
+              /** The usser can use a [Personal Meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi) when scheduling a meeting. */
+              use_pmi_for_scheduled_meetings?: boolean;
+              /** Information about the **Enable continuous meeting chat** feature. */
+              continuous_meeting_chat?: {
+                  /** Whether to enable the **Enable continuous meeting chat** setting. */
+                  enable?: boolean;
+                  /** Whether to enable the **External users can be added** setting. */
+                  can_add_external_users?: boolean;
+                  /** Whether to enable the **Automatically add invited external users** setting. */
+                  auto_add_invited_external_users?: boolean;
+                  /** Whether to enable the **Enable continuous meeting chat** setting for instant meetings. */
+                  support_instant_meetings?: boolean;
+                  /** Whether to enable the **Enable continuous meeting chat** setting for scheduled meetings. */
+                  support_scheduled_meetings?: boolean;
+              };
+          };
+          /** User Settings: Telephony. */
+          telephony?: {
+              /** The third-party audio conference info. */
+              audio_conference_info?: string;
+              /** This setting shows the international numbers link on the invitation email. */
+              show_international_numbers_link?: boolean;
+              /** This setting indicates where most of the participants call into or call from during a meeting. */
+              telephony_regions?: {
+                  /** The telephony region options provided by Zoom to select from. */
+                  allowed_values?: string[];
+                  /** The account's selected telephony regions that indicate where most participants call into or call from during a meeting. */
+                  selection_values?: string;
+              };
+              /** The third party audio conference. */
+              third_party_audio?: boolean;
+          };
+          /** Account Settings: TSP. */
+          tsp?: {
+              /** The call out. */
+              call_out?: boolean;
+              /** The call out by countries or regions. */
+              call_out_countries?: Record<string, any>[];
+              /** This setting shows the international numbers link on the invitation email. */
+              show_international_numbers_link?: boolean;
+              /** The user's **Global Dial-in Countries/Regions** settings. */
+              global_dial_in_countries?: {
+                  /** The list of all available countries/regions that can be selected for displaying dial-in numbers in the meeting invitation. */
+                  allowed_countries?: {
+                      /** The code of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+                  /** The list of selected countries/regions whose dial-in numbers will be listed in the email invitation. You can adjust the order that the dial-in numbers appear in the email invitation. */
+                  selected_countries?: {
+                      /** The code of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+              };
+          };
+          /** Account settings - Whiteboard. */
+          whiteboard?: {
+              /** This setting is enables an out-of-meeting whiteboard. */
+              out_meeting_advanced_whiteboard?: boolean;
+              /** This setting is enables an in-meeting whiteboard */
+              in_meeting_advanced_whiteboard?: boolean;
+          };
+          /** General settings. */
+          general_setting?: {
+              /** Allow automatic direct sharing and connecting to Zoom Rooms using ultrasonic proximity signal. */
+              auto_zoom_room_proximity_connect?: boolean;
+          };
+      }
+    | {
+          authentication_options?: {
+              /** The user's [meeting authentication settings](https://support.zoom.us/hc/en-us/articles/360037117472). */
+              meeting_authentication?: {
+                  /** Whether the [**Allow authentication exception**](https://support.zoom.us/hc/en-us/articles/360037117472#h_01F13A9N1FQFNVESC9C21NRHXY) setting is enabled. This lets hosts invite users who can bypass authentication. */
+                  allow_authentication_exception?: boolean;
+                  /** The user's [**Meeting Authentication Options**](https://support.zoom.us/hc/en-us/articles/360060549492-Allowing-only-authenticated-users-in-meetings#h_01F51KGPWJNQBDMFSJ3ZJQ4AA2) settings. */
+                  authentication_options?: {
+                      /** Whether the authentication option is the default authentication option. */
+                      default_option?: boolean;
+                      /** A comma-separated list of approved authentication domains. */
+                      domains?: string;
+                      /** The authentication option's ID. */
+                      id?: string;
+                      /** The authentication option's name. */
+                      name?: string;
+                      /** The authentication type.
+                       * `enforce_login` - Only users logged in to Zoom can join meetings.
+                       * `enforce_login_with_domains` - Only users from specific domains can join meetings. The list of domains is defined in the `domains` field.
+                       * `enforce_login_with_same_account` - Only the Zoom account's users can join meetings. */
+                      type?:
+                          | 'enforce_login'
+                          | 'enforce_login_with_domains'
+                          | 'enforce_login_with_same_account';
+                      /** Whether the authentication option is visible. */
+                      visible?: boolean;
+                  }[];
+                  /** Whether only authenticated users can join meetings. */
+                  meeting_authentication?: boolean;
+              };
+              /** The user's recording authentication settings. */
+              recording_authentication?: {
+                  /** The user's authentication options. */
+                  authentication_options?: {
+                      /** Whether the authentication option is the default authentication option. */
+                      default_option?: boolean;
+                      /** A comma-separated list of approved authentication domains. */
+                      domains?: string;
+                      /** The authentication option's ID. */
+                      id?: string;
+                      /** The authentication option's name. */
+                      name?: string;
+                      /** The authentication type.
+                       * `enforce_login` - Only users logged in to Zoom can view the recordings.
+                       * `enforce_login_with_domains` - Only users from specific domains can view the recordings. The list of domains is defined in the `domains` field.
+                       * `internally` - Only the Zoom account's users can view the recordings. */
+                      type?:
+                          | 'enforce_login'
+                          | 'enforce_login_with_domains'
+                          | 'internally';
+                      /** Whether the authentication option is visible. */
+                      visible?: boolean;
+                  }[];
+                  /** Whether only authenticated users can view cloud recordings. */
+                  recording_authentication?: boolean;
+              };
+          };
+      }
+    | {
+          /** Whether the [**Allow authentication exception**](https://support.zoom.us/hc/en-us/articles/360037117472#h_01F13A9N1FQFNVESC9C21NRHXY) setting is enabled. This lets hosts invite users who can bypass authentication. */
+          allow_authentication_exception?: boolean;
+          /** The meeting authentication options */
+          authentication_options?: {
+              /** The authentication default option. */
+              default_option?: boolean;
+              /** The authentication domains. */
+              domains?: string;
+              /** The authentication ID. */
+              id?: string;
+              /** The authentication name. */
+              name?: string;
+              /**  The authentication type. Specify one of the following authentication types for the authentication profile:  
+ 
+ * `enforce_login`: This option allows any users to join the meeting or webinar, as long as they are signed into their Zoom account.
+ * `enforce_login_with_domains`: This option, allows you to specify a rule so that only those Zoom users whose email addresses contain a certain domain, can join the meeting or webinar. You can either add multiple domains using a comma in between and/or use a wildcard for listing domains.  
+ 
+ * `enforce_login_with_same_account`: This option allows users to join the meeting or webinar with the same Zoom account. */
+              type?:
+                  | 'enforce_login'
+                  | 'enforce_login_with_same_account'
+                  | 'enforce_login_with_domains';
+              /** This setting indicates if the authentication is visible. */
+              visible?: boolean;
+          }[];
+          /** Only authenticated users can join meetings */
+          meeting_authentication?: boolean;
+      }
+    | {
+          /** The authentication options. */
+          authentication_options?: {
+              /** The authentication default option. */
+              default_option?: boolean;
+              /** The authentication domains. */
+              domains?: string;
+              /** The authentication ID. */
+              id?: string;
+              /** The name of the authentication. */
+              name?: string;
+              /** The type of authentication. */
+              type?:
+                  | 'internally'
+                  | 'enforce_login'
+                  | 'enforce_login_with_domains';
+              /** The authentication is visible. */
+              visible?: boolean;
+          }[];
+          /** Only authenticated users can view cloud recordings */
+          recording_authentication?: boolean;
+      }
+    | {
+          meeting_security?: {
+              /** Whether all meetings must be secured with at least one security option. 
+
+ This setting can only be disabled by Enterprise, ISV, Business (with more than 100 licenses), and Education accounts. */
+              auto_security?: boolean;
+              /** Whether users in specific domains are blocked from joining meetings and webinars. */
+              block_user_domain?: boolean;
+              /** The blocked domains. */
+              block_user_domain_list?: string[];
+              /** Whether the meeting passcode is encrypted and included in the invitation link. The provided link will allow participants to join the meeting without having to enter the passcode. */
+              embed_password_in_join_link?: boolean;
+              /** The type of encryption used when starting a meeting:
+               * `enhanced_encryption` - Enhanced encryption. Encryption data is stored in the cloud.
+               * `e2ee` - End-to-end encryption. The encryption key is stored on the local device and cannot be obtained by anyone else. Enabling E2EE also [**disables** certain features](https://support.zoom.us/hc/en-us/articles/360048660871), such as cloud recording, live streaming, and allowing participants to join before the host. */
+              encryption_type?: 'enhanced_encryption' | 'e2ee';
+              /** Whether end-to-end encryption is enabled for meetings. */
+              end_to_end_encrypted_meetings?: boolean;
+              /** Whether all instant and scheduled meetings that users can join via client or Zoom Rooms systems are passcode-protected. [Personal Meeting ID (PMI)](https://support.zoom.us/hc/en-us/articles/203276937) meetings are **not** included in this setting. */
+              meeting_password?: boolean;
+              /** The information about the meeting and webinar [passcode requirements](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604). */
+              meeting_password_requirement?: {
+                  /** The maximum length of consecutive characters (for example, `abcdef`) allowed in a passcode:
+                   * `4` through `8` - The maximum consecutive characters length. The length is `n` minus `1`, where `n` is the value. For example, if the value is `4`, there can only be a maximum of `3` consecutive characters in a passcode (for example, `abc1x@8fdh`).
+                   * `0` - No consecutive character restriction. */
+                  consecutive_characters_length?: 0 | 4 | 5 | 6 | 7 | 8;
+                  /** Whether passcodes must contain at least one letter character. */
+                  have_letter?: boolean;
+                  /** Whether passcodes must contain at least one numeric character. */
+                  have_number?: boolean;
+                  /** Whether passcodes must contain at least one special character. For example, `!`, `@`, and/or `#` characters. */
+                  have_special_character?: boolean;
+                  /** Whether passcodes must include uppercase and lowercase characters. */
+                  have_upper_and_lower_characters?: boolean;
+                  /** The minimum passcode length. */
+                  length?: number;
+                  /** Whether passcodes must contain **only** numeric characters. */
+                  only_allow_numeric?: boolean;
+                  /** Whether users are informed when the provided passcode is weak. */
+                  weak_enhance_detection?: boolean;
+              };
+              /** Whether to specify that only authenticated users can join the meeting from the web client. */
+              only_authenticated_can_join_from_webclient?: boolean;
+              /** Whether passcodes are required for participants joining by phone. 
+
+ If enabled and the meeting is passcode-protected, a numeric passcode is required for participants to join by phone. For meetings with alphanumeric passcodes, a numeric passcode will be generated. */
+              phone_password?: boolean;
+              /** Whether all Personal Meeting ID (PMI) meetings that users can join via client or Zoom Rooms systems are passcode-protected. */
+              pmi_password?: boolean;
+              /** Whether passcodes are required for meetings that have already been scheduled. */
+              require_password_for_scheduled_meeting?: boolean;
+              /** Whether passcodes are required for webinars that have already been scheduled. */
+              require_password_for_scheduled_webinar?: boolean;
+              /** Whether participants are placed in the [**Waiting Room**](https://support.zoom.us/hc/en-us/articles/115000332726-Waiting-Room) when they join a meeting. 
+
+ If the **Waiting Room** feature is enabled, the [**Allow participants to join before host**](https://support.zoom.us/hc/en-us/articles/202828525-Allow-participants-to-join-before-host) setting is automatically disabled. */
+              waiting_room?: boolean;
+              /** The information about the Waiting Room settings. */
+              waiting_room_settings?: {
+                  /** The type of participants to be admitted to the Waiting Room:
+                   * `0` - All attendees.
+                   * `1` - Users who are not in your account.
+                   * `2` - Users who are not in your account and are not part of your [allowed domains list](https://support.zoom.us/hc/en-us/articles/360037117472-Configuring-authentication-profiles#h_e3cf0d5f-eec7-4c2a-ad29-ef2a5079a7da). */
+                  participants_to_place_in_waiting_room?: 0 | 1 | 2;
+                  /** The users who can admit participants from the Waiting Room:
+                   * `0` - Host and co-hosts only.
+                   * `1` - Host, co-hosts, and anyone who bypassed the Waiting Room if the host and co-hosts are not present. */
+                  users_who_can_admit_participants_from_waiting_room?: 0 | 1;
+                  /** If the `participants_to_place_in_waiting_room` field is `2`, a comma-separated list of the domains that can bypass the Waiting Room (`example.com,example2.com`). */
+                  whitelisted_domains_for_waiting_room?: string;
+              };
+              /** Whether to generate a passcode when scheduling webinars. Participants must use the generated passcode to join the scheduled webinar. */
+              webinar_password?: boolean;
+          };
+      };
+
+/** Update user settings - Query parameters */
+export type ZoomApi$User$Settings$Update$Params = Partial<{
+    /** The optional query parameters:
+     * `meeting_authentication` &mdash; Use this query parameter to view the [meeting authentication settings](https://support.zoom.us/hc/en-us/articles/360037117472-Authentication-Profiles-for-Meetings-and-Webinars) applied to the user's account.
+     * `recording_authentication` &mdash; Use this query parameter to view the [recording authentication settings](https://support.zoom.us/hc/en-us/articles/360037756671-Authentication-Profiles-for-Cloud-Recordings) applied to the user's account.
+     * `meeting_security` &mdash; Use this query parameter to view the meeting security settings applied to the user's account. */
+    option:
+        | 'meeting_authentication'
+        | 'recording_authentication'
+        | 'meeting_security';
+}>;
+
+/** Update user settings - Request body */
+export type ZoomApi$User$Settings$Update$Request =
+    | {
+          /** The user's audio conference settings. */
+          audio_conferencing?: {
+              /** The user's [**Mask phone number in the participant list**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067881#h_01F5K5HBEEEXRXR9SN5ZBNWN30) settings. */
+              participant_phone_masking?: {
+                  /** Whether to mask phone numbers of users dialing into a meeting in the participant list. */
+                  enable?: boolean;
+                  /** The type of phone number masking pattern to apply.
+                   * `mask_default` - Default masking pattern (Example: 888****666).
+                   * `mask_first_5` - Mask first five digits (Example: *****66666).
+                   * `mask_except_last_4` - Mask everything except last four digits (Example: *****6666). */
+                  masking_type?:
+                      | 'mask_default'
+                      | 'mask_first_5'
+                      | 'mask_except_last_4';
+              };
+              /** The user's [**Global Dial-in Countries/Regions**](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0068094#h_01F5KKA1Y2CWNT35HF5C0JZY89) settings. */
+              global_dial_in_countries?: {
+                  /** The list of selected countries/regions whose dial-in numbers will be listed in the email invitation. You can adjust the order that the dial-in numbers appear in the email invitation. */
+                  selected_countries?: {
+                      /** The [code](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+                  /** Whether to include toll-free numbers in the email invitation for the selected countries/regions. */
+                  include_toll_free?: boolean;
+              };
+          };
+          email_notification?: {
+              /** When an alternative host is set or removed from a meeting. */
+              alternative_host_reminder?: boolean;
+              /** When a meeting is cancelled. */
+              cancel_meeting_reminder?: boolean;
+              /** Whether to notify the host when a cloud recording is available. */
+              cloud_recording_available_reminder?: boolean;
+              /** When attendees join meeting before host. */
+              jbh_reminder?: boolean;
+              /** Whether to notify any alternative hosts when a cloud recording is available. */
+              recording_available_reminder_alternative_hosts?: boolean;
+              /** Whether to notify the person who scheduled the meeting or webinar for the host when a cloud recording is available. */
+              recording_available_reminder_schedulers?: boolean;
+              /** This setting notifies the host there is a meeting is scheduled, rescheduled, or cancelled. */
+              schedule_for_reminder?: boolean;
+          };
+          feature?: {
+              /** The user's assigned [Concurrent Meeting](https://support.zoom.us/hc/en-us/articles/206122046) type: 
+* `Basic` 
+* `Plus` 
+* `None` 
+
+ **Note:** This feature requires a Concurrent Meeting Basic or Plus plan subscription. */
+              concurrent_meeting?: 'Basic' | 'Plus' | 'None';
+              /** This setting enables the [large meeting](https://support.zoom.us/hc/en-us/articles/201362823-What-is-a-Large-Meeting-) feature for the user. */
+              large_meeting?: boolean;
+              /** This field sets the meeting capacity for the user if the user has the **Large meeting** feature enabled. The value for the field can be 500, 1000, 3000, or 5000. */
+              large_meeting_capacity?: number;
+              /** This field sets a user's meeting capacity. The user's meeting capacity denotes the maximum number of participants that can join a meeting scheduled by the user. */
+              meeting_capacity?: number;
+              /** This setting enables Webinar feature for the user. */
+              webinar?: boolean;
+              /** The user's webinar capacity. This only applies to users with the [**Webinar**](https://support.zoom.us/hc/en-us/articles/200917029-Getting-started-with-webinar) feature enabled:
+               * `100`
+               * `500`
+               * `501`
+               * `1000`
+               * `1001`
+               * `3000`
+               * `5000`
+               * `10000` */
+              webinar_capacity?:
+                  | 100
+                  | 500
+                  | 501
+                  | 1000
+                  | 1001
+                  | 3000
+                  | 5000
+                  | 10000;
+              /** Whether to enable the Zoom Events feature for the user. */
+              zoom_events?: boolean;
+              /** The user's Zoom Events plan capacity: `500`, `1000`, `3000`, `5000`, `10000`, `20000`, `30000`, or `50000`. */
+              zoom_events_capacity?:
+                  | 500
+                  | 1000
+                  | 3000
+                  | 5000
+                  | 10000
+                  | 20000
+                  | 30000
+                  | 50000;
+              /** Whether to enable the Zoom Events Unlimited feature for the user. */
+              zoom_events_unlimited?: boolean;
+              /** The capacity list of user's Zoom Events Unlimited plan: `100`, `500`, `1000`, `3000`, `5000`, `10000`, `20000`, `30000`, or `50000`. */
+              zoom_events_unlimited_capacities?: (
+                  | 100
+                  | 500
+                  | 1000
+                  | 3000
+                  | 5000
+                  | 10000
+                  | 20000
+                  | 30000
+                  | 50000
+              )[];
+              /** Whether to enable the Zoom Sessions Unlimited feature for the user. */
+              zoom_sessions_unlimited?: boolean;
+              /** The capacity list of user's Zoom Sessions Unlimited plan: `100`, `500`, `1000`, `3000`, `5000`, `10000`, `20000`, `30000`, or `50000`. */
+              zoom_sessions_unlimited_capacities?: (
+                  | 100
+                  | 500
+                  | 1000
+                  | 3000
+                  | 5000
+                  | 10000
+                  | 20000
+                  | 30000
+                  | 50000
+              )[];
+              /** Whether to enable the Zoom Webinars Plus Unlimited feature for the user. */
+              zoom_webinars_plus_unlimited?: boolean;
+              /** The capacity list of user's Zoom Webinars Plus Unlimited plan - `100`, `500`, `1000`, `3000`, `5000`, `10000`, `20000`, `30000`, or `50000`. */
+              zoom_webinars_plus_unlimited_capacities?: (
+                  | 100
+                  | 500
+                  | 1000
+                  | 3000
+                  | 5000
+                  | 10000
+                  | 20000
+                  | 30000
+                  | 50000
+              )[];
+              /** Whether to enable the Zoom Events Pay Per Attendee feature for the user. */
+              zoom_events_pay_per_attendee?: boolean;
+              /** Whether to enable the Zoom Sessions Pay Per Attendee feature for the user. */
+              zoom_sessions_pay_per_attendee?: boolean;
+              /** The Zoom phone feature. If the value is set to false, will remove user from Zoom Phone. All numbers and phones assigned to the users will become unassigned.  */
+              zoom_phone?: boolean;
+              /** Whether the user has a Zoom Revenue Accelerator license. For information about a Zoom Revenue Accelerator license, contact [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003). */
+              zoom_iq_for_sales?: boolean;
+              /** Whether the user has a Zoom Revenue Accelerator license. For information about a Zoom Revenue Accelerator license, contact [Zoom Support](https://support.zoom.us/hc/en-us/articles/201362003). */
+              zoom_revenue_accelerator?: boolean;
+              /** Whether the user has a Zoom Whiteboard license. */
+              zoom_whiteboard?: boolean;
+              /** Whether the user has a Zoom Whiteboard Plus license. */
+              zoom_whiteboard_plus?: boolean;
+              /** Whether the user has a Zoom Translated Captions license. */
+              zoom_translated_captions?: boolean;
+              /** Whether the user has a Zoom Customer Managed Key license. */
+              zoom_customer_managed_key?: boolean;
+              /** Whether the user has a Zoom Huddles license. */
+              zoom_huddles?: boolean;
+              /** Whether the user has a Zoom Quality Management license. */
+              zoom_quality_management?: boolean;
+              /** Whether the user has a Zoom Workforce Management license. */
+              zoom_workforce_management?: boolean;
+              /** Whether the user has a Zoom Scheduler license. */
+              zoom_scheduler?: boolean;
+              /** Whether the user has a Zoom Clips Plus license. */
+              zoom_clips_plus?: boolean;
+              /** Whether the user has a Zoom Mail Calendar license. */
+              zoom_mail_calendar?: boolean;
+              /** Whether the user has a Zoom Compliance Management license. */
+              zoom_compliance_management?: boolean;
+              /** Whether the user has a Zoom Docs license. */
+              zoom_docs?: boolean;
+              /** Whether the user has a Zoom Canvas license. */
+              zoom_canvas?: boolean;
+              /** A list of license information used to specify the appropriate license type, license option, and license subscription reference ID. */
+              license_info_list?: {
+                  /** The corresponding type for the license that needs to be updated. */
+                  license_type:
+                      | 'ZOOM_WHITEBOARD'
+                      | 'ZOOM_TRANSLATED_CAPTIONS'
+                      | 'ZOOM_SCHEDULER'
+                      | 'ZOOM_CLIPS'
+                      | 'ZOOM_VISITOR_MANAGEMENT'
+                      | 'ZOOM_CMK'
+                      | 'ZOOM_DOCS'
+                      | 'ZOOM_REVENUE_ACCELERATOR'
+                      | 'ZOOM_COMPLIANCE_MANAGEMENT'
+                      | 'ZOOM_WORKFORCE_MANAGEMENT'
+                      | 'ZOOM_QUALITY_MANAGEMENT'
+                      | 'ZOOM_HEALTHCARE_CLINICAL_NOTES'
+                      | 'ZOOM_EVENTS_NEW_SAAS'
+                      | 'ZOOM_EVENTS_CONSUMPTION'
+                      | 'ZOOM_WEBINARS_PLUS'
+                      | 'ZOOM_WEBINARS_PLUS_CONSUMPTION'
+                      | 'ZOOM_CUSTOM_AI_COMPANION'
+                      | 'CX_INSIGHTS'
+                      | 'ZOOM_ENHANCED_MEDIA'
+                      | 'EDU_STUDENT';
+                  /** License option
+For the parameters with **licenseType** as **ZOOM_WHITEBOARD:**
+  `2` - Zoom Whiteboard.
+  `65536` - Zoom Whiteboard Plus.
+
+For the parameters with **licenseType** as **ZOOM_TRANSLATED_CAPTIONS**:
+  `2048` - Zoom Translated Captions.
+  
+For the parameters with **licenseType** as **ZOOM_SCHEDULER**:
+  `2199023255552` - Zoom Scheduler.
+
+For the parameters with **licenseType** as **ZOOM_CLIPS**:
+  `1` - Zoom Clips Plus.
+
+For the parameters with **licenseType** as **ZOOM_VISITOR_MANAGEMENT**:
+  `2147483648` - Zoom Visitor Management.
+
+For the parameters with **licenseType** as **ZOOM_CMK**:
+  `131072` - Zoom Customer Managed Key.
+
+<del>For the parameters with **licenseType** as **ZOOM_DOCS**:
+  `281474976710656` - Zoom Docs.
+</del>
+
+For the parameters with **licenseType** as **ZOOM_CANVAS**:
+  `281474976710656` - Zoom Canvas.
+
+For the parameters with **licenseType** as **ZOOM_REVENUE_ACCELERATOR**:
+  `1` - Zoom Revenue Accelerator.
+
+For the parameters with **licenseType** as **ZOOM_COMPLIANCE_MANAGEMENT**:
+  `8796093022208` - Zoom Compliance Management.
+  `17592186044416` - Zoom Compliance Management Plus.
+
+For the parameters with **licenseType** as **ZOOM_WORKFORCE_MANAGEMENT**:
+  `549755813888` - Zoom Workforce Management.
+
+For the parameters with **licenseType** as **ZOOM_QUALITY_MANAGEMENT**:
+  `1099511627776` - Zoom Quality Management.
+  `35184372088832` - Zoom Advanced Quality Management.
+
+For the parameters with **licenseType** as **ZOOM_HEALTHCARE_CLINICAL_NOTES**:
+  `512` - Zoom Workplace for Clinicians Unlimited.
+  `4503599627370496` - Zoom Workplace for Clinicians - Pay Per Notes.
+
+For the parameters with **licenseType** as **ZOOM_EVENTS_NEW_SAAS**:
+  `2` - Zoom Events Unlimited - 100 attendees.
+  `4` - Zoom Events Unlimited - 500 attendees.
+  `8` - Zoom Events Unlimited - 1000 attendees.
+  `16` - Zoom Events Unlimited - 3000 attendees.
+  `32` - Zoom Events Unlimited - 5000 attendees.
+  `64` - Zoom Events Unlimited - 10000 attendees.
+  `128` - Zoom Events Unlimited - 20000 attendees.
+  `256` - Zoom Events Unlimited - 30000 attendees.
+  `512` - Zoom Events Unlimited - 50000 attendees.
+
+For the parameters with **licenseType** as **ZOOM_EVENTS_CONSUMPTION**:
+  `1` - Zoom Events - Pay Per Attendee.
+
+For the parameters with **licenseType** as **ZOOM_WEBINARS_PLUS**:
+  `2048` - Zoom Webinars Plus Unlimited - 100 attendees.
+  `4096` - Zoom Webinars Plus Unlimited - 500 attendees.
+  `8192` - Zoom Webinars Plus Unlimited - 1000 attendees.
+  `16384` - Zoom Webinars Plus Unlimited - 3000 attendees.
+  `32768` - Zoom Webinars Plus Unlimited - 5000 attendees.
+  `65536` - Zoom Webinars Plus Unlimited - 10000 attendees.
+  `131072` - Zoom Webinars Plus Unlimited - 20000 attendees.
+  `262144` - Zoom Webinars Plus Unlimited - 30000 attendees.
+  `524288` - Zoom Webinars Plus Unlimited - 50000 attendees.
+
+For the parameters with **licenseType** as **ZOOM_WEBINARS_PLUS_CONSUMPTION**:
+  `1024` - Zoom Webinars Plus - Pay Per Attendee.
+
+For the parameters with **licenseType** as **ZOOM_CUSTOM_AI_COMPANION**:
+  `256` - Zoom Custom AI Companion.
+  `4096` - Zoom AI Companion.
+
+For the parameters with **licenseType** as **CX_INSIGHTS_LEADER**:
+  `1099511627776` - CX Insights Leader.
+
+For the parameters with **licenseType** as **ZOOM_ENHANCED_MEDIA**:
+  `4503599627370496` - Zoom Enhanced Media.
+
+For the parameters with **licenseType** as **EDU_STANDARD_STUDENT**:
+  `1152921504606846976` - Education Standard Student. */
+                  license_option:
+                      | 1
+                      | 2
+                      | 4
+                      | 8
+                      | 16
+                      | 32
+                      | 64
+                      | 128
+                      | 256
+                      | 512
+                      | 1024
+                      | 2048
+                      | 4096
+                      | 8192
+                      | 16384
+                      | 32768
+                      | 65536
+                      | 131072
+                      | 262144
+                      | 524288
+                      | 2147483648
+                      | 549755813888
+                      | 1099511627776
+                      | 2199023255552
+                      | 8796093022208
+                      | 17592186044416
+                      | 35184372088832
+                      | 281474976710656
+                      | 4503599627370496;
+                  /** The subscription ID associated with the corresponding license. */
+                  subscription_id?: string;
+              }[];
+          };
+          in_meeting?: {
+              /** Whether the host can enable the [**Focus Mode**](https://support.zoom.us/hc/en-us/articles/360061113751-Using-focus-mode) when scheduling a meeting. This value defaults to `null`. */
+              allow_host_to_enable_focus_mode?: boolean;
+              /** If the value of this field is set to `true`,  it allows users to delete messages in the in-meeting chat.
+               */
+              allow_users_to_delete_messages_in_meeting_chat?: boolean;
+              /** Allow livestreaming. */
+              allow_live_streaming?: boolean;
+              /** Whether to display a thumbs up or thumbs down feedback survey at the end of each meeting. */
+              post_meeting_feedback?: boolean;
+              /** Whether to enable the [**Zoom Whiteboard**](https://support.zoom.us/hc/en-us/articles/4410916881421) feature. */
+              whiteboard?: boolean;
+              /** Who participants can chat with: 
+* `1` &mdash; The participant cannot use chat. 
+* `2` &mdash; The participant can chat with the host and co-hosts only. 
+ * `3` &mdash; The participant can chat with other participants publicly. 
+* `4` - The participant can chat with other participants publicly and privately. 
+
+ **Note:** This setting is only available with client versions 5.7.3 and above. */
+              allow_participants_chat_with?: 1 | 2 | 3 | 4;
+              /** How participants can save meeting chats:
+               * `1` &mdash; Participants cannot save meeting chats.
+               * `2` &mdash; Participants can only save host and co-host meeting chats.
+               * `3` &mdash; Participants can save all meeting chats. */
+              allow_users_save_chats?: 1 | 2 | 3;
+              /** This setting allows meeting participants to use the [annotation tools](https://support.zoom.us/hc/en-us/articles/115005706806). This value defaults to `false`. */
+              annotation?: boolean;
+              /** This setting allows the host to put an attendee on hold. This value defaults to `false`. **This field has been deprecated and is no longer supported.** */
+              attendee_on_hold?: boolean;
+              /** Whether the [**Focus Mode**](https://support.zoom.us/hc/en-us/articles/360061113751-Using-focus-mode) feature is enabled. When enabled, this feature only displays the host and co-hosts' video and profile pictures during a meeting. 
+
+ This value defaults to `false`. */
+              attention_mode_focus_mode?: boolean;
+              /** This setting automatically saves all in-meeting chats. This value defaults to `false`. */
+              auto_saving_chat?: boolean;
+              /** This setting allows the meeting host to split meeting participants into separate breakout rooms. */
+              breakout_room?: boolean;
+              /** This setting allows the host to assign participants to breakout rooms when scheduling. This feature is **only** available in version 4.5.0 or higher. */
+              breakout_room_schedule?: boolean;
+              /** This setting enables chat during meeting for all participants. This value defaults to `false`. */
+              chat?: boolean;
+              /** This setting allows participants to ask questions for the host and participants to answer. */
+              meeting_question_answer?: boolean;
+              /** This setting enables closed captions. This value defaults to `false`. */
+              closed_caption?: boolean;
+              /** The information about the user's closed captioning settings. */
+              closed_captioning?: {
+                  /** This setting allows a live transcription service to transcribe meetings. */
+                  auto_transcribing?: boolean;
+                  /** This setting allows the host to type closed captions or assign a participant or 3rd-party service to provide closed captioning. */
+                  enable?: boolean;
+                  /** This setting allows participants to save closed captions or transcripts. */
+                  save_caption?: boolean;
+                  /** This setting allows the use of an API token to integrate with third-party closed captioning services. */
+                  third_party_captioning_service?: boolean;
+                  /** This setting allows the viewing of full transcripts in the in-meeting side panel. */
+                  view_full_transcript?: boolean;
+              };
+              /** This setting allows the host to add co-hosts. This value defaults to `false`. */
+              co_host?: boolean;
+              /** This setting uses custom [data center regions](https://support.zoom.us/hc/en-us/articles/360042411451-Selecting-data-center-regions-for-meetings-webinars):
+               * `true` &mdash; Users can [select data center regions](https://support.zoom.us/hc/en-us/articles/360042411451-Selecting-data-center-regions-for-hosted-meetings-and-webinars) to use for hosting real-time meeting traffic. The data center regions can be provided in the `data_center_regions` field.
+               * `false` &mdash; Only use the default data center regions. */
+              custom_data_center_regions?: boolean;
+              /** This setting allows custom livestreaming. */
+              custom_live_streaming_service?: boolean;
+              /** The custom livestreaming service instructions. */
+              custom_service_instructions?: string;
+              /** If the value of `custom_data_center_regions` is `true`, a comma-separated list of the following [data center regions](https://support.zoom.us/hc/en-us/articles/360059254691-Datacenter-abbreviation-list) to opt in to:
+               * `AU` &mdash; Australia.
+               * `LA` &mdash; Latin America.
+               * `CA` &mdash; Canada.
+               * `CN` &mdash; China.
+               * `DE` &mdash; Germany.
+               * `HK` &mdash; Hong Kong SAR.
+               * `IN` &mdash; India.
+               * `IE` &mdash; Ireland.
+               * `TY` &mdash; Japan.
+               * `MX` &mdash; Mexico.
+               * `NL` &mdash; Netherlands.
+               * `SG` &mdash; Singapore.
+               * `US` &mdash; United States. */
+              data_center_regions?: (
+                  | 'AU'
+                  | 'LA'
+                  | 'CA'
+                  | 'CN'
+                  | 'DE'
+                  | 'HK'
+                  | 'IN'
+                  | 'IE'
+                  | 'TY'
+                  | 'MX'
+                  | 'NL'
+                  | 'SG'
+                  | 'US'
+              )[];
+              /** This setting enables the **Disable desktop screen sharing for meetings you host** setting. */
+              disable_screen_sharing_for_host_meetings?: boolean;
+              /** This setting enables the **Disable screen sharing when guests are in the meeting** setting. */
+              disable_screen_sharing_for_in_meeting_guests?: boolean;
+              /** This setting requires [AES encryption](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) for meetings. */
+              e2e_encryption?: boolean;
+              /** When to play the meeting entry/exit sound notification: 
+* `host` &mdash; Only when the host joins or leaves. 
+* `all` &mdash; When any participant joins or leaves. 
+* `none` - Disable the entry/exit sound notification. 
+
+This value defaults to `all`. */
+              entry_exit_chime?: 'host' | 'all' | 'none';
+              /** This setting allows another user to take control of the user's camera. This value defaults to `false`. */
+              far_end_camera_control?: boolean;
+              /** This field enables the [**Feedback to Zoom**](https://support.zoom.us/hc/en-us/articles/115005838023-Feedback-to-Zoom) setting. This value defaults to `false`. */
+              feedback?: boolean;
+              /** This setting indicates whether [in-meeting file transfer](https://support.zoom.us/hc/en-us/articles/209605493-In-meeting-file-transfer) setting has been enabled for the user or not. */
+              file_transfer?: boolean;
+              /** This setting enables the group HD video in Meeting. This value defaults to `false`. */
+              group_hd?: boolean;
+              /** This setting enables the group HD video in Webinar. This value defaults to `false`. */
+              webinar_group_hd?: boolean;
+              /** This setting allows participants to join a meeting directly from their desktop browser. Note that the meeting experience from the desktop browser is limited. */
+              join_from_desktop?: boolean;
+              /** This setting allows participants to join a meeting directly from their mobile browser. Note that the meeting experience from the mobile browser is limited. */
+              join_from_mobile?: boolean;
+              /** The information about the [language interpretation](https://support.zoom.us/hc/en-us/articles/360034919791-Using-Language-Interpretation-in-your-meeting-or-webinar) settings. */
+              language_interpretation?: {
+                  /** A list of user-defined supported languages. */
+                  custom_languages?: string[];
+                  /** Whether enable language interpretation by default. */
+                  enable_language_interpretation_by_default?: boolean;
+                  /** Whether to allow participants to speak in listening channel. */
+                  allow_participants_to_speak_in_listening_channel?: boolean;
+                  /** Whether to allow up to 25 custom languages when scheduling meetings. */
+                  allow_up_to_25_custom_languages_when_scheduling_meetings?: boolean;
+                  /** This setting allows the hosts to assign participants as interpreters who can interpret one language into another in real-time. */
+                  enable?: boolean;
+              };
+              /**  This setting allows hosts to assign participants as sign language interpreters who can interpret one language into sign language in real-time. Hosts can assign interpreters when scheduling, or during the meeting itself. This feature is only available with version 5.11.3 or later. */
+              sign_language_interpretation?: {
+                  /** Whether to allow hosts to assign participants as sign language interpreters who can interpret one language into another in real-time. */
+                  enable?: boolean;
+                  /** Whether to enable sign language interpretation view by default in scheduler. */
+                  enable_sign_language_interpretation_by_default?: boolean;
+                  /** A list of system-supported languages. */
+                  languages?: (
+                      | 'American'
+                      | 'Chinese'
+                      | 'French'
+                      | 'German'
+                      | 'Japanese'
+                      | 'Russian'
+                      | 'Brazilian'
+                      | 'Spanish'
+                      | 'Mexican'
+                      | 'British'
+                  )[];
+                  /** A list of user-defined supported languages. */
+                  custom_languages?: string[];
+              };
+              /** This setting allows Facebook livestreaming. */
+              live_streaming_facebook?: boolean;
+              /** This setting allows YouTube to livestreaming. */
+              live_streaming_youtube?: boolean;
+              /** The information about manual captioning settings. */
+              manual_captioning?: {
+                  /** This setting allows the host to manually caption or let the host assign a participant to provide manual captioning. */
+                  allow_to_type?: boolean;
+                  /** This setting enables Zoom's [live transcription feature](https://support.zoom.us/hc/en-us/articles/207279736-Managing-closed-captioning-and-live-transcription#h_01FHGGHYJ4457H4GSZY0KM3NSB). */
+                  auto_generated_captions?: boolean;
+                  /** This setting enables the viewing of full transcripts in the in-meeting side panel. */
+                  full_transcript?: boolean;
+                  /** The [Enable manual closed captioning](https://support.zoom.us/hc/en-us/articles/207279736-Managing-closed-captioning-and-live-transcription) setting. */
+                  manual_captions?: boolean;
+                  /** This setting allows participants to [save closed captions or transcripts](https://support.zoom.us/hc/en-us/articles/360060958752). 
+
+ **Note:** If the `full_transcript` field is set to `false`, participants **cannot** save captions. */
+                  save_captions?: boolean;
+                  /** This setting allows the use of an API token to integrate with a [third-party device](https://support.zoom.us/hc/en-us/articles/115002212983) to provide closed captioning. */
+                  third_party_captioning_service?: boolean;
+              };
+              /** Whether meeting participants can [communicate using the emoji reactions](https://support.zoom.us/hc/en-us/articles/115001286183-Nonverbal-feedback-and-meeting-reactions) located in the **Reactions** menu in the meeting toolbar. */
+              meeting_reactions?: boolean;
+              /** Users can choose from the following meeting reaction options:
+               * `all` &mdash; All emojis: Allow meeting participants to use any emoji available in Zoom chat as a reaction in a meeting.
+               * `selected` &mdash; Selected emojis: Allow meeting participants to use the 6 standard meeting reaction emojis: Clapping Hands, Thumbs Up, Heart, Tears of Joy, Open Mouth, Party Popper (Tada, Celebration)  */
+              meeting_reactions_emojis?: 'all' | 'selected';
+              /** Whether to allow host and panelist to use audible clap. */
+              allow_host_panelists_to_use_audible_clap?: boolean;
+              /** Setting this field to true allow you to use [webinar reactions](https://support.zoom.us/hc/en-us/articles/4803536268429). */
+              webinar_reactions?: boolean;
+              /** This setting allows the host to present a survey to participants once a meeting has ended. This feature is only available in version 5.7.3 or higher. */
+              meeting_survey?: boolean;
+              /** This setting enables the [**Non-verbal feedback**](https://support.zoom.us/hc/en-us/articles/115001286183-Nonverbal-feedback-and-meeting-reactions-) feature.  This value defaults to `false`. */
+              non_verbal_feedback?: boolean;
+              /** This setting adds polls to the meeting controls. This value defaults to `false`. */
+              polling?: boolean;
+              /** This setting [enables private chat](https://support.zoom.us/hc/en-us/articles/360060835932-Enabling-and-disabling-private-chat) between participants during meetings. This value defaults to `false`. */
+              private_chat?: boolean;
+              /** This setting allows users to record and play their own voice. */
+              record_play_voice?: boolean;
+              /** This setting enables the [**Remote control**](https://support.zoom.us/hc/en-us/articles/201362673-Requesting-or-giving-remote-control) feature.  This value defaults to `false`. */
+              remote_control?: boolean;
+              /** This setting enables the [**Remote support**](https://support.zoom.us/hc/en-us/articles/360060951012-Enabling-remote-support) feature. This value defaults to `false`. */
+              remote_support?: boolean;
+              /** This setting indicates whether the [**Request permission to unmute participants**](https://support.zoom.us/hc/en-us/articles/203435537-Muting-and-unmuting-participants-in-a-meeting#h_01EGK4XFWS1SJGZ71MYGKF7260) option has been enabled for the user or not. */
+              request_permission_to_unmute_participants?: boolean;
+              /** This setting allows host and participants to share their screen or content during meetings
+               */
+              screen_sharing?: boolean;
+              /** This setting allows the use of shared dual cameras. This value defaults to `false`. **This field is deprecated.** */
+              share_dual_camera?: boolean;
+              /** This setting allows participants to join a meeting directly from their browser and bypass the Zoom application download process. This is useful for participants who cannot download, install, or run applications. Note that the meeting experience from the browser is limited. */
+              show_a_join_from_your_browser_link?: boolean;
+              /** This setting allows you to always display [in-meeting controls](https://support.zoom.us/hc/en-us/articles/360021921032-Zoom-Room-meeting-controls-and-settings#h_01EQCC03TCPRC72VKXZ7W47FDX). */
+              show_meeting_control_toolbar?: boolean;
+              /** Whether the person sharing during a presentation can allow others to control the slide presentation. This feature is only available in version 5.8.3 or higher. */
+              slide_control?: boolean;
+              /** This setting enables virtual backgrounds. This value defaults to `false`. */
+              virtual_background?: boolean;
+              /** The user's virtual background settings. */
+              virtual_background_settings?: {
+                  /** This setting allows the user to upload custom virtual backgrounds. */
+                  allow_upload_custom?: boolean;
+                  /** This setting allows the use of videos for virtual backgrounds. */
+                  allow_videos?: boolean;
+                  /** This setting enables virtual backgrounds. */
+                  enable?: boolean;
+                  /** The information about the virtual background files. */
+                  files?: {
+                      /** The virtual background file's ID. */
+                      id?: string;
+                      /** Whether the file is the default Virtual Background file. */
+                      is_default?: boolean;
+                      /** The virtual background file's name. */
+                      name?: string;
+                      /** The virtual background file's size, in bytes. */
+                      size?: number;
+                      /** The virtual background file's type. */
+                      type?: string;
+                  }[];
+              };
+              /** This setting enables the [**Waiting Room**](https://support.zoom.us/hc/en-us/articles/115000332726-Waiting-Room) feature. This value defaults to `false`. */
+              waiting_room?: boolean;
+              /** The information about the user's webinar chat settings. */
+              webinar_chat?: {
+                  /** This setting allows webinar attendees to chat with:
+                   * `1` &mdash; No one.
+                   * `2` &mdash; Host and all panelists.
+                   * `3` &mdash; Everyone. */
+                  allow_attendees_chat_with?: 1 | 2 | 3;
+                  /** This setting automatically saves chat messages to a local file on the host's computer when the webinar ends. */
+                  allow_auto_save_local_chat_file?: boolean;
+                  /** This setting indicates who the webinar panelists can chat with:
+                   * `1` &mdash; Host and all panelists.
+                   * `2` &mdash; Everyone. */
+                  allow_panelists_chat_with?: 1 | 2;
+                  /** This setting allows webinar panelists to send direct messages to other panelists. */
+                  allow_panelists_send_direct_message?: boolean;
+                  /** This setting indicates how the webinar attendees can save chats:
+                   * `0` &mdash; Attendees cannot save chats.
+                   * `1` &mdash; Attendees can only save host and panelist chats.
+                   * `2` &mdash; Attendees can save all chats. */
+                  allow_users_save_chats?: 0 | 1 | 2;
+                  /** By default, allow webinar attendees to chat with:
+                   * `1` &mdash; Host and all panelists.
+                   * `2` &mdash; Everyone. */
+                  default_attendees_chat_with?: 1 | 2;
+                  /** This setting allows the webinar participants to send chat messages. */
+                  enable?: boolean;
+              };
+              webinar_live_streaming?: {
+                  /** The specific instructions to allow your account's meeting hosts to configure a custom livestream. */
+                  custom_service_instructions?: string;
+                  /** Whether webinar livestreaming is enabled. */
+                  enable?: boolean;
+                  /** This setting notifies users to watch the livestream. This does not apply to custom RTMP (real-time messaging protocol). */
+                  live_streaming_reminder?: boolean;
+                  /** The available livestreaming services:
+                   * `facebook`
+                   * `workplace_by_facebook`
+                   * `youtube`
+                   * `custom_live_streaming_service` */
+                  live_streaming_service?: (
+                      | 'facebook'
+                      | 'workplace_by_facebook'
+                      | 'youtube'
+                      | 'custom_live_streaming_service'
+                  )[];
+              };
+              /** The information about the account's meeting polling settings. */
+              meeting_polling?: {
+                  /** Whether to allow the host to create advanced polls and quizzes. Advanced polls and quizzes include single choice, multiple choice, drop down, matching, short answer, long answer, rank order, and fill-in-the-blank questions. The host can also set the correct answers for quizzes they create. */
+                  advanced_polls?: boolean;
+                  /** Whether to allow alternative hosts to add or edit polls and quizzes. */
+                  allow_alternative_host_to_add_edit?: boolean;
+                  /** Whether to require answers to be anonymous. */
+                  require_answers_to_be_anonymous?: boolean;
+                  /** Whether to allow host to upload an image for each question. */
+                  allow_host_to_upload_image?: boolean;
+                  /** Whether to allow the host to add polls before or during a meeting. */
+                  enable?: boolean;
+              };
+              /** The information about the user's webinar polling settings. */
+              webinar_polling?: {
+                  /** Whether to allow the host to create advanced polls and quizzes. Advanced polls and quizzes include single choice, multiple choice, drop down, matching, short answer, long answer, rank order, and fill-in-the-blank questions. The host can also set the correct answers for quizzes they create. */
+                  advanced_polls?: boolean;
+                  /** Whether to allow alternative hosts to add or edit polls and quizzes. */
+                  allow_alternative_host_to_add_edit?: boolean;
+                  /** Whether to require answers to be anonymous. */
+                  require_answers_to_be_anonymous?: boolean;
+                  /** Whether to allow host to upload an image for each question. */
+                  allow_host_to_upload_image?: boolean;
+                  /** This setting allows the host to add polls before or during a webinar. */
+                  enable?: boolean;
+              };
+              /** This setting allows the host to present surveys to attendees once a webinar has ended. */
+              webinar_survey?: boolean;
+              /** This setting indicates who can share their screen or content during meetings. The value can be one of the following:   
+ 
+`host`: Only host can share the screen.  
+ 
+`all`: Both hosts and attendees can share their screen during meetings. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              who_can_share_screen?: 'host' | 'all';
+              /** This setting indicates who is allowed to start sharing screen when someone else in the meeting is sharing their screen. The value can be one of the following:  
+ 
+`host`: Only a host can share the screen when someone else is sharing.  
+ 
+`all`: Anyone in the meeting is allowed to start sharing their screen when someone else is sharing. For Webinar, the hosts and panelists can start screen sharing, but not the attendees.
+ */
+              who_can_share_screen_when_someone_is_sharing?: 'host' | 'all';
+              /** This setting indicates how many participants can share at the same time. The value can be one of the following:  
+ 
+`one`: Only one participant can share at a time
+.  
+ 
+`multiple`: Multiple participants can share simultaneously (dual monitors recommended). */
+              participants_share_simultaneously?: 'multiple' | 'one';
+              /** This setting allows Workplace by Facebook livestreaming. */
+              workplace_by_facebook?: boolean;
+              /** This setting allows the user to view and add contacts to the [**Auto-answer group in chat**](https://support.zoom.us/hc/en-us/articles/203736135-Auto-answering-invitations-to-meetings) feature. Calls from members of the **Auto Answer Group** will be automatically answered the user. */
+              auto_answer?: boolean;
+              /** This setting enables the [**Show Zoom windows during screen share**](https://support.zoom.us/hc/en-us/articles/360061383571-Showing-Zoom-windows-during-screen-share) feature. */
+              allow_show_zoom_windows?: boolean;
+          };
+          profile?: {
+              recording_storage_location?: {
+                  /** Users can choose the country to store their recorded content. Content can include meeting, webinar, and phone recordings, as well as voicemail, transcripts, and custom greeting prompts. See [Managing the Communications Content storage location](https://support.zoom.us/hc/en-us/articles/360050781131) for details.
+
+Provide abbreviated country codes as the value for this field. See the [Countries abbreviation list](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries) for details. */
+                  allowed_values?: string[];
+                  /** The abbreviated country code. */
+                  value?: string;
+              };
+          };
+          recording?: {
+              /** This setting asks the host to confirm the disclaimer. */
+              ask_host_to_confirm_disclaimer?: boolean;
+              /** This field can be used if `recording_disclaimer` is set to true. This field indicates whether or not you would like to ask participants for consent when a recording starts. The value can be one of the following:  
+ 
+* `true`: Ask participants for consent when a recording starts.   
+ 
+* `false`: Do not ask participants for consent when a recording starts. */
+              ask_participants_to_consent_disclaimer?: boolean;
+              /** The auto delete cloud recordings setting. */
+              auto_delete_cmr?: boolean;
+              /** When the `auto_delete_cmr` value is `true`, this value is the number of days before the auto-deletion of cloud recordings:
+               * `30` &mdash; 30 days.
+               * `60` &mdash; 60 days.
+               * `90` &mdash; 90 days.
+               * `120` &mdash; 120 days. */
+              auto_delete_cmr_days?: 30 | 60 | 90 | 120;
+              /** The account's [**Record active speaker, gallery view and shared screen separately**](https://support.zoom.us/hc/en-us/articles/360060316092-Changing-basic-and-advanced-cloud-recording-settings#h_01F4CYJTCTXNS2MXH00W9EFG6R) settings. */
+              record_files_separately?: {
+                  /** The record the active speaker only setting. */
+                  active_speaker?: boolean;
+                  /** The record the gallery view only setting. */
+                  gallery_view?: boolean;
+                  /** The record the shared screen only setting. */
+                  shared_screen?: boolean;
+              };
+              /** This setting allows you to display the participants' names in the recording. */
+              display_participant_name?: boolean;
+              /** This setting records the thumbnails of the presenter when they are sharing their screen. */
+              recording_thumbnails?: boolean;
+              /** This setting optimizes recordings for a third-party video editor. This may increase the file size and the time it takes to generate recording files. */
+              optimize_recording_for_3rd_party_video_editor?: boolean;
+              /** This setting enables the [recording highlights](https://support.zoom.us/hc/en-us/articles/360060802432) feature. */
+              recording_highlight?: boolean;
+              /** This setting saves the panelist chat to the recording. This setting saves messages sent by panelists during a webinar to either all panelists or all panelists and attendees to the recording. */
+              save_panelist_chat?: boolean;
+              /** This setting saves the poll results shared during the meeting or webinar. This also includes poll results shared during the meeting or webinar. */
+              save_poll_results?: boolean;
+              /** This setting saves [closed captions](https://support.zoom.us/hc/en-us/articles/207279736) as a VTT (Video Track Text) file. */
+              save_close_caption?: boolean;
+              /** The automatic recording:  
+ `local` - Record on local.  
+ `cloud` - Record on cloud.  
+ `none` - Disabled. */
+              auto_recording?: 'local' | 'cloud' | 'none';
+              /** The cloud recording. */
+              cloud_recording?: boolean;
+              /** The host can pause or stop the auto recording in the cloud. */
+              host_pause_stop_recording?: boolean;
+              /** The setting to allow cloud recording access only from specific IP address ranges.
+               */
+              ip_address_access_control?: {
+                  /** If set to `true`, the cloud recordings of this account can only be accessed by the IP addresses defined in the `ip_addresses_or_ranges` property.
+
+ */
+                  enable?: boolean;
+                  /** The IP addresses or ranges that have access to the cloud recordings. Separate multiple IP ranges with comma. Use n.n.n.n, n.n.n.n/n or n.n.n.n - n.n.n.n syntax where n is a number.
+
+Example: `46.33.24.184, 48.99.100.2/25` or `200.181.108.17 - 220.181.108.157`
+
+ */
+                  ip_addresses_or_ranges?: string;
+              };
+              /** The local recording. */
+              local_recording?: boolean;
+              /** This setting records one audio file for all participants. */
+              record_audio_file?: boolean;
+              /** This setting records the gallery view. */
+              record_gallery_view?: boolean;
+              /** This setting records the active speaker view. */
+              record_speaker_view?: boolean;
+              /** The audio transcript. */
+              recording_audio_transcript?: boolean;
+              /** This setting shows a disclaimer to participants before a recording starts.
+This field has been deprecated. The replacement field is recording_notification_for_zoom_client */
+              recording_disclaimer?: boolean;
+              /** By selecting this option, your recording will have meeting smart chapters, and next steps. You are directing Zoom to access, process, and use your account's recording data for the purpose of analysis and insights. */
+              smart_recording?: {
+                  /** By selecting this option, meeting details in the audio transcript will be highlighted. Hosts can modify highlighted sections and generate a video summary (highlighted sections may have a 3-second offset) based on these sections. The summary is for informational purposes only and may not be complete. */
+                  create_recording_highlights?: boolean;
+                  /** By selecting this option, your recording will have chapters with overview. Hosts can edit the chapters. */
+                  create_smart_chapters?: boolean;
+                  /** By selecting this option, there will be a summary of actions to take after the recorded meeting. */
+                  create_next_steps?: boolean;
+              };
+              /** This object represents the minimum passcode requirements set for recordings via Account Recording Settings. */
+              recording_password_requirement?: {
+                  /** The passcode must contain at least one alphabetical letter (a, b, c..). */
+                  have_letter?: boolean;
+                  /** The passcode must contain at least one number(1, 2, 3..). */
+                  have_number?: boolean;
+                  /** The passcode must contain at least one special character(!, @, #..). */
+                  have_special_character?: boolean;
+                  /** The minimum required length for the passcode. */
+                  length?: number;
+                  /** The passcode must contain only numeric characters. */
+                  only_allow_numeric?: boolean;
+              };
+              /** This setting saves the chat text from the meeting. */
+              save_chat_text?: boolean;
+              /** The show timestamp on the video. */
+              show_timestamp?: boolean;
+              /** You will update the setting name: Recording notifications - Zoom clients */
+              recording_notification_for_zoom_client?: {
+                  /** Update child setting name is [Show a disclaimer to participants when a recording starts]. All participants or Guest only. */
+                  disclaimer_to_participants?:
+                      | 'All participants'
+                      | 'Guest only';
+                  /** Update child setting name is [Play voice prompt for]. All participants or Guest only or No one */
+                  play_voice_prompt?:
+                      | 'All participants'
+                      | 'Guest only'
+                      | 'No one';
+                  /** Update Child setting name is [Ask host to confirm before starting a recording], true: enable, false: disable */
+                  ask_host_to_confirm?: boolean;
+              };
+              /** Allow Zoom Revenue Accelerator to manage recording files with separate auto-delete settings */
+              allow_revenue_accelerator_manage_recording_separate_auto_delete?: boolean;
+              /** When the cloud recording is going to be permanently deleted from trash */
+              cloud_recording_permanently_deleted?: {
+                  /** Main setting value */
+                  cloud_recording_permanently_deleted_from_trash?: boolean;
+                  /** Selected email reminder */
+                  email_reminder_type?:
+                      | '7 days before deletion'
+                      | 'Weekly digest on Monday';
+              };
+              /** Allow 3rd-party recording */
+              allow_cmr_3rd_party_bot?: boolean;
+              /** add water marker for recording */
+              water_marker_recording?: boolean;
+              /** Viewers can see the transcript */
+              viewer_see_transcript?: boolean;
+              /** Allow invitees to access recordings without the passcode */
+              allow_invitees_access_recordings_without_passcode?: boolean;
+              /** Set recording as on-demand by default */
+              recording_as_on_demand?: boolean;
+              /** Recording notifications - Phone users */
+              recording_notifications_phone_users?: {
+                  /** Require phone-only users to press 1 to consent to being recorded */
+                  require_press_one_consent_to_record?: boolean;
+                  /** Multiple notifications for phone users */
+                  multiple_notifications_phone_users?: boolean;
+              };
+              /** Upload recording to the cloud */
+              upload_recording?: boolean;
+              /** Allow users to add cloud recordings to Zoom Clips */
+              allow_add_cloud_recordings_to_zoom_clips?: boolean;
+              /** Allow cloud recording sharing */
+              allow_share?: boolean;
+              /** Viewers see chat */
+              viewer_see_chat?: boolean;
+              /** Require users to authenticate before viewing cloud recordings */
+              authenticated_view_cloud_recoding?: {
+                  /** Main setting value */
+                  authenticated_can_view_cloud_recordings?: boolean;
+                  /** Default authentication option */
+                  default_authenticate_content?:
+                      | 'Signed-in users in my account'
+                      | 'Sign in to Zoom'
+                      | 'Sign in to Zoom with specified domains'
+                      | 'Sign in to external Single Sign-On (SSO)'
+                      | 'Only people with access';
+              };
+              /** Push notification to subscription URL when a cloud recording is available */
+              notification_subscription_url_when_recording_available?: boolean;
+              /** Recording storage email notifications */
+              recording_storage_email_notifications?: boolean;
+              /** all sub-options for local recording */
+              local_recording_options?: {
+                  /** Internal meeting participants */
+                  internal_meeting_participants?: boolean;
+                  /** Auto approve their permission requests */
+                  internal_auto_approve_requests?: boolean;
+                  /** External meeting participants */
+                  external_meeting_participants?: boolean;
+                  /** Auto approve their permission requests */
+                  external_auto_approve_requests?: boolean;
+                  /** Meeting participants with specified domains */
+                  participants_with_specified_domains?: boolean;
+                  /** Enter the domain information */
+                  participants_with_specified_domains_content?: string;
+                  /** Auto approve their permission requests */
+                  participants_specified_domains_auto_approve_requests?: boolean;
+                  /** Save chat messages from the meeting / webinar */
+                  save_chat_messages?: boolean;
+                  /** Save closed caption as a VTT file */
+                  save_closed_caption?: boolean;
+              };
+              /** Embed passcode in the shareable link for one-click access */
+              embed_passcode_in_shareable_link?: boolean;
+          };
+          schedule_meeting?: {
+              /** This setting determines how participants can join the audio portion of the meeting:  
+ `both` - Telephony and VoIP.  
+ `telephony` - Audio PSTN telephony only.  
+ `voip` - VoIP only.  
+ `thirdParty` - Third party audio conference. */
+              audio_type?: 'both' | 'telephony' | 'voip' | 'thirdParty';
+              /** The passcode for already scheduled meetings.
+               */
+              default_password_for_scheduled_meetings?: string;
+              /** This setting encrypts the meeting passcode and includes the join meeting link to allow participants to join with just one click without having to enter the passcode.
+               */
+              embed_password_in_join_link?: boolean;
+              /** This setting requires a passcode for personal meetings if attendees can join before host. */
+              force_pmi_jbh_password?: boolean;
+              /** The start meetings with host video on setting. */
+              host_video?: boolean;
+              /** This setting joins the meeting before the host arrives. */
+              join_before_host?: boolean;
+              /** The Account wide meeting/webinar [passcode requirements](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604). */
+              meeting_password_requirement?: {
+                  /** 
+This setting specifies the max length of consecutive characters(abcde...) that can be used in a passcode.
+If you set the value of this field to `0`, no restriction will be applied on consecutive characters. 
+
+If you would like to set this restriction, you can specify a number between 4 and 8 that define the maximum allowed length for consecutive characters in a passcode.
+
+The max allowed length will be `n-1` where `n` refers to the value you provide for this field.  For instance, if you provide `4` as the value, there can only be a maximum of `3` consecutive characters in a passcode(example: abc1x@8fdh). */
+                  consecutive_characters_length?: 0 | 4 | 5 | 6 | 7 | 8;
+                  /** The passcode must contain at least 1 letter (such as a,b,c...).
+                   */
+                  have_letter?: boolean;
+                  /** The passcode must contain at least one number (such as 1,2,3...). */
+                  have_number?: boolean;
+                  /** The passcode must have at least one special character (!,@,#...). */
+                  have_special_character?: boolean;
+                  /** The passcode must include both uppercase and lowercase characters. */
+                  have_upper_and_lower_characters?: boolean;
+                  /** The minimum length that the meeting or webinar passcode must have. */
+                  length?: number;
+                  /** The passcode must only contain numbers and no other characters. */
+                  only_allow_numeric?: boolean;
+                  /** This setting informs users if the provided passcode is weak. */
+                  weak_enhance_detection?: boolean;
+              };
+              /** The start meetings with participants video on setting. */
+              participants_video?: boolean;
+              /** The personal meeting setting.  
+   
+ 
+`true`: Indicates that the **&quot;Enable [Personal Meeting ID (PMI)](https://marketplace.zoom.us/docs/api-reference/using-zoom-apis#understanding-personal-meeting-id-pmi)&quot;** setting is turned on. Users can choose to use a PMI for their meetings.   
+   
+ 
+`false`: Indicates that the **&quot;Enable Personal Meeting ID&quot;** setting is [turned off](https://support.zoom.us/hc/en-us/articles/201362843-Personal-meeting-ID-PMI-and-personal-link#h_aa0335c8-3b06-41bc-bc1f-a8b84ef17f2a). If this setting is disabled (`false`), meetings that were scheduled with a PMI will be invalid. Scheduled meetings must be manually updated.
+For Zoom Phone only: If a user has been assigned a desk phone, **&quot;Elevate to Zoom Meeting&quot;** on desk phone will be disabled.
+
+
+ */
+              personal_meeting?: boolean;
+              /** The PMI passcode.
+               */
+              pmi_password?: string;
+              /** This setting generates and requires the passcode for participants joining by phone. */
+              pstn_password_protected?: boolean;
+              /** This setting requires a passcode for instant meetings. If you use a PMI for your instant meetings, this option will be disabled. This setting is always enabled for free accounts and Pro accounts with a single host and cannot be modified for these accounts.
+               */
+              require_password_for_instant_meetings?: boolean;
+              /** This setting requires a passcode for Personal Meeting ID (PMI). This setting is always enabled for free accounts and Pro accounts with a single host and cannot be modified for these accounts.
+               */
+              require_password_for_pmi_meetings?: 'jbh_only' | 'all' | 'none';
+              /** This setting requires a passcode for meetings that have already been scheduled.
+               */
+              require_password_for_scheduled_meetings?: boolean;
+              /** This setting requires a passcode when scheduling new meetings. This setting is always enabled for free accounts and Pro accounts with a single host and cannot be modified for these accounts.
+               */
+              require_password_for_scheduling_new_meetings?: boolean;
+              /** This setting indicates the use of a [Personal Meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi) when starting an instant meeting. */
+              use_pmi_for_instant_meetings?: boolean;
+              /** This setting indicates the use of a [Personal Meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi) when scheduling a meeting. */
+              use_pmi_for_scheduled_meetings?: boolean;
+          };
+          /** User Settings: Telephony. */
+          telephony?: {
+              /** The third-party audio conference info. */
+              audio_conference_info?: string;
+              /** This setting shows the international numbers link on the invitation email. */
+              show_international_numbers_link?: boolean;
+              /** This setting indicates where most of the participants call into or call from during a meeting. */
+              telephony_regions?: {
+                  /** The account's selected telephony regions that indicate where most participants call into or call from during a meeting. */
+                  selection_values?: string;
+              };
+              /** The third-party audio conference. */
+              third_party_audio?: boolean;
+          };
+          /** Account Settings: TSP. */
+          tsp?: {
+              /** The call out. */
+              call_out?: boolean;
+              /** The call out countries or regions setting */
+              call_out_countries?: Record<string, any>[];
+              /** This setting shows the international numbers link on the invitation email. */
+              show_international_numbers_link?: boolean;
+              /** The user's **Global Dial-in Countries/Regions** settings. */
+              global_dial_in_countries?: {
+                  /** The list of selected countries/regions whose dial-in numbers will be listed in the email invitation. You can adjust the order that the dial-in numbers appear in the email invitation. */
+                  selected_countries?: {
+                      /** The code of the country or region. */
+                      code?: string;
+                      /** The name of the country or region. */
+                      name?: string;
+                  }[];
+              };
+          };
+      }
+    | {
+          /** The meeting authentication options. */
+          authentication_option?: {
+              /** The authentication action. */
+              action?: 'update' | 'show' | 'hide';
+              /** The authentication default option. */
+              default_option?: boolean;
+              /** The authentication domains. */
+              domains?: string;
+              /** The authentication ID. */
+              id?: string;
+              /** The authentication name. */
+              name?: string;
+              /**  The authentication type. Specify one of the following authentication types for the authentication profile:  
+ 
+ * `enforce_login`: This option allows any users to join the meeting or webinar, as long as they are signed into their Zoom account.
+ * `enforce_login_with_domains`: This option, allows you to specify a rule so that only those Zoom users whose email addresses contain a certain domain, can join the meeting or webinar. You can either add multiple domains using a comma in between and/or use a wildcard for listing domains.  
+ 
+ * `enforce_login_with_same_account`: This option allows users to join the meeting or webinar with the same Zoom account. */
+              type?:
+                  | 'enforce_login'
+                  | 'enforce_login_with_same_account'
+                  | 'enforce_login_with_domains';
+          };
+          /** Only authenticated users can join meetings */
+          meeting_authentication?: boolean;
+      }
+    | {
+          /** The authentication options. */
+          authentication_option?: {
+              /** The authentication action. */
+              action?: 'update' | 'show' | 'hide';
+              /** The authentication default option. */
+              default_option?: boolean;
+              /** The authentication domains. */
+              domains?: string;
+              /** The authentication ID. */
+              id?: string;
+              /** The authentication name. */
+              name?: string;
+              /** The authentication type. */
+              type?:
+                  | 'internally'
+                  | 'enforce_login'
+                  | 'enforce_login_with_domains';
+          };
+          /** Only authenticated users can view cloud recordings */
+          recording_authentication?: boolean;
+      }
+    | {
+          meeting_security?: {
+              /** Whether to require that all meetings are secured with at least one security option. 
+
+ This setting can only be disabled by Enterprise, ISV, Business (with more than 100 licenses), and Education accounts. */
+              auto_security?: boolean;
+              /** Whether to block users in specific domains from joining meetings and webinars. */
+              block_user_domain?: boolean;
+              /** The domain to block, up to 20 domains. For example, the `*.example.com` domain. */
+              block_user_domain_list?: string[];
+              /** Whether the meeting passcode will be encrypted and included in the invitation link. The provided link will allow participants to join the meeting without having to enter the passcode. */
+              embed_password_in_join_link?: boolean;
+              /** The type of encryption to use when starting a meeting:
+               * `enhanced_encryption` &mdash; Use enhanced encryption. Encryption data is stored in the cloud.
+               * `e2ee` &mdash; End-to-end encryption. The encryption key is stored on the local device and cannot be obtained by anyone else. Enabling E2EE also [**disables** certain features](https://support.zoom.us/hc/en-us/articles/360048660871), such as cloud recording, live streaming, and allowing participants to join before the host. */
+              encryption_type?: 'enhanced_encryption' | 'e2ee';
+              /** Whether to enable end-to-end encryption for meetings. If enabled, you can specify the type of encryption in the `encryption_type` field. */
+              end_to_end_encrypted_meetings?: boolean;
+              /** Whether all instant and scheduled meetings that users can join via client or Zoom Rooms systems are passcode-protected. [Personal Meeting ID (PMI)](https://support.zoom.us/hc/en-us/articles/203276937) meetings are **not** included in this setting. */
+              meeting_password?: boolean;
+              /** The information about the meeting and webinar [passcode requirements](https://support.zoom.us/hc/en-us/articles/360033559832-Meeting-and-webinar-passwords#h_a427384b-e383-4f80-864d-794bf0a37604). */
+              meeting_password_requirement?: {
+                  /** The maximum length of consecutive characters (for example, `abcdef`) allowed in a passcode:
+                   * `4` through `8` &mdash; The maximum consecutive characters length. The length is `n` minus `1`, where `n` is the provided value. For example, if you provide the `4` value, there can only be a maximum of `3` consecutive characters in a passcode (for example, `abc1x@8fdh`).
+                   * `0` &mdash; Do not apply a consecutive character restriction. */
+                  consecutive_characters_length?: 0 | 4 | 5 | 6 | 7 | 8;
+                  /** Whether the passcode must contain at least one letter character. */
+                  have_letter?: boolean;
+                  /** Whether the passcode must contain at least one numeric character. */
+                  have_number?: boolean;
+                  /** Whether the passcode must contain at least one special character. For example, `!`, `@`, and/or `#` characters. */
+                  have_special_character?: boolean;
+                  /** Whether the passcode must include uppercase and lowercase characters. */
+                  have_upper_and_lower_characters?: boolean;
+                  /** The passcode's minimum length. */
+                  length?: number;
+                  /** Whether the passcode must contain **only** numeric characters. */
+                  only_allow_numeric?: boolean;
+                  /** Whether users will be informed when the provided passcode is weak. */
+                  weak_enhance_detection?: boolean;
+              };
+              /** Whether to specify that only authenticated users can join the meeting from the web client. */
+              only_authenticated_can_join_from_webclient?: boolean;
+              /** Whether to require a passcode for participants joining by phone. 
+
+ If enabled and the meeting is passcode-protected, a numeric passcode is required for participants to join by phone. For meetings with alphanumeric passcodes, a numeric passcode will be generated. */
+              phone_password?: boolean;
+              /** Whether all Personal Meeting ID (PMI) meetings that users can join via client or Zoom Rooms systems are passcode-protected. */
+              pmi_password?: boolean;
+              /** Whether to require a passcode for meetings that have already been scheduled. */
+              require_password_for_scheduled_meeting?: boolean;
+              /** Whether to require a passcode for webinars that have already been scheduled. */
+              require_password_for_scheduled_webinar?: boolean;
+              /** Whether participants are placed in the [**Waiting Room**](https://support.zoom.us/hc/en-us/articles/115000332726-Waiting-Room) when they join a meeting. 
+
+ If the **Waiting Room** feature is enabled, the [**Allow participants to join before host**](https://support.zoom.us/hc/en-us/articles/202828525-Allow-participants-to-join-before-host) setting is automatically disabled. */
+              waiting_room?: boolean;
+              /** The information about the waiting room settings. */
+              waiting_room_settings?: {
+                  /** The type of participants to be admitted to the Waiting Room:
+                   * `0` &mdash; All attendees.
+                   * `1` &mdash; Users who are not in your account.
+                   * `2` &mdash; Users who are not in your account and are not part of your [allowed domains list](https://support.zoom.us/hc/en-us/articles/360037117472-Configuring-authentication-profiles#h_e3cf0d5f-eec7-4c2a-ad29-ef2a5079a7da). */
+                  participants_to_place_in_waiting_room?: 0 | 1 | 2;
+                  /** The users who can admit participants from the Waiting Room:
+                   * `0` &mdash; Host and co-hosts only.
+                   * `1` &mdash; Host, co-hosts, and anyone who bypassed the Waiting Room if the host and co-hosts are not present. */
+                  users_who_can_admit_participants_from_waiting_room?: 0 | 1;
+                  /** If the `participants_to_place_in_waiting_room` field is `2`, a comma-separated list of the domains that can bypass the Waiting Room (`&quot;example.com,example2.com&quot;`). */
+                  whitelisted_domains_for_waiting_room?: string;
+              };
+              /** Whether to generate a passcode when scheduling webinars. Participants must use the generated passcode to join the scheduled webinar. */
+              webinar_password?: boolean;
+          };
+      };
+
+/** Update user status - Request body */
+export type ZoomApi$User$Status$Request = {
+    /** The action types.
+ `activate` - Activate a deactivated user.  
+ `deactivate` - Deactivate a user.  
+ `clock_in` - Clock in a user.  
+ `clock_out` - Clock out a user. */
+    action: 'activate' | 'deactivate' | 'clock_in' | 'clock_out';
+    /** Indicates whether to transfer Zoom Events hub assets. This option is supported only for user deactivation operations.
+
+When `transfer_events` is set to `true`, the `transfer_email` field is required. Upon user deactivation, the user’s Zoom Events hub assets will be transferred to the specified target user.
+When `transfer_events` is set to `false`, the `transfer_email` field is not required, and no Zoom Events hub asset transfer will be performed. */
+    transfer_events?: boolean;
+    /** Transfer email. The email address of the target user who will receive the Zoom Events hub assets transferred from the deactivated user. This field is **required** when `transfer_events` is set to `true`. */
+    transfer_email?: string;
+};
+
+/** Get user summary - Response */
+export type ZoomApi$User$Summary$Response = {
+    /** The number of licensed users. */
+    licensed_users_count?: number;
+    /** The number of basic users. */
+    basic_users_count?: number;
+    /** The number of on-prem users. */
+    on_prem_users_count?: number;
+    /** The number of Zoom rooms. */
+    room_users_count?: number;
+    /** The number of users with a pending activation meeting license. */
+    pending_users_count?: number;
+    /** The number of users without licenses. */
+    join_only_users_count?: number;
+    /** The total number of `licensed_users_count`, `basic_users_count`, `on_prem_users_count`, `join_only_users_count` and `room_users_count`. */
+    total_users_count?: number;
 };
 
 /** Add a user's TSP account - Request body */
@@ -8155,6 +15252,588 @@ export type ZoomApi$User$T$S$Ps$Response = {
         /** Telephony bridge
          */
         tsp_bridge?: 'US_TSP_TB' | 'EU_TSP_TB';
+    }[];
+};
+
+/** Get a user's token - Query parameters */
+export type ZoomApi$User$Token$Params = Partial<{
+    /** The user token type. 
+* `zak` - A Zoom Access Key (ZAK) is used to generate a URL to start meetings. See [Getting a Zoom Access Key (ZAK)](https://developers.zoom.us/docs/meeting-sdk/auth/#start-meetings-and-webinars-with-a-zoom-users-zak-token) for details. The ZAK's expiration time is two hours. For API users, the expiration time is 90 days. An API user is a user created via the `custCreate` action in the **[Create users](https://marketplace.zoom.us/docs/api-reference/zoom-api/methods/#operation/userCreate)** API. The maximum length of this value is `512`. 
+* `token` - **Deprecated** A Zoom token. This token expires in 14 days. You must make the request again after expiration to receive a new token. This query parameter returns a null value if the user signed in to Zoom via Google or Facebook. The maximum length of this value is `512`. 
+* `onbehalf` - A Zoom token that establishes a delegation relationship between a Zoom user and a Meeting SDK app. It allows the SDK app to join the same meeting as the Zoom user and act on their behalf in an assistant role. The SDK app cannot use this token to join meetings independently without the Zoom user present. This token expires in 2 hours; you must request a new token after it expires.
+
+ This value defaults to `token`. */
+    type: 'token' | 'zak' | 'onbehalf';
+    /** The ZAK/onbehalf expiration time to live (TTL), in seconds. To update the user's ZAK/onbehalf TTL, use this field with the `zak` or `onbehalf` value for the `type` query parameter. 
+
+Defaults to `7200` or `7776000` (90 days) for API users. The maximum value is one year. */
+    ttl: number;
+    /** The meeting's ID, use this field with the `onbehalf` value for the `type` query parameter. */
+    meeting_id: string;
+}>;
+
+/** Get a user's token - Response */
+export type ZoomApi$User$Token$Response = {
+    /** The user's ZAK or token value. */
+    token?: string;
+};
+
+/** Update a user - Query parameters */
+export type ZoomApi$User$Update$Params = Partial<{
+    /** The user's login method. 
+* `0` - Facebook OAuth. 
+* `1` - Google OAuth. 
+* `24` - Apple OAuth. 
+* `27` - Microsoft OAuth. 
+* `97` - Mobile device. 
+* `98` - RingCentral OAuth. 
+* `99` - API user. 
+* `100` - Zoom Work email. 
+* `101` - Single Sign-On (SSO). 
+
+These login methods are only available in China. 
+* `11` - Phone number. 
+* `21` - WeChat. 
+* `23` - Alipay. */
+    login_type: 0 | 1 | 11 | 21 | 23 | 24 | 27 | 97 | 98 | 99 | 100 | 101;
+    /** Whether to remove the user's TSP credentials. 
+* `true` - The queried ID is an employee's unique ID. 
+* `false` - The queried ID is not an employee's unique ID. 
+
+ This value defaults to `false` (null). */
+    remove_tsp_credentials: boolean;
+}>;
+
+/** Update a user - Request body */
+export type ZoomApi$User$Update$Request = {
+    /** The Kaltura user ID. */
+    cms_user_id?: string;
+    /** The user's company. */
+    company?: string;
+    /** The user's assigned custom attributes. */
+    custom_attributes?: {
+        /** The custom attribute's key. */
+        key?: string;
+        /** The custom attribute's name. */
+        name?: string;
+        /** The custom attribute's value */
+        value?: string;
+    }[];
+    /** The user's assigned department. */
+    dept?: string;
+    /** The user's first name. This value cannot contain more than five Chinese characters. */
+    first_name?: string;
+    /** This field provides the unique identifier of the group that you would like to add a [pending user](https://support.zoom.us/hc/en-us/articles/201363183-Managing-users#h_13c87a2a-ecd6-40ad-be61-a9935e660edb) to. Retrieve the value of this field from the [**List groups**](/docs/docs/api/rest/reference/user/methods/#operation/groups) API. */
+    group_id?: string;
+    /** List of division IDs to be updated. Currently only a single division is supported. */
+    division_ids?: string[];
+    /** The user's host key. */
+    host_key?: string;
+    /** The user's job title. */
+    job_title?: string;
+    /** The user's cost center. */
+    cost_center?: string;
+    /** The user's language. */
+    language?: string;
+    /** The user's last name. This value cannot contain more than five Chinese characters. */
+    last_name?: string;
+    /** The user's location. */
+    location?: string;
+    /** The user's assigned manager. To set a manager, provide the manager’s email address or display name within the same account. */
+    manager?: string;
+    /** **Note** This field has been **deprecated** and will not be supported in the future. Use the `country` field of the `phone_numbers` object to select the phone number country. 
+
+The user's phone number [country ID](https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists#countries). */
+    phone_country?: string;
+    /** **Note** This field has been **deprecated** and will not be supported in the future. Instead, use the `phone_numbers` field to assign phone numbers to a user. 
+
+The user's phone number. To update a phone number, you must also provide the `phone_country` field. */
+    phone_number?: string;
+    /** The information about the user's assigned phone numbers. */
+    phone_numbers?: {
+        /** The phone number's country code. */
+        code?: string;
+        /** The phone number's [country ID](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#countries). */
+        country?: string;
+        /** The phone number's label.
+         * `Mobile`
+         * `Office`
+         * `Home`
+         * `Fax` */
+        label?: 'Mobile' | 'Office' | 'Home' | 'Fax';
+        /** The phone number. */
+        number?: string;
+    }[];
+    /** The user's [personal meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi). */
+    pmi?: number;
+    /** The user's pronouns. */
+    pronouns?: string;
+    /** The user's display pronouns setting.
+     * `1` - Ask the user every time they join meetings and webinars.
+     * `2` - Always display pronouns in meetings and webinars.
+     * `3` - Do not display pronouns in meetings and webinars. */
+    pronouns_option?: 1 | 2 | 3;
+    /** The user's [timezone](https://developers.zoom.us/docs/api/rest/other-references/abbreviation-lists/#timezones) */
+    timezone?: string;
+    /** The type of [user](https://support.zoom.us/hc/en-us/articles/201363173-Zoom-user-types-roles).
+* `1` - Basic. 
+* `2` - Licensed. 
+* `4` - Unassigned without Meetings Basic.   
+* <del>`99` - None. You can only set this value if the user was created using the `ssoCreate` value for `action` parameter in the [**Create users**](/docs/api-reference/zoom-api/methods#operation/userCreate) API.</del>
+
+**Note**: If a Zoom Workplace series plan is configured as the account’s base plan, you can directly assign the corresponding Zoom Workplace license by setting type = 2. */
+    type?: 1 | 2 | 4 | 99;
+    /** Whether to use a [personal meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi) for instant meetings. */
+    use_pmi?: boolean;
+    /** The user's personal meeting room name. */
+    vanity_name?: string;
+    /** The user's display name. This value cannot contain more than ten Chinese characters. */
+    display_name?: string;
+    /** The Zoom Workplace plan option. 
+ `0` - Turn off Zoom Workplace license.  
+ `16` - Zoom Workplace Business Plus with US/CA Unlimited.  
+ `32` - Zoom Workplace Business Plus with UK/IR Unlimited.  
+ `64` - Zoom Workplace Business Plus with AU/NZ Unlimited.  
+ `128` - Zoom Workplace Business Plus with Japan Unlimited.  
+ `33554432` - Zoom Workplace Business Plus with Global Select.  
+ `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited.  
+ `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited.  
+ `536870912` - Zoom Workplace Enterprise Premier with UK/IR Unlimited.  
+ `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited.  
+ `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited.
+ 
+The Zoom One plan option for Gov accounts:  
+ `0` - Turn off Zoom One license.  
+ `16` - Zoom One Business Plus. 
+ 
+ The Zoom One plan option for Education accounts:  
+ `0` - Turn off Zoom One license.  
+ `18014398509481984` - Zoom One for Education School and Campus.  
+ `72057594037927936` - Zoom One for Education Enterprise Essentials.  
+ `576460752303423488` - Zoom One for Education Enterprise Student.  
+ `144115188075855872` - Zoom One for Education Enterprise Plus.  
+ `137438953472` - Zoom One for Education School and Campus Plus with US/CA Unlimited.  
+ `1099511627776` -Zoom One for Education School and Campus Plus with AU/NZ Unlimited.  
+ `549755813888` - Zoom One for Education School and Campus Plus with UK/IR Unlimited.  
+ `274877906944` - Zoom One for Education School and Campus Plus with Japan Unlimited.  
+ `2199023255552` - Zoom One for Education School and Campus Plus with Global Select.  
+ `4294967296` - Zoom One for Education Enterprise Premier with US/CA Unlimited.  
+ `34359738368` - Zoom One for Education Enterprise Premier with AU/NZ Unlimited.  
+ `17179869184` -Zoom One for Education Enterprise Premier with UK/IR Unlimited.  
+ `8589934592` - Zoom One for Education Enterprise Premier with with Japan Unlimited.  
+ `68719476736` - Zoom One for Education Enterprise Premier with Global Select. */
+    zoom_one_type?:
+        | 0
+        | 16
+        | 32
+        | 64
+        | 128
+        | 33554432
+        | 134217728
+        | 268435456
+        | 536870912
+        | 1073741824
+        | 4398046511104
+        | 4294967296
+        | 8589934592
+        | 17179869184
+        | 34359738368
+        | 68719476736
+        | 137438953472
+        | 274877906944
+        | 549755813888
+        | 1099511627776
+        | 2199023255552
+        | 18014398509481984
+        | 72057594037927940
+        | 144115188075855870
+        | 576460752303423500;
+    /** The Zoom United type and license.
+     * `1` - Zoom United Pro-United with US/CA Unlimited.
+     * `2` - Zoom United Pro-United with UK/IR Unlimited.
+     * `4` - Zoom United Pro-United with AU/NZ Unlimited.
+     * `8` - Zoom United Pro-United with Global Select.
+     * `16` - Zoom United Pro-United with Zoom Phone Pro.
+     * `32` - Zoom United Biz-United with US/CA Unlimited.
+     * `64` - Zoom United Biz-United with UK/IR Unlimited.
+     * `128` - Zoom United Biz-United with AU/NZ Unlimited.
+     * `256` - Zoom United Biz-United with Global Select.
+     * `512` - Zoom United Biz-United with Zoom Phone Pro.
+     * `1024` - Zoom United Ent-United with US/CA Unlimited.
+     * `2048` - Zoom United Ent-United with UK/IR Unlimited.
+     * `4096` - Zoom United Ent-United with AU/NZ Unlimited.
+     * `8192` - Zoom United Ent-United with Global Select.
+     * `16384` - Zoom United Ent-United with Zoom Phone Pro.
+     * `32768` - Zoom United Pro-United with JP Unlimited.
+     * `65536` - Zoom United Biz-United with JP Unlimited.
+     * `131072` - Zoom United Ent-United with JP Unlimited.
+     * `none` - Turn off Zoom United type. */
+    plan_united_type?:
+        | '1'
+        | '2'
+        | '4'
+        | '8'
+        | '16'
+        | '32'
+        | '64'
+        | '128'
+        | '256'
+        | '512'
+        | '1024'
+        | '2048'
+        | '4096'
+        | '8192'
+        | '16384'
+        | '32768'
+        | '65536'
+        | '131072'
+        | 'none';
+    /** The information about the user's features. If the value is set to false, will remove user from Zoom Phone. All numbers and phones assigned to the users will become unassigned.  */
+    feature?: {
+        /** Whether the user has the **Zoom Phone** feature enabled. */
+        zoom_phone?: boolean;
+    };
+    /** The user's self-introduction. Hyperlinks or HTML code not allowed in this field. */
+    about_me?: string;
+    /** The user's LinkedIn link. The URL must contain `linkedin.com`. */
+    linkedin_url?: string;
+    /** A list of license information used to specify the appropriate license type, license option, and license subscription reference ID. This list is only for accounts with multiple subscription plans enabled. */
+    license_info_list?: {
+        /** License type name.
+The `MEETING` license is associated with the paid user type, while the `ZOOM_WORKPLACE_BUNDLE` license corresponds to the Zoom Workplace series licenses. */
+        license_type: 'MEETING' | 'ZOOM_WORKPLACE_BUNDLE';
+        /** License option.
+
+For the `MEETING` parameter, setting the corresponding value indicates that the user is converted to a licensed user. The specific values are as follows:
+User's plan type.  
+ `2` - Licensed.  
+
+For the `ZOOM_WORKPLACE_BUNDLE` parameter, setting the corresponding value assigns the user a Zoom Workplace series license. The specific values are as follows:
+The user's Zoom Workplace plan option.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus with US/CA Unlimited.  
+ `32` - Zoom Workplace Business Plus with UK/IR Unlimited.  
+ `64` - Zoom Workplace Business Plus with AU/NZ Unlimited.  
+ `128` - Zoom Workplace Business Plus with Japan Unlimited.  
+ `33554432` - Zoom Workplace Business Plus with Global Select.  
+ `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited.  
+ `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited.  
+ `536870912` - Zoom Workplace Enterprise Premier with UK/IR Unlimited.  
+ `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited.  
+ `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited.
+
+ The Zoom Workplace plan option for Govermnemt accounts.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus. 
+
+ The Zoom Workplace plan option for Education accounts.  
+ `18014398509481984` - Zoom Workplace for Education School and Campus.  
+ `72057594037927936` - Zoom Workplace for Education Enterprise Essentials.  
+ `576460752303423488` - Zoom Workplace for Education Enterprise Student. 
+ `144115188075855872` - Zoom Workplace for Education Enterprise Plus.  
+ `137438953472` - Zoom Workplace for Education School and Campus Plus with US/CA Unlimited.  
+ `1099511627776` - Zoom Workplace for Education School and Campus Plus with AU/NZ Unlimited.  
+ `549755813888` - Zoom Workplace for Education School and Campus Plus with UK/IR Unlimited.  
+ `274877906944` - Zoom Workplace for Education School and Campus Plus with Japan Unlimited.  
+ `2199023255552` - Zoom Workplace for Education School and Campus Plus with Global Select.  
+ `4294967296` - Zoom Workplace for Education Enterprise Premier with US/CA Unlimited.  
+ `34359738368` - Zoom Workplace for Education Enterprise Premier with AU/NZ Unlimited.  
+ `17179869184` -Zoom Workplace for Education Enterprise Premier with UK/IR Unlimited.  
+ `8589934592` - Zoom Workplace for Education Enterprise Premier with with Japan Unlimited.  
+ `68719476736` - Zoom Workplace for Education Enterprise Premier with Global Select.
+ */
+        license_option:
+            | 2
+            | 4
+            | 8
+            | 16
+            | 32
+            | 64
+            | 128
+            | 33554432
+            | 134217728
+            | 1073741824
+            | 536870912
+            | 268435456
+            | 4398046511104
+            | 18014398509481984
+            | 72057594037927940
+            | 576460752303423500
+            | 144115188075855870
+            | 137438953472
+            | 1099511627776
+            | 549755813888
+            | 274877906944
+            | 2199023255552
+            | 4294967296
+            | 34359738368
+            | 17179869184
+            | 8589934592
+            | 68719476736;
+        /** The subscription ID associated with the corresponding license. */
+        subscription_id: string;
+    }[];
+};
+
+/** Check a user's PM room - Query parameters */
+export type ZoomApi$User$Vanity$Name$Params = Partial<{
+    /** Personal meeting room name. */
+    vanity_name: string;
+}>;
+
+/** Check a user's PM room - Response */
+export type ZoomApi$User$Vanity$Name$Response = {
+    /** If `true`, it indicates that the personal meeting room with the given name exists.  
+  `false` - The room name does not exist. */
+    existed?: boolean;
+};
+
+/** Get the user's ZAK - Response */
+export type ZoomApi$User$Zak$Response = {
+    /** The user's ZAK. */
+    token?: string;
+};
+
+/** List users - Query parameters */
+export type ZoomApi$Users$Params = Partial<{
+    /** The user's status. 
+* `active` - The user exists on the account. 
+* `inactive` - The user has been deactivated. 
+* `pending` - The user exists on the account, but has not activated their account. See [Managing users](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0061789) for details.
+
+This value defaults to `active`. */
+    status: 'active' | 'inactive' | 'pending';
+    /** The number of records returned within a single API call. */
+    page_size: number;
+    /** The role's unique ID. Use this parameter to filter the response by a specific role. You can use the [**List roles**](/docs/api/accounts/#tag/roles/GET/roles) API to get a role's unique ID value. */
+    role_id: string;
+    /** The page number of the current page in the returned records. We will no longer support this field in a future release. Instead, use the next_page_token for pagination. */
+    page_number: string;
+    /** This parameter displays one of the following attributes in the API call's response:
+     * `custom_attributes` &mdash; Return the user's custom attributes.
+     * `host_key` &mdash; Return the user's [host key](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067063). */
+    include_fields: 'custom_attributes' | 'host_key';
+    /** The next page token paginates through a large set of results. It returns whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. */
+    next_page_token: string;
+    /** The user's license. Filter the response by a specific license. */
+    license:
+        | 'zoom_workforce_management'
+        | 'zoom_compliance_management'
+        | 'zoom_compliance_manager_for_contact_center';
+}>;
+
+/** List users - Response */
+export type ZoomApi$Users$Response = {
+    /** The next page token paginates through a large set of results. A next page token returns whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes. */
+    next_page_token?: string;
+    /** The number of pages returned for the request made. */
+    page_count?: number;
+    /** The page number of the current results. */
+    page_number?: number;
+    /** The number of records returned within a single API call. */
+    page_size?: number;
+    /** The total number of all the records available across pages. */
+    total_records?: number;
+    /** The information about the users. */
+    users?: {
+        /** The date and time when this user was created. */
+        user_created_at?: string;
+        /** The date and time when this user's latest login type was created. */
+        created_at?: string;
+        /** The information about the user's custom attributes.
+
+This field is **only** returned if users are assigned custom attributes and you provided the `custom_attributes` value for the `include_fields` query parameter in the API request. */
+        custom_attributes?: {
+            /** The custom attribute's unique ID. */
+            key?: string;
+            /** The custom attribute's name. */
+            name?: string;
+            /** The custom attribute's value. */
+            value?: string;
+        }[];
+        /** The user's department. */
+        dept?: string;
+        /** The user's email address. */
+        email: string;
+        /** The employee's unique ID. The this field only returns when:
+         * SAML single sign-on (SSO) is enabled.
+         * The `login_type` value is `101` (SSO). */
+        employee_unique_id?: string;
+        /** The user's first name. */
+        first_name?: string;
+        /** The IDs of groups where the user is a member. */
+        group_ids?: string[];
+        /** List of division IDs the user belongs to. Currently, only a single division is supported. */
+        division_ids?: string[];
+        /** The user's [host key](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067063).
+
+This field is **only** returned if users are assigned a host key and you provided the `host_key` value for the `include_fields` query parameter in the API request. */
+        host_key?: string;
+        /** The user's ID. 
+
+The API does **not** return this value for users with the `pending` status. */
+        id?: string;
+        /** The IDs of IM directory groups where the user is a member. */
+        im_group_ids?: string[];
+        /** The last client version that user used to log in. */
+        last_client_version?: string;
+        /** The user's last login time. This field has a three-day buffer period.
+
+For example, if user first logged in on `2020-01-01` and then logged out and logged in on `2020-01-02`, this value will still reflect the login time of `2020-01-01`. However, if the user logs in on `2020-01-04`, the value of this field will reflect the corresponding login time since it exceeds the three-day buffer period. */
+        last_login_time?: string;
+        /** The user's last name. */
+        last_name?: string;
+        /** This field is returned if the user is enrolled in the [Zoom United](https://zoom.us/pricing) plan. The license option:
+         * `1` &mdash; Zoom United Pro-United with US/CA Unlimited.
+         * `2` &mdash; Zoom United Pro-United with UK/IR Unlimited.
+         * `4` &mdash; Zoom United Pro-United with AU/NZ Unlimited.
+         * `8` &mdash; Zoom United Pro-United with Global Select.
+         * `16` &mdash; Zoom United Pro-United with Zoom Phone Pro.
+         * `32` &mdash; Zoom United Biz-United with US/CA Unlimited.
+         * `64` &mdash; Zoom United Biz-United with UK/IR Unlimited.
+         * `128` &mdash; Zoom United Biz-United with AU/NZ Unlimited.
+         * `256` &mdash; Zoom United Biz-United with Global Select.
+         * `512` &mdash; Zoom United Biz-United with Zoom Phone Pro.
+         * `1024` &mdash; Zoom United Ent-United with US/CA Unlimited.
+         * `2048` &mdash; Zoom United Ent-United with UK/IR Unlimited.
+         * `4096` &mdash; Zoom United Ent-United with AU/NZ Unlimited.
+         * `8192` &mdash; Zoom United Ent-United with Global Select.
+         * `16384` &mdash; Zoom United Ent-United with Zoom Phone Pro.
+         * `32768` &mdash; Zoom United Pro-United with JP Unlimited.
+         * `65536` &mdash; Zoom United Biz-United with JP Unlimited.
+         * `131072` &mdash; Zoom United Ent-United with JP Unlimited. */
+        plan_united_type?:
+            | '1'
+            | '2'
+            | '4'
+            | '8'
+            | '16'
+            | '32'
+            | '64'
+            | '128'
+            | '256'
+            | '512'
+            | '1024'
+            | '2048'
+            | '4096'
+            | '8192'
+            | '16384'
+            | '32768'
+            | '65536'
+            | '131072';
+        /** The user's [personal meeting ID (PMI)](https://developers.zoom.us/docs/api/rest/using-zoom-apis/#understanding-personal-meeting-id-pmi) */
+        pmi?: number;
+        /** The unique ID of the user's assigned [role](/docs/api/accounts/#tag/roles/GET/roles). */
+        role_id?: string;
+        /** The user's status.
+         * `active` - An active user.
+         * `inactive` - A deactivated user.
+         * `pending` - A pending user. */
+        status?: 'active' | 'inactive' | 'pending';
+        /** The user's timezone. */
+        timezone?: string;
+        /** The user's assigned plan type.
+         * `1` - Basic.
+         * `2` - Licensed.
+         * `4` - Unassigned without Meetings Basic.
+         * <del>`99` - None (this can only be set with `ssoCreate`).</del> */
+        type: 1 | 2 | 4 | 99;
+        /** Whether the user's email address for the Zoom account is verified.
+         * `1` - A verified user email.
+         * `0` - The user's email **not** verified. */
+        verified?: 1 | 0;
+        /** The user's display name. */
+        display_name?: string;
+        /** Detailed license subscription information. This list is returned only for accounts with multiple subscription plans enabled that contain duplicate plans. */
+        license_info_list?: {
+            /** License type name.
+The `MEETING` license is associated with the paid user type, while the `ZOOM_WORKPLACE_BUNDLE` license corresponds to the Zoom Workplace series licenses. */
+            license_type?: 'MEETING' | 'ZOOM_WORKPLACE_BUNDLE';
+            /** License option.
+
+For the `MEETING` parameter, setting the corresponding value indicates that the user is converted to a licensed user. The specific values are as follows:
+User's plan type.  
+ `2` - Licensed. 
+
+For the `ZOOM_WORKPLACE_BUNDLE` parameter, setting the corresponding value assigns the user a Zoom Workplace series license. The specific values are as follows:
+The user's Zoom Workplace plan option.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus with US/CA Unlimited.  
+ `32` - Zoom Workplace Business Plus with UK/IR Unlimited.  
+ `64` - Zoom Workplace Business Plus with AU/NZ Unlimited.  
+ `128` - Zoom Workplace Business Plus with Japan Unlimited.  
+ `33554432` - Zoom Workplace Business Plus with Global Select.  
+ `134217728` - Zoom Workplace Enterprise Premier with US/CA Unlimited.  
+ `1073741824` - Zoom Workplace Enterprise Premier with AU/NZ Unlimited.  
+ `536870912` - Zoom Workplace Enterprise Premier with UK/IR Unlimited.  
+ `268435456` - Zoom Workplace Enterprise Premier with Japan Unlimited.  
+ `4398046511104` - Zoom Workplace Pro Plus with US/CA Unlimited.
+
+ The Zoom Workplace plan option for Govermnemt accounts.  
+ `4` - Zoom Workplace Enterprise.  
+ `8` - Zoom Workplace Enterprise Plus.  
+ `16` - Zoom Workplace Business Plus. 
+
+ The Zoom Workplace plan option for Education accounts.  
+ `18014398509481984` - Zoom Workplace for Education School and Campus.  
+ `72057594037927936` - Zoom Workplace for Education Enterprise Essentials.  
+ `576460752303423488` - Zoom Workplace for Education Enterprise Student. 
+ `144115188075855872` - Zoom Workplace for Education Enterprise Plus.  
+ `137438953472` - Zoom Workplace for Education School and Campus Plus with US/CA Unlimited.  
+ `1099511627776` - Zoom Workplace for Education School and Campus Plus with AU/NZ Unlimited.  
+ `549755813888` - Zoom Workplace for Education School and Campus Plus with UK/IR Unlimited.  
+ `274877906944` - Zoom Workplace for Education School and Campus Plus with Japan Unlimited.  
+ `2199023255552` - Zoom Workplace for Education School and Campus Plus with Global Select.  
+ `4294967296` - Zoom Workplace for Education Enterprise Premier with US/CA Unlimited.  
+ `34359738368` - Zoom Workplace for Education Enterprise Premier with AU/NZ Unlimited.  
+ `17179869184` -Zoom Workplace for Education Enterprise Premier with UK/IR Unlimited.  
+ `8589934592` - Zoom Workplace for Education Enterprise Premier with with Japan Unlimited.  
+ `68719476736` - Zoom Workplace for Education Enterprise Premier with Global Select. */
+            license_option?:
+                | 2
+                | 4
+                | 8
+                | 16
+                | 32
+                | 64
+                | 128
+                | 33554432
+                | 134217728
+                | 1073741824
+                | 536870912
+                | 268435456
+                | 4398046511104
+                | 18014398509481984
+                | 72057594037927940
+                | 576460752303423500
+                | 144115188075855870
+                | 137438953472
+                | 1099511627776
+                | 549755813888
+                | 274877906944
+                | 2199023255552
+                | 4294967296
+                | 34359738368
+                | 17179869184
+                | 8589934592
+                | 68719476736;
+            /** Subscription ID with the corresponding license. */
+            subscription_id?: string;
+        }[];
+        /** The user's login method.
+
+`0` - Facebook OAuth.
+`1` - Google OAuth.
+`24` - Apple OAuth.
+`27` - Microsoft OAuth.
+`97` - Mobile device.
+`99` - API user.
+`100` - Zoom Work email.
+`101` - Single Sign-On (SSO). */
+        login_types?: (0 | 1 | 23 | 24 | 27 | 97 | 98 | 100 | 101)[];
     }[];
 };
 

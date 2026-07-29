@@ -678,6 +678,286 @@ export class ZoomApi {
         };
     }
 
+    /** contacts API methods */
+    contacts() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
+        return {
+            /** List contact groups */
+            listGroups(
+                params?: GeneratedTypes.ZoomApi$Contact$Groups$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Contact$Groups$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/contacts/groups`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Create a contact group */
+            createGroup(
+                body?: GeneratedTypes.ZoomApi$Contact$Group$Create$Request,
+            ): Promise<GeneratedTypes.ZoomApi$Contact$Group$Create$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/contacts/groups`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Get a contact group */
+            getGroup(
+                groupId: string,
+            ): Promise<GeneratedTypes.ZoomApi$Contact$Group$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/contacts/groups/${groupId}`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Update a contact group */
+            updateGroup(
+                groupId: string,
+                body?: GeneratedTypes.ZoomApi$Contact$Group$Update$Request,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/contacts/groups/${groupId}`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Delete a contact group */
+            deleteGroup(groupId: string): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/contacts/groups/${groupId}`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** List contact group members */
+            listMembers(
+                groupId: string,
+                params?: GeneratedTypes.ZoomApi$Contact$Group$Members$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Contact$Group$Members$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/contacts/groups/${groupId}/members`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Add contact group members */
+            createMember(
+                groupId: string,
+                body?: GeneratedTypes.ZoomApi$Contact$Group$Member$Add$Request,
+            ): Promise<GeneratedTypes.ZoomApi$Contact$Group$Member$Add$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/contacts/groups/${groupId}/members`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Remove members in a contact group */
+            deleteMember(
+                groupId: string,
+                params?: GeneratedTypes.ZoomApi$Contact$Group$Member$Remove$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/contacts/groups/${groupId}/members`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+        };
+    }
+
+    /** divisions API methods */
+    divisions() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
+        return {
+            /** List divisions */
+            list(
+                params?: GeneratedTypes.ZoomApi$List$Divisions$Params,
+            ): Promise<GeneratedTypes.ZoomApi$List$Divisions$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/divisions`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Create a division */
+            create(
+                body?: GeneratedTypes.ZoomApi$Createadivision$Request,
+            ): Promise<GeneratedTypes.ZoomApi$Createadivision$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/divisions`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+        };
+    }
+
+    /** groups API methods */
+    groups() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
+        return {
+            /** List groups */
+            list(
+                params?: GeneratedTypes.ZoomApi$Groups$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Groups$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Create a group */
+            create(
+                body?: GeneratedTypes.ZoomApi$Group$Create$Request,
+            ): Promise<GeneratedTypes.ZoomApi$Group$Create$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+        };
+    }
+
+    /** users API methods */
+    users() {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
+        return {
+            /** List users */
+            list(
+                params?: GeneratedTypes.ZoomApi$Users$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Users$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Create users */
+            create(
+                body?: GeneratedTypes.ZoomApi$User$Create$Request,
+            ): Promise<GeneratedTypes.ZoomApi$User$Create$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Check a user email */
+            getEmail(
+                params?: GeneratedTypes.ZoomApi$User$Email$Params,
+            ): Promise<GeneratedTypes.ZoomApi$User$Email$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/email`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Bulk update features for users */
+            createFeature(
+                body?: GeneratedTypes.ZoomApi$Bulk$Update$Feature$Request,
+            ): Promise<GeneratedTypes.ZoomApi$Bulk$Update$Feature$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/features`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Get the user's ZAK */
+            getZak(): Promise<GeneratedTypes.ZoomApi$User$Zak$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/me/zak`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Get user summary */
+            getSummary(): Promise<GeneratedTypes.ZoomApi$User$Summary$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/summary`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Check a user's PM room */
+            getVanityName(
+                params?: GeneratedTypes.ZoomApi$User$Vanity$Name$Params,
+            ): Promise<GeneratedTypes.ZoomApi$User$Vanity$Name$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/vanity_name`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+        };
+    }
+
     /** archiveFiles API methods (parameterized) */
     archiveFile(fileId: string) {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -1647,6 +1927,337 @@ export class ZoomApi {
                     body: body ? JSON.stringify(body) : undefined,
                 }) as any;
             },
+            /** Get a user */
+            getUser(
+                params?: GeneratedTypes.ZoomApi$User$Params,
+            ): Promise<GeneratedTypes.ZoomApi$User$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Update a user */
+            updateUser(
+                body?: GeneratedTypes.ZoomApi$User$Update$Request,
+                params?: GeneratedTypes.ZoomApi$User$Update$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                    params: params,
+                }) as any;
+            },
+            /** Delete a user */
+            deleteUser(
+                params?: GeneratedTypes.ZoomApi$User$Delete$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** List user assistants */
+            listAssistants(): Promise<GeneratedTypes.ZoomApi$User$Assistants$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/assistants`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Add assistants */
+            createAssistant(
+                body?: GeneratedTypes.ZoomApi$User$Assistant$Create$Request,
+            ): Promise<GeneratedTypes.ZoomApi$User$Assistant$Create$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/assistants`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Delete user assistants */
+            deleteAssistant(): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/assistants`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Delete a user assistant */
+            userAssistantDelete(assistantId: string): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/assistants/${assistantId}`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** List a user's collaboration devices */
+            listCollaborationDevices(): Promise<GeneratedTypes.ZoomApi$List$Collaboration$Devices$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/collaboration_devices`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Get collaboration device detail */
+            getCollaborationDevice(
+                collaborationDeviceId: string,
+            ): Promise<GeneratedTypes.ZoomApi$Get$Collaboration$Device$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/collaboration_devices/${collaborationDeviceId}`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Update a user's email */
+            updateEmail(
+                body?: GeneratedTypes.ZoomApi$User$Email$Update$Request,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/email`,
+                    method: 'PUT',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Get meeting summary templates */
+            listMeetingSummaryTemplates(): Promise<GeneratedTypes.ZoomApi$Getmeetingsummarytemplates$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/meeting_summary_templates`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Get meeting template detail */
+            getMeetingTemplate(
+                meetingTemplateId: string,
+            ): Promise<GeneratedTypes.ZoomApi$Get$User$Meeting$Templates$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/meeting_templates/${meetingTemplateId}`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Update a user's password */
+            updatePassword(
+                body?: GeneratedTypes.ZoomApi$User$Password$Request,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/password`,
+                    method: 'PUT',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Get user permissions */
+            listPermissions(): Promise<GeneratedTypes.ZoomApi$User$Permission$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/permissions`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Upload a user's profile picture */
+            createPicture(): Promise<GeneratedTypes.ZoomApi$User$Picture$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/picture`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Delete a user's profile picture */
+            deletePicture(): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/picture`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Get a user presence status */
+            listPresenceStatus(): Promise<GeneratedTypes.ZoomApi$Get$User$Presence$Status$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/presence_status`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Update a user's presence status */
+            updatePresenceStatus(
+                body?: GeneratedTypes.ZoomApi$Update$Presence$Status$Request,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/presence_status`,
+                    method: 'PUT',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** List user schedulers */
+            listSchedulers(): Promise<GeneratedTypes.ZoomApi$User$Schedulers$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/schedulers`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Delete user schedulers */
+            deleteScheduler(): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/schedulers`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Delete a scheduler */
+            userSchedulerDelete(schedulerId: string): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/schedulers/${schedulerId}`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Get user settings */
+            listSettings(
+                params?: GeneratedTypes.ZoomApi$User$Settings$Params,
+            ): Promise<GeneratedTypes.ZoomApi$User$Settings$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/settings`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Update user settings */
+            userSettingsUpdate(
+                body?: GeneratedTypes.ZoomApi$User$Settings$Update$Request,
+                params?: GeneratedTypes.ZoomApi$User$Settings$Update$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/settings`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                    params: params,
+                }) as any;
+            },
+            /** Upload Virtual Background files */
+            createVirtualBackground(): Promise<GeneratedTypes.ZoomApi$Upload$V$Buser$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/settings/virtual_backgrounds`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Delete Virtual Background files */
+            deleteVirtualBackground(
+                params?: GeneratedTypes.ZoomApi$Del$User$V$B$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/settings/virtual_backgrounds`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Update user status */
+            updateStatus(
+                body?: GeneratedTypes.ZoomApi$User$Status$Request,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/status`,
+                    method: 'PUT',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Get a user's token */
+            getToken(
+                params?: GeneratedTypes.ZoomApi$User$Token$Params,
+            ): Promise<GeneratedTypes.ZoomApi$User$Token$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/token`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Revoke a user's SSO token */
+            deleteToken(): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/users/${userId}/token`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
         };
     }
 
@@ -2451,6 +3062,326 @@ export class ZoomApi {
                     headers: {
                         ...self.getAuthHeader(),
                     },
+                }) as any;
+            },
+        };
+    }
+
+    /** divisions API methods (parameterized) */
+    division(divisionId: string) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
+        return {
+            /** Get a division */
+            getDivision(): Promise<GeneratedTypes.ZoomApi$Getdivision$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/divisions/${divisionId}`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Update a division */
+            updateDivision(
+                body?: GeneratedTypes.ZoomApi$Updateadivision$Request,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/divisions/${divisionId}`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Delete a division */
+            deleteDivision(): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/divisions/${divisionId}`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** List division members */
+            listUsers(
+                params?: GeneratedTypes.ZoomApi$List$Division$Members$Params,
+            ): Promise<GeneratedTypes.ZoomApi$List$Division$Members$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/divisions/${divisionId}/users`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Assign a division */
+            createUser(
+                body?: GeneratedTypes.ZoomApi$Assigndivision$Member$Request,
+            ): Promise<GeneratedTypes.ZoomApi$Assigndivision$Member$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/divisions/${divisionId}/users`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+        };
+    }
+
+    /** groups API methods (parameterized) */
+    group(groupId: string) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
+        const self = this;
+        return {
+            /** Get a group */
+            getGroup(): Promise<GeneratedTypes.ZoomApi$Group$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Update a group */
+            updateGroup(
+                body?: GeneratedTypes.ZoomApi$Group$Update$Request,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Delete a group */
+            deleteGroup(): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** List group admins */
+            listAdmins(
+                params?: GeneratedTypes.ZoomApi$Group$Admins$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Group$Admins$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/admins`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Add group admins */
+            createAdmin(
+                body?: GeneratedTypes.ZoomApi$Group$Admins$Create$Request,
+            ): Promise<GeneratedTypes.ZoomApi$Group$Admins$Create$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/admins`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Delete a group admin */
+            deleteAdmin(userId: string): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/admins/${userId}`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** List group channels */
+            listChannels(): Promise<GeneratedTypes.ZoomApi$Group$Channels$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/channels`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Get locked settings */
+            listLockSettings(
+                params?: GeneratedTypes.ZoomApi$Get$Group$Lock$Settings$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Get$Group$Lock$Settings$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/lock_settings`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Update locked settings */
+            updateLockSetting(
+                body?: GeneratedTypes.ZoomApi$Group$Locked$Settings$Request,
+                params?: GeneratedTypes.ZoomApi$Group$Locked$Settings$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/lock_settings`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                    params: params,
+                }) as any;
+            },
+            /** List group members  */
+            listMembers(
+                params?: GeneratedTypes.ZoomApi$Group$Members$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Group$Members$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/members`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Add group members */
+            createMember(
+                body?: GeneratedTypes.ZoomApi$Group$Members$Create$Request,
+            ): Promise<GeneratedTypes.ZoomApi$Group$Members$Create$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/members`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Update a group member */
+            updateMember(
+                memberId: string,
+                body?: GeneratedTypes.ZoomApi$Update$A$Group$Member$Request,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/members/${memberId}`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                }) as any;
+            },
+            /** Delete a group member */
+            deleteMember(memberId: string): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/members/${memberId}`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Get a group's settings */
+            listSettings(
+                params?: GeneratedTypes.ZoomApi$Get$Group$Settings$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Get$Group$Settings$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/settings`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Update a group's settings */
+            updateSetting(
+                body?: GeneratedTypes.ZoomApi$Update$Group$Settings$Request,
+                params?: GeneratedTypes.ZoomApi$Update$Group$Settings$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/settings`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                    params: params,
+                }) as any;
+            },
+            /** Get a group's webinar registration settings */
+            getRegistration(
+                params?: GeneratedTypes.ZoomApi$Group$Settings$Registration$Params,
+            ): Promise<GeneratedTypes.ZoomApi$Group$Settings$Registration$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/settings/registration`,
+                    method: 'GET',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
+                }) as any;
+            },
+            /** Update a group's webinar registration settings */
+            updateRegistration(
+                body?: GeneratedTypes.ZoomApi$Group$Settings$Registration$Update$Request,
+                params?: GeneratedTypes.ZoomApi$Group$Settings$Registration$Update$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/settings/registration`,
+                    method: 'PATCH',
+                    headers: {
+                        ...self.getAuthHeader(),
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : undefined,
+                    params: params,
+                }) as any;
+            },
+            /** Upload Virtual Background files */
+            createVirtualBackground(): Promise<GeneratedTypes.ZoomApi$Upload$Group$V$B$Response> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/settings/virtual_backgrounds`,
+                    method: 'POST',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                }) as any;
+            },
+            /** Delete Virtual Background files */
+            deleteVirtualBackground(
+                params?: GeneratedTypes.ZoomApi$Del$Group$V$B$Params,
+            ): Promise<any> {
+                return self.client.request({
+                    url: `${self.client.BASE_API_URL}/groups/${groupId}/settings/virtual_backgrounds`,
+                    method: 'DELETE',
+                    headers: {
+                        ...self.getAuthHeader(),
+                    },
+                    params: params,
                 }) as any;
             },
         };

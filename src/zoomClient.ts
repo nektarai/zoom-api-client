@@ -119,6 +119,15 @@ function numericHeader(headers: Headers, name: string): number | undefined {
 }
 
 /**
+ * Normalizes a delay to whole, non-negative seconds. Callers feed this into
+ * timers, where a negative or fractional value would retry immediately.
+ */
+function toDelaySeconds(seconds: number): number | undefined {
+    if (!Number.isFinite(seconds)) return undefined;
+    return Math.max(0, Math.round(seconds));
+}
+
+/**
  * Parses `Retry-After` into seconds. The header is usually delta-seconds, but
  * HTTP also permits an HTTP-date, which is converted to seconds from now.
  */
@@ -127,17 +136,18 @@ function parseRetryAfter(headers: Headers): number | undefined {
     if (raw === undefined) return undefined;
 
     const seconds = Number(raw);
-    if (!Number.isNaN(seconds)) return seconds;
+    if (!Number.isNaN(seconds)) return toDelaySeconds(seconds);
 
     const timestamp = Date.parse(raw);
     if (Number.isNaN(timestamp)) return undefined;
 
-    return Math.max(0, Math.round((timestamp - Date.now()) / 1000));
+    return toDelaySeconds((timestamp - Date.now()) / 1000);
 }
 
 /**
  * Collects Zoom's `X-RateLimit-*` headers. Returns undefined when Zoom sent
- * none, so callers can distinguish "not rate limited" from "no data".
+ * none at all — absent headers say nothing about whether the request was rate
+ * limited, so undefined means "no data", not "not rate limited".
  */
 function parseRateLimit(headers: Headers): ZoomRateLimitInfo | undefined {
     const rateLimit: ZoomRateLimitInfo = {
@@ -153,6 +163,29 @@ function parseRateLimit(headers: Headers): ZoomRateLimitInfo | undefined {
 }
 
 /**
+ * Extracts the most useful message from an error body.
+ *
+ * API errors carry `message`. OAuth failures instead carry `{ error, reason }`
+ * — a machine-readable code plus human text — which are joined as
+ * `invalid_grant: Invalid Token!`. That keeps the code substring-matchable for
+ * error classifiers while still surfacing the readable half, and matches the
+ * shape other OAuth clients emit.
+ */
+function errorMessage(result: ZoomResponse, res: Response): string {
+    if (typeof result === 'string' && result) return result;
+
+    if (typeof result === 'object' && result !== null) {
+        if (result.message) return result.message;
+        if (result.error && result.reason)
+            return `${result.error}: ${result.reason}`;
+        if (result.error) return result.error;
+        if (result.reason) return result.reason;
+    }
+
+    return `HTTP ${res.status} ${res.statusText}`;
+}
+
+/**
  * Builds a ZoomError from a non-ok response, preserving the HTTP status, Zoom's
  * application error code, and any rate-limit headers so callers can decide
  * whether and when to retry.
@@ -163,12 +196,7 @@ function buildZoomError(
     request: ZoomRequest,
 ): ZoomError {
     const isObject = typeof result === 'object' && result !== null;
-
-    let message: string;
-    if (typeof result === 'string' && result) message = result;
-    else if (isObject && result.message) message = result.message;
-    else if (isObject && result.error) message = result.error;
-    else message = `HTTP ${res.status} ${res.statusText}`;
+    const message = errorMessage(result, res);
 
     return new ZoomError(message, {
         code: isObject ? result.code : undefined,

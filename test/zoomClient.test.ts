@@ -160,6 +160,40 @@ test('error uses `error` field when `message` is absent', async () => {
     scope.done();
 });
 
+test('oauth failure joins the error code with the human reason', async () => {
+    // Zoom's /oauth/token failure body: { reason, error }, no `message`.
+    const resp = { reason: 'Invalid Token!', error: 'invalid_grant' };
+    const scope = nock(client.BASE_OAUTH_URL)
+        .post('/oauth/token')
+        .reply(400, resp);
+
+    let err: ZoomError | undefined;
+    try {
+        await client.request({ method: 'POST', url: '/oauth/token' });
+    } catch (e) {
+        err = e as ZoomError;
+    }
+
+    // The machine-readable code stays matchable by substring, and the readable
+    // half is no longer reachable only via `response`.
+    expect(err?.message).toBe('invalid_grant: Invalid Token!');
+    expect(err?.statusCode).toBe(400);
+    expect(err?.response).toEqual(resp);
+
+    scope.done();
+});
+
+test('oauth failure with only a reason still yields a message', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d15')
+        .reply(400, { reason: 'Invalid Token!' });
+
+    const err = await expectZoomError('/d15');
+    expect(err.message).toBe('Invalid Token!');
+
+    scope.done();
+});
+
 test('body `code` and HTTP `statusCode` are kept separate', async () => {
     const resp = { code: 124, message: 'Invalid access token' };
     const scope = nock(ZOOM_BASE_API_URL).get('/v2/d8').reply(401, resp);
@@ -230,6 +264,40 @@ test('Retry-After in HTTP-date form converts to seconds', async () => {
     const err = await expectZoomError('/d11');
     expect(err.retryAfter).toBeGreaterThan(115);
     expect(err.retryAfter).toBeLessThanOrEqual(120);
+
+    scope.done();
+});
+
+test('negative Retry-After is clamped to zero, not passed through', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d16')
+        .reply(429, { message: 'slow down' }, { 'Retry-After': '-1' });
+
+    // A negative delay would make setTimeout fire immediately.
+    const err = await expectZoomError('/d16');
+    expect(err.retryAfter).toBe(0);
+
+    scope.done();
+});
+
+test('fractional Retry-After is rounded to whole seconds', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d17')
+        .reply(429, { message: 'slow down' }, { 'Retry-After': '2.5' });
+
+    const err = await expectZoomError('/d17');
+    expect(err.retryAfter).toBe(3);
+
+    scope.done();
+});
+
+test('non-finite Retry-After is dropped', async () => {
+    const scope = nock(ZOOM_BASE_API_URL)
+        .get('/v2/d18')
+        .reply(429, { message: 'slow down' }, { 'Retry-After': '1e400' });
+
+    const err = await expectZoomError('/d18');
+    expect(err.retryAfter).toBeUndefined();
 
     scope.done();
 });

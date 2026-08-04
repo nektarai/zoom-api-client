@@ -1,5 +1,5 @@
-import { ZoomS2SO, ZoomClient } from '../src';
 import nock from 'nock';
+import { ZoomClient, ZoomS2SO } from '../src';
 
 const clientId = 'dummy';
 const clientSecret = 'dummy';

@@ -1,5 +1,5 @@
-import { ZoomClient, ZoomError } from '../src';
 import nock from 'nock';
+import { ZoomClient, ZoomError } from '../src';
 
 const clientId = 'dummy';
 const clientSecret = 'dummy';
@@ -22,7 +22,7 @@ test.skip('should initialise ZoomClient correctly', async () => {
             emit,
         })),
     }));
-    const { EventEmitter } = await import('events');
+    const { EventEmitter } = await import('node:events');
     const { ZoomClient } = await import('../src');
     (EventEmitter as any).mockImplementation(() => ({
         emit,

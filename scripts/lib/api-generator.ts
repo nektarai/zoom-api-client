@@ -3,18 +3,16 @@
  */
 
 import {
-    ParsedEndpoint,
-    ResourceGroup,
-    ParameterObject,
-    SchemaObject,
-} from './openapi-parser';
-import {
+    escapeJsDoc,
+    sanitizeIdentifier,
     snakeToCamel,
     snakeToPascal,
-    extractPathParams,
-    sanitizeIdentifier,
-    escapeJsDoc,
 } from './naming-utils';
+import type {
+    ParameterObject,
+    ParsedEndpoint,
+    ResourceGroup,
+} from './openapi-parser';
 
 interface MethodInfo {
     name: string;
@@ -234,8 +232,7 @@ function generateResourceMethods(
         if (usedNames.has(methodName)) {
             // Use a more descriptive name based on the operationId
             const sanitized = sanitizeIdentifier(endpoint.operationId);
-            methodName =
-                sanitized.charAt(0).toLowerCase() + sanitized.slice(1);
+            methodName = sanitized.charAt(0).toLowerCase() + sanitized.slice(1);
         }
         // The fallback can collide too (two specs may share an operationId
         // within one resource group), and a duplicate method name emits
@@ -431,7 +428,7 @@ function capitalize(str: string): string {
  */
 function singularize(word: string): string {
     if (word.endsWith('ies')) {
-        return word.slice(0, -3) + 'y';
+        return `${word.slice(0, -3)}y`;
     }
     // Only strip 'es' for sibilant endings (ches, shes, sses, xes, zes)
     if (

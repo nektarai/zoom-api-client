@@ -1,6 +1,6 @@
-import { ZoomApi, ZoomClient } from '../src';
 import nock from 'nock';
-import { URLSearchParams } from 'url';
+import { ZoomApi, ZoomClient } from '../src';
+
 const clientId = 'dummy';
 const clientSecret = 'dummy';
 const accountId = 'dummy';

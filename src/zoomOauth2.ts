@@ -1,11 +1,11 @@
 import {
     ZoomError,
-    ZoomEventRequest,
-    ZoomRequest,
-    ZoomSuccess,
-    ZoomTokensResponse,
+    type ZoomEventRequest,
+    type ZoomRequest,
+    type ZoomSuccess,
+    type ZoomTokensResponse,
 } from './types';
-import { ZoomClient } from './zoomClient';
+import type { ZoomClient } from './zoomClient';
 
 export class ZoomOauth {
     protected client: ZoomClient;

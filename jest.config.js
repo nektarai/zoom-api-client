@@ -21,8 +21,4 @@ module.exports = {
     ],
     verbose: true,
     workerIdleMemoryLimit: '512M',
-    /* @Ashniu123 TEMP: Till we upgrade to jest 30
-       Issue: https://github.com/jestjs/jest/issues/14305
-     */
-    prettierPath: '<rootDir>/node_modules/prettier2/index.js',
 };

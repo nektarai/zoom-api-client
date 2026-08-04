@@ -2,16 +2,12 @@
  * TypeScript type generator from OpenAPI schemas.
  */
 
-import {
+import { escapeJsDoc, sanitizeIdentifier, snakeToPascal } from './naming-utils';
+import type {
+    ParameterObject,
     ParsedEndpoint,
     SchemaObject,
-    ParameterObject,
 } from './openapi-parser';
-import {
-    snakeToPascal,
-    sanitizeIdentifier,
-    escapeJsDoc,
-} from './naming-utils';
 
 interface GeneratedType {
     name: string;
@@ -131,8 +127,8 @@ function operationIdToBaseTypeName(operationId: string): string {
  * Convert an OpenAPI schema to TypeScript type definition.
  */
 function schemaToTypeScript(schema: SchemaObject, indent: number): string {
-    const indentStr = '    '.repeat(indent);
-    const innerIndent = '    '.repeat(indent + 1);
+    const _indentStr = '    '.repeat(indent);
+    const _innerIndent = '    '.repeat(indent + 1);
 
     // Handle $ref (shouldn't happen in this spec, but just in case)
     if (schema.$ref) {

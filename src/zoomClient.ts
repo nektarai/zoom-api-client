@@ -1,12 +1,12 @@
-import { EventEmitter } from 'events';
-import { URLSearchParams } from 'url';
+import { EventEmitter } from 'node:events';
+import { URLSearchParams } from 'node:url';
 import {
-    ZoomRequest,
-    ZoomClientOptions,
+    type ZoomClientOptions,
     ZoomError,
-    ZoomRateLimitInfo,
-    ZoomRequestOptions,
-    ZoomResponse,
+    type ZoomRateLimitInfo,
+    type ZoomRequest,
+    type ZoomRequestOptions,
+    type ZoomResponse,
 } from './types';
 
 export class ZoomClient {

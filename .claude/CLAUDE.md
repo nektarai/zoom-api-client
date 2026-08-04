@@ -7,10 +7,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm run build          # Clean dist/ and compile TypeScript
 npm test               # Run Jest tests with coverage
+npm run lint           # Biome: format + lint check (no writes)
+npm run lint:fix       # Biome: apply safe fixes
+npm run typecheck      # tsc --noEmit over src/ AND test/
 npm run generate       # Regenerate API client from the OpenAPI specs in specs/
 npx jest test/zoomClient.test.ts              # Run a single test file
 npx jest --testNamePattern "should normalize"  # Run tests matching a pattern
 ```
+
+`npm test` does not typecheck — `@swc/jest` strips types without checking them, and
+`npm run build` only covers `src/`. `npm run typecheck` is the only thing that
+typechecks `test/`.
 
 ## Architecture
 
@@ -27,7 +34,7 @@ Zero-dependency, fully typed Zoom API client for Node.js. Published as `@nektara
 - **ZoomApi** (`src/zoomApi.generated.ts`): 250+ endpoint methods generated from the Zoom OpenAPI specs in `specs/`. Fluent resource pattern: `zoomApi.user(userId).listMeetings()`, `zoomApi.meeting(id).getMeeting()`.
 - **Types** (`src/types.generated.ts`): Request param and response types for all generated endpoints.
 
-To regenerate: `npm run generate` — runs `scripts/generate-api.ts` which parses each spec, generates types and API client, then runs Prettier + ESLint on output.
+To regenerate: `npm run generate` — runs `scripts/generate-api.ts` which parses each spec, generates types and API client, then runs `biome check --write` on the output.
 
 Zoom publishes one spec per product area. `specs/*.json` are committed verbatim so they can be refreshed from Zoom without a manual merge; register new ones in `SPEC_PATHS` in `scripts/generate-api.ts`. **Order matters** — duplicate method names resolve first-wins, so an earlier spec keeps the cleaner name and later ones fall back to their `operationId`. Keep `Meetings.json` first to hold existing method names stable.
 
@@ -45,8 +52,11 @@ Zoom publishes one spec per product area. `specs/*.json` are committed verbatim 
 
 ## Code Standards
 
-- **Style**: Single quotes, trailing commas, 4-space indent, semicolons (Prettier-enforced)
-- **ESLint**: `no-console` is an error. `@typescript-eslint/no-explicit-any` is off. Floating promises are errors.
+- **Tooling**: [Biome](https://biomejs.dev) owns both formatting and linting (`biome.json`). It replaced ESLint 8 + Prettier — there is no `.eslintrc.js` or `.prettierrc.js`.
+- **Style**: Single quotes, trailing commas, 4-space indent, semicolons. Indent width comes from `.editorconfig` via `formatter.useEditorconfig` (so JSON stays at 2).
+- **Lint rules**: Biome `recommended`, plus `noConsole` as an error and `noExplicitAny` / `noTsIgnore` off. `noFloatingPromises` and `noMisusedPromises` are enabled **from nursery** — they are the reason this repo uses Biome's types domain at all, and they may shift behavior across Biome minor versions. Verify they still fire after a Biome upgrade.
+- **Overrides** in `biome.json`: `scripts/**` allows `console` and `${}`-in-string (it is a code generator); `src/*.generated.ts` is formatted but not linted; `tsconfig*.json` is parsed as JSONC.
+- **`files.maxSize` is raised to 4 MiB.** `src/types.generated.ts` is ~1 MiB and silently exceeds Biome's 1 MiB default, which would skip the largest file in the repo without failing.
 - **TypeScript**: Strict mode, ESNext target, CommonJS output. `noImplicitAny` is off despite strict mode.
 - **Tests**: Jest with SWC transform. Tests use `nock` for HTTP mocking. Coverage collected from `src/`.
 

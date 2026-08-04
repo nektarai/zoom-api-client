@@ -3,9 +3,9 @@
  * Do not edit manually - run `npm run generate` to regenerate.
  */
 
-import { ZoomTokens, ZoomError } from './types';
-import { ZoomClient } from './zoomClient';
+import { ZoomError, ZoomTokens } from './types';
 import * as GeneratedTypes from './types.generated';
+import { ZoomClient } from './zoomClient';
 
 export class ZoomApi {
     private client: ZoomClient;

@@ -1,5 +1,5 @@
-import { ZoomClient, ZoomEventRequest, ZoomOauth } from '../src';
 import nock from 'nock';
+import { ZoomClient, type ZoomEventRequest, ZoomOauth } from '../src';
 
 const clientId = 'dummy';
 const clientSecret = 'dummy';
@@ -101,7 +101,7 @@ test('verifyEvent: No verification key provided', async () => {
         redirectUri,
     });
     oauth = new ZoomOauth(client);
-    let throwError;
+    let throwError: unknown;
     try {
         oauth.verifyEvent(event);
     } catch (err) {

@@ -6,9 +6,7 @@
     "outDir": "./dist",
     "noEmit": false,
     "skipLibCheck": false,
-    "importHelpers": false,
+    "importHelpers": false
   },
-  "include": [
-    "src/**/*",
-  ],
+  "include": ["src/**/*"]
 }

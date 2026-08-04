@@ -2,8 +2,8 @@
  * OpenAPI 3.0 spec parser for Zoom API endpoints.
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 export interface OpenApiSpec {
     openapi: string;
@@ -245,6 +245,9 @@ export function groupEndpointsByResource(
             });
         }
 
+        // The block above guarantees resourceKey is present. `?.` here would
+        // silently drop endpoints instead of failing loudly if that ever breaks.
+        // biome-ignore lint/style/noNonNullAssertion: invariant established above
         groups.get(resourceKey)!.endpoints.push(endpoint);
     }
 

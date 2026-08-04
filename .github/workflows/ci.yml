@@ -13,6 +13,27 @@ permissions:
     contents: read
 
 jobs:
+    quality:
+        name: Lint & Typecheck
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '22'
+                  cache: npm
+
+            - run: npm ci
+
+            # `biome ci` is check-only and enforces assist actions, so it can't
+            # pass by silently rewriting files the way `biome check` could.
+            - run: npx biome ci .
+
+            # Biome is a native binary and @types/node is pinned to the 22 line,
+            # so neither check varies by Node major. Run once, not across the matrix.
+            - run: npm run typecheck
+
     test:
         name: Node ${{ matrix.node }}
         runs-on: ubuntu-latest

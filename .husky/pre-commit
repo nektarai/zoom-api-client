@@ -1,4 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx lint-staged
+# Check-only, deliberately not --write: Biome would fix files without
+# re-staging them, so the commit would capture the unfixed version.
+# Run `npm run lint:fix` when this fails.
+npx biome check --staged --no-errors-on-unmatched

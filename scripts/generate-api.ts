@@ -1,4 +1,5 @@
 #!/usr/bin/env ts-node
+
 /**
  * Zoom API Client Generator
  *
@@ -6,15 +7,15 @@
  * Usage: ts-node scripts/generate-api.ts
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import { generateApiClass } from './lib/api-generator';
 import {
-    parseOpenApiSpec,
     groupEndpointsByResource,
+    parseOpenApiSpec,
 } from './lib/openapi-parser';
 import { generateTypes } from './lib/type-generator';
-import { generateApiClass } from './lib/api-generator';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 /**
@@ -71,37 +72,20 @@ function main() {
     fs.writeFileSync(API_OUTPUT_PATH, apiContent, 'utf-8');
     console.log(`   Written to: ${API_OUTPUT_PATH}\n`);
 
-    // Format generated files with Prettier
-    console.log('🎨 Formatting generated files with Prettier...');
+    // Format and lint generated files with Biome
+    console.log('🎨 Formatting and linting generated files with Biome...');
     try {
         execSync(
-            `npx prettier --write "${TYPES_OUTPUT_PATH}" "${API_OUTPUT_PATH}"`,
+            `npx biome check --write "${TYPES_OUTPUT_PATH}" "${API_OUTPUT_PATH}"`,
             {
                 cwd: ROOT_DIR,
                 stdio: 'inherit',
             },
         );
         console.log('   Formatting complete!\n');
-    } catch (error) {
+    } catch {
         console.warn(
-            '   Warning: Prettier formatting failed, continuing anyway.\n',
-        );
-    }
-
-    // Lint generated files with ESLint
-    console.log('🔍 Linting generated files with ESLint...');
-    try {
-        execSync(
-            `npx eslint --fix "${TYPES_OUTPUT_PATH}" "${API_OUTPUT_PATH}"`,
-            {
-                cwd: ROOT_DIR,
-                stdio: 'inherit',
-            },
-        );
-        console.log('   Linting complete!\n');
-    } catch (error) {
-        console.warn(
-            '   Warning: ESLint found issues that could not be auto-fixed.\n',
+            '   Warning: Biome found issues that could not be auto-fixed.\n',
         );
     }
 

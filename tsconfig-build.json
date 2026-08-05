@@ -3,10 +3,12 @@
   "compilerOptions": {
     "inlineSourceMap": true,
     "declaration": true,
+    "rootDir": "./src",
     "outDir": "./dist",
     "noEmit": false,
     "skipLibCheck": false,
-    "importHelpers": false
+    "importHelpers": false,
+    "types": ["node"]
   },
   "include": ["src/**/*"]
 }

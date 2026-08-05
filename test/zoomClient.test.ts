@@ -23,7 +23,7 @@ test.skip('should initialise ZoomClient correctly', async () => {
         })),
     }));
     const { EventEmitter } = await import('node:events');
-    const { ZoomClient } = await import('../src');
+    const { ZoomClient } = await import('../src/index.js');
     (EventEmitter as any).mockImplementation(() => ({
         emit,
     }));

@@ -5,6 +5,9 @@ module.exports = {
     // coverageReporters: ['json', 'text', 'lcov'],
     moduleNameMapper: {
         '^@root(.*)$': '<rootDir>$1',
+        // TS requires .js specifiers under moduleResolution node16; map them back
+        // so a specifier like '../src/index.js' resolves to the .ts source.
+        '^(\\.{1,2}/.*)\\.js$': '$1',
     },
     rootDir: '.',
     transform: {

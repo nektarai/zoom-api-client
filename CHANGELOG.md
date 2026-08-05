@@ -133,7 +133,7 @@ Migration examples:
 - Manual type definitions (now auto-generated)
 - Legacy convenience methods
 
-See README.md for detailed migration guide.
+See [MIGRATION.md](./MIGRATION.md) for the detailed migration guide.
 
 ## 0.0.4
 

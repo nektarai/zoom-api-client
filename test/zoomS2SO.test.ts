@@ -27,7 +27,7 @@ beforeEach(() => {
 test('authorizationUrl', () => {
     const state = { hello: 'world' };
     const stateStr = JSON.stringify(state);
-    expect(() => s2so.getAuthorizationUrl(stateStr)).toThrowError();
+    expect(() => s2so.getAuthorizationUrl(stateStr)).toThrow();
 });
 
 test('requestTokens', async () => {
@@ -70,10 +70,10 @@ test('requestTokens fails', async () => {
 
 test('refreshTokens', async () => {
     const refreshToken = 'dummy';
-    expect(() => s2so.refreshTokens(refreshToken)).toThrowError();
+    expect(() => s2so.refreshTokens(refreshToken)).toThrow();
 });
 
 test('revokeTokens', async () => {
     const accessToken = 'dummy';
-    expect(() => s2so.revokeTokens(accessToken)).toThrowError();
+    expect(() => s2so.revokeTokens(accessToken)).toThrow();
 });

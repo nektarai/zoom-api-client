@@ -16,9 +16,10 @@
     "pretty": true,
     "resolveJsonModule": true,
     "target": "esnext",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node20",
+    "moduleResolution": "node16",
     "lib": ["esnext"],
+    "types": ["node", "jest"],
     "noEmit": true
   },
   "include": ["src/**/*", "test/**/*"],

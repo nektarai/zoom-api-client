@@ -1,5 +1,31 @@
 # Changelog
 
+## [1.1.0] - 2026-08-05
+
+First stable release of the 1.1 line. It promotes `1.1.0-alpha.0` and
+`1.1.0-alpha.1` unchanged — no API or behavior differences since `1.1.0-alpha.1` —
+so the two sections below are the substance of this release.
+
+Note for anyone upgrading from `0.0.4`, which was until now the newest stable
+version: 1.0.0 was never published, so this is the first stable release to carry
+its breaking changes. See the `[1.0.0]` section for the removed methods and the
+migration table.
+
+### Fixed
+
+- Installing this package no longer downloads 12 unused `@swc/core-*` native
+  binaries. They were declared as production `optionalDependencies` pinned to a
+  version that nothing ever loaded — `@swc/core` resolves its own platform
+  binaries — so every install fetched roughly 150 MB of dead weight per platform
+  for a package that otherwise has no runtime dependencies.
+
+### Changed
+
+- The build now uses TypeScript 6. Emitted JavaScript and `.d.ts` files are
+  byte-identical to those produced by the previous TypeScript 5.5 build, so this
+  is invisible to consumers; it is recorded only because the compiler version
+  changed.
+
 ## [1.1.0-alpha.1]
 
 ### Fixed
